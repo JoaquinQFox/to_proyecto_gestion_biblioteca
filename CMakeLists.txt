@@ -28,6 +28,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         src/database/Database.h src/database/Database.cpp
         src/database/DatabaseInitializer.h src/database/DatabaseInitializer.cpp
+        src/interfaces/IRepository.h
+        src/models/Categoria.h src/models/Categoria.cpp
+        src/repositories/CategoriaRepository.h src/repositories/CategoriaRepository.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

@@ -18,15 +18,15 @@ bool DatabaseInitializer::incializar() {
         // Tabla: CATEGORIAS
         R"(
             CREATE TABLE IF NOT EXISTS categorias (
-                id_categoria INTEGER PRIMARY KEY AUTOINCREMENT,
-                nombre TEXT NOT NULL,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nombre TEXT NOT NULL
             )
         )",
 
         // Tabla: LIBROS
         R"(
             CREATE TABLE IF NOT EXISTS libros (
-                id_libro INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_categoria INTEGER NOT NULL,
                 titulo TEXT NOT NULL,
                 autor TEXT NOT NULL,
@@ -35,7 +35,7 @@ bool DatabaseInitializer::incializar() {
                 isbn TEXT,
 
                 FOREIGN KEY (id_categoria)
-                    REFERENCES categorias(id_categoria)
+                    REFERENCES categorias(id)
                     ON DELETE RESTRICT
                     ON UPDATE CASCADE
             )
@@ -44,13 +44,13 @@ bool DatabaseInitializer::incializar() {
         // Tabla: EJEMPLARES
         R"(
             CREATE TABLE IF NOT EXISTS ejemplares (
-                id_ejemplar INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_libro INTEGER NOT NULL,
                 codigo TEXT NOT NULL UNIQUE,
                 estado TEXT NOT NULL,
 
                 FOREIGN KEY (id_libro)
-                    REFERENCES libros(id_libro)
+                    REFERENCES libros(id)
                     ON DELETE RESTRICT
                     ON UPDATE CASCADE
             )
@@ -59,19 +59,18 @@ bool DatabaseInitializer::incializar() {
         // Tabla: LECTORES
         R"(
             CREATE TABLE IF NOT EXISTS lectores (
-                id_lector INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 dni TEXT NOT NULL UNIQUE,
                 nombres TEXT NOT NULL,
                 apellidos TEXT NOT NULL,
-                telefono TEXT,
-                direccion TEXT
+                telefono TEXT
             )
         )",
 
         // Tabla: PRESTAMOS
         R"(
             CREATE TABLE IF NOT EXISTS prestamos (
-                id_prestamo INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_ejemplar INTEGER NOT NULL,
                 id_lector INTEGER NOT NULL,
                 fecha_prestamo TEXT NOT NULL,
@@ -79,12 +78,12 @@ bool DatabaseInitializer::incializar() {
                 fecha_devolucion TEXT,
 
                 FOREIGN KEY (id_ejemplar)
-                    REFERENCES ejemplares(id_ejemplar)
+                    REFERENCES ejemplares(id)
                     ON DELETE RESTRICT
                     ON UPDATE CASCADE,
 
                 FOREIGN KEY (id_lector)
-                    REFERENCES lectores(id_lector)
+                    REFERENCES lectores(id)
                     ON DELETE RESTRICT
                     ON UPDATE CASCADE
             )
