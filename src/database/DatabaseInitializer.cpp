@@ -15,8 +15,8 @@ bool DatabaseInitializer::incializar() {
     QSqlQuery query(db);
 
     QStringList sentencias = {
-        // Tabla: CATEGORIAS
-        R"(
+       // Tabla: CATEGORIAS
+       R"(
             CREATE TABLE IF NOT EXISTS categorias (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nombre TEXT NOT NULL
@@ -30,9 +30,11 @@ bool DatabaseInitializer::incializar() {
                 id_categoria INTEGER NOT NULL,
                 titulo TEXT NOT NULL,
                 autor TEXT NOT NULL,
-                year INTEGER,
+                anio INTEGER,
                 editorial TEXT,
-                isbn TEXT,
+                isbn TEXT UNIQUE,
+                activo INTEGER NOT NULL DEFAULT 1
+                    CHECK (activo IN (0, 1)),
 
                 FOREIGN KEY (id_categoria)
                     REFERENCES categorias(id)
@@ -41,13 +43,21 @@ bool DatabaseInitializer::incializar() {
             )
         )",
 
-        // Tabla: EJEMPLARES
-        R"(
+       // Tabla: EJEMPLARES
+       R"(
             CREATE TABLE IF NOT EXISTS ejemplares (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_libro INTEGER NOT NULL,
                 codigo TEXT NOT NULL UNIQUE,
-                estado TEXT NOT NULL,
+                estado TEXT NOT NULL
+                    CHECK (estado IN (
+                        'Disponible',
+                        'Prestado',
+                        'Dañado',
+                        'Perdido',
+                        'En mantenimiento',
+                        'Retirado'
+                    )),
 
                 FOREIGN KEY (id_libro)
                     REFERENCES libros(id)
@@ -56,19 +66,22 @@ bool DatabaseInitializer::incializar() {
             )
         )",
 
-        // Tabla: LECTORES
-        R"(
+       // Tabla: LECTORES
+       R"(
             CREATE TABLE IF NOT EXISTS lectores (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 dni TEXT NOT NULL UNIQUE,
                 nombres TEXT NOT NULL,
                 apellidos TEXT NOT NULL,
-                telefono TEXT
+                telefono TEXT,
+                direccion TEXT,
+                activo INTEGER NOT NULL DEFAULT 1
+                    CHECK (activo IN (0, 1))
             )
         )",
 
-        // Tabla: PRESTAMOS
-        R"(
+       // Tabla: PRESTAMOS
+       R"(
             CREATE TABLE IF NOT EXISTS prestamos (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_ejemplar INTEGER NOT NULL,
