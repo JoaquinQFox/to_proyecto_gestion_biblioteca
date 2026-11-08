@@ -32,10 +32,10 @@ bool CategoriaRepository::obtenerPorId(int id, Categoria& categoria)
     QSqlQuery query(Database::obtenerConexion());
 
     query.prepare(
-        "SELECT id, nombre"
+        "SELECT id, nombre "
         "FROM categorias "
         "WHERE id = :id"
-        );
+    );
 
     query.bindValue(":id", id);
 
@@ -123,4 +123,5 @@ bool CategoriaRepository::eliminar(int id)
         return false;
     }
 
-    return query.numRowsAffected() > 0; }
+    return query.numRowsAffected() > 0;
+}
