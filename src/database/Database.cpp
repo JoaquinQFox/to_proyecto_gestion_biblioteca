@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QCoreApplication>
+#include <QSqlQuery>
 
 QSqlDatabase Database::conexion;
 
@@ -35,7 +36,12 @@ bool Database::conectar()
         return false;
     }
 
-    qDebug() << "Base de datos:" << ruta;
+    QSqlQuery query(conexion);
+    if (!query.exec("PRAGMA foreign_keys = ON")) {
+        qDebug() << "Error al activar claves foráneas:"
+                 << query.lastError().text();
+        return false;
+    }
 
     return true;
 }
