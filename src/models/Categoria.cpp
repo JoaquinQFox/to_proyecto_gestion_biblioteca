@@ -6,17 +6,22 @@ Categoria::Categoria()
 Categoria::Categoria(int id, const QString &nombre)
     : id(id), nombre(nombre) {}
 
-int Categoria::getId() const {
+int Categoria::getId() const
+{
     return id;
 }
 
-void Categoria::setId(int id) {
+void Categoria::setId(int id)
+{
     this->id = id;
 }
 
-QString Categoria::getNombre() const {
+QString Categoria::getNombre() const
+{
     return nombre;
 }
- void Categoria::setNombre(const QString &nombre) {
+
+void Categoria::setNombre(const QString &nombre)
+{
     this->nombre = nombre;
 }

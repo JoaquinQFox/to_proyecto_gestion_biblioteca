@@ -1,127 +1,81 @@
 #include "CategoriaRepository.h"
-#include "../models/Categoria.h"
 #include "../database/Database.h"
-
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QVariant>
-#include <QDebug>
+#include <stdexcept>
 
-bool CategoriaRepository::agregar(const Categoria& categoria)
+int CategoriaRepository::agregar(const Categoria &entidad)
 {
     QSqlQuery query(Database::obtenerConexion());
-
-    query.prepare(
-        "INSERT INTO categorias (nombre) "
-        "VALUES (:nombre)"
-        );
-
-    query.bindValue(":nombre", categoria.getNombre());
+    query.prepare("INSERT INTO categorias (nombre) VALUES (:nombre)");
+    query.bindValue(":nombre", entidad.getNombre());
 
     if (!query.exec()) {
-        qDebug() << "Error al agregar categoría:"
-                 << query.lastError().text();
-        return false;
+        throw std::runtime_error("Error al agregar categoria: " + query.lastError().text().toStdString());
     }
-
-    return true;
+    return query.lastInsertId().toInt();
 }
 
-bool CategoriaRepository::obtenerPorId(int id, Categoria& categoria)
+Categoria CategoriaRepository::obtenerPorId(int id)
 {
     QSqlQuery query(Database::obtenerConexion());
-
-    query.prepare(
-        "SELECT id, nombre "
-        "FROM categorias "
-        "WHERE id = :id"
-    );
-
+    query.prepare("SELECT id, nombre FROM categorias WHERE id = :id");
     query.bindValue(":id", id);
 
     if (!query.exec()) {
-        qDebug() << "Error al obtener categoría:"
-                 << query.lastError().text();
-        return false;
+        throw std::runtime_error("Error al obtener categoria por ID: " + query.lastError().text().toStdString());
     }
 
-    if (!query.next())
-        return false;
-
-    categoria = Categoria(
-        query.value("nombre").toString()
-    );
-
-    return true;
+    if (query.next()) {
+        return Categoria(
+            query.value("id").toInt(),
+            query.value("nombre").toString()
+            );
+    }
+    throw std::runtime_error("Categoria no encontrada con ID: " + std::to_string(id));
 }
 
 QList<Categoria> CategoriaRepository::obtenerTodos()
 {
-    QList<Categoria> categorias;
-
+    QList<Categoria> lista;
     QSqlQuery query(Database::obtenerConexion());
-
-    query.prepare(
-        "SELECT id, nombre "
-        "FROM categorias "
-        "ORDER BY nombre"
-    );
+    query.prepare("SELECT id, nombre FROM categorias");
 
     if (!query.exec()) {
-        qDebug() << "Error al obtener categorías:"
-                 << query.lastError().text();
-        return categorias;
+        throw std::runtime_error("Error al obtener categorias: " + query.lastError().text().toStdString());
     }
 
     while (query.next()) {
-        Categoria categoria(
+        lista.append(Categoria(
             query.value("id").toInt(),
             query.value("nombre").toString()
-        );
-
-        categorias.append(categoria);
+        ));
     }
-    return categorias;
+    return lista;
 }
 
-bool CategoriaRepository::actualizar(const Categoria& categoria)
+bool CategoriaRepository::actualizar(const Categoria &entidad)
 {
     QSqlQuery query(Database::obtenerConexion());
-
-    query.prepare(
-        "UPDATE categorias "
-        "SET nombre = :nombre, "
-        "WHERE id = :id"
-    );
-
-    query.bindValue(":id", categoria.getId());
-    query.bindValue(":nombre", categoria.getNombre());
+    query.prepare("UPDATE categorias SET nombre = :nombre WHERE id = :id");
+    query.bindValue(":nombre", entidad.getNombre());
+    query.bindValue(":id", entidad.getId());
 
     if (!query.exec()) {
-        qDebug() << "Error al actualizar categoría:"
-                 << query.lastError().text();
-        return false;
+        throw std::runtime_error("Error al actualizar categoria: " + query.lastError().text().toStdString());
     }
-
     return query.numRowsAffected() > 0;
 }
 
 bool CategoriaRepository::eliminar(int id)
 {
     QSqlQuery query(Database::obtenerConexion());
-
-    query.prepare(
-        "DELETE FROM categorias "
-        "WHERE id = :id"
-        );
-
+    query.prepare("DELETE FROM categorias WHERE id = :id");
     query.bindValue(":id", id);
 
     if (!query.exec()) {
-        qDebug() << "Error al desactivar categoría:"
-                 << query.lastError().text();
-        return false;
+        throw std::runtime_error("Error al eliminar categoria: " + query.lastError().text().toStdString());
     }
-
     return query.numRowsAffected() > 0;
 }

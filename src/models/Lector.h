@@ -3,7 +3,8 @@
 
 #include <QString>
 
-class Lector {
+class Lector
+{
 private:
     int id;
     QString dni;

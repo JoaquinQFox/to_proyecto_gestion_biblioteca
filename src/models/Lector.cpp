@@ -8,58 +8,72 @@ Lector::Lector(int id, const QString &dni, const QString &nombres, const QString
     : id(id), dni(dni), nombres(nombres), apellidos(apellidos),
     telefono(telefono), direccion(direccion), activo(activo) {}
 
-int Lector::getId() const {
+int Lector::getId() const
+{
     return id;
 }
 
-void Lector::setId(int id) {
+void Lector::setId(int id)
+{
     this->id = id;
 }
 
-QString Lector::getDni() const {
+QString Lector::getDni() const
+{
     return dni;
 }
 
-void Lector::setDni(const QString &dni) {
+void Lector::setDni(const QString &dni)
+{
     this->dni = dni;
 }
 
-QString Lector::getNombres() const {
+QString Lector::getNombres() const
+{
     return nombres;
 }
 
-void Lector::setNombres(const QString &nombres) {
+void Lector::setNombres(const QString &nombres)
+{
     this->nombres = nombres;
 }
 
-QString Lector::getApellidos() const {
+QString Lector::getApellidos() const
+{
     return apellidos;
 }
 
-void Lector::setApellidos(const QString &apellidos) {
+void Lector::setApellidos(const QString &apellidos)
+{
     this->apellidos = apellidos;
 }
 
-QString Lector::getTelefono() const {
+QString Lector::getTelefono() const
+{
     return telefono;
 }
 
-void Lector::setTelefono(const QString &telefono) {
+void Lector::setTelefono(const QString &telefono)
+{
     this->telefono = telefono;
 }
 
-QString Lector::getDireccion() const {
+QString Lector::getDireccion() const
+{
     return direccion;
 }
 
-void Lector::setDireccion(const QString &direccion) {
+void Lector::setDireccion(const QString &direccion)
+{
     this->direccion = direccion;
 }
 
-bool Lector::isActivo() const {
+bool Lector::isActivo() const
+{
     return activo;
 }
 
-void Lector::setActivo(bool activo) {
+void Lector::setActivo(bool activo)
+{
     this->activo = activo;
 }

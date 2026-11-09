@@ -3,7 +3,8 @@
 
 #include <QString>
 
-class Ejemplar {
+class Ejemplar
+{
 private:
     int id;
     int idLibro;

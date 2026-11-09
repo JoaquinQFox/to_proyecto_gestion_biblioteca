@@ -3,7 +3,8 @@
 
 #include <QString>
 
-class Categoria {
+class Categoria
+{
 private:
     int id;
     QString nombre;

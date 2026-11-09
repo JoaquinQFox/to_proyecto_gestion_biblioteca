@@ -3,7 +3,8 @@
 
 #include <QString>
 
-class Libro {
+class Libro
+{
 private:
     int id;
     int idCategoria;

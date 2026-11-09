@@ -4,7 +4,8 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
-bool DatabaseInitializer::incializar() {
+bool DatabaseInitializer::incializar()
+{
     QSqlDatabase db = Database::obtenerConexion();
 
     if (!db.isOpen()) {

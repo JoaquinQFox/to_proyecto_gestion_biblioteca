@@ -7,14 +7,13 @@
 class CategoriaRepository : public IRepository<Categoria>
 {
 public:
-    bool agregar(const Categoria& entidad) override;
+    CategoriaRepository() = default;
+    ~CategoriaRepository() override = default;
 
-    bool obtenerPorId(int id, Categoria& entidad) override;
-
+    int agregar(const Categoria &entidad) override;
+    Categoria obtenerPorId(int id) override;
     QList<Categoria> obtenerTodos() override;
-
-    bool actualizar(const Categoria& entidad) override;
-
+    bool actualizar(const Categoria &entidad) override;
     bool eliminar(int id) override;
 };
 

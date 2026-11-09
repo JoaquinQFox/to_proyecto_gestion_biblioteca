@@ -8,66 +8,82 @@ Libro::Libro(int id, int idCategoria, const QString &titulo, const QString &auto
     : id(id), idCategoria(idCategoria), titulo(titulo), autor(autor),
     year(year), editorial(editorial), isbn(isbn), activo(activo) {}
 
-int Libro::getId() const {
+int Libro::getId() const
+{
     return id;
 }
 
-void Libro::setId(int id) {
+void Libro::setId(int id)
+{
     this->id = id;
 }
 
-int Libro::getIdCategoria() const {
+int Libro::getIdCategoria() const
+{
     return idCategoria;
 }
 
-void Libro::setIdCategoria(int idCategoria) {
+void Libro::setIdCategoria(int idCategoria)
+{
     this->idCategoria = idCategoria;
 }
 
-QString Libro::getTitulo() const {
+QString Libro::getTitulo() const
+{
     return titulo;
 }
 
-void Libro::setTitulo(const QString &titulo) {
+void Libro::setTitulo(const QString &titulo)
+{
     this->titulo = titulo;
 }
 
-QString Libro::getAutor() const {
+QString Libro::getAutor() const
+{
     return autor;
 }
 
-void Libro::setAutor(const QString &autor) {
+void Libro::setAutor(const QString &autor)
+{
     this->autor = autor;
 }
 
-int Libro::getYear() const {
+int Libro::getYear() const
+{
     return year;
 }
 
-void Libro::setYear(int year) {
+void Libro::setYear(int year)
+{
     this->year = year;
 }
 
-QString Libro::getEditorial() const {
+QString Libro::getEditorial() const
+{
     return editorial;
 }
 
-void Libro::setEditorial(const QString &editorial) {
+void Libro::setEditorial(const QString &editorial)
+{
     this->editorial = editorial;
 }
 
-QString Libro::getIsbn() const {
+QString Libro::getIsbn() const
+{
     return isbn;
 }
 
-void Libro::setIsbn(const QString &isbn) {
+void Libro::setIsbn(const QString &isbn)
+{
     this->isbn = isbn;
 }
 
-bool Libro::isActivo() const {
+bool Libro::isActivo() const
+{
     return activo;
 }
 
-void Libro::setActivo(bool activo) {
+void Libro::setActivo(bool activo)
+{
     this->activo = activo;
 }

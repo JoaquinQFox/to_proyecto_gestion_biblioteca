@@ -3,7 +3,8 @@
 
 #include <QDate>
 
-class Prestamo {
+class Prestamo
+{
 private:
     int id;
     int idEjemplar;

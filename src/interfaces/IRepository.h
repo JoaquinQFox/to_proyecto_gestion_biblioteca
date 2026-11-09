@@ -7,17 +7,13 @@ template <typename T>
 class IRepository
 {
 public:
-    virtual ~IRepository() = default;
-
-    virtual bool agregar(const T& entidad) = 0;
-
-    virtual bool obtenerPorId(int id, T& entidad) = 0;
-
+    virtual int agregar(const T& entidad) = 0;
+    virtual T obtenerPorId(int id) = 0;
     virtual QList<T> obtenerTodos() = 0;
-
     virtual bool actualizar(const T& entidad) = 0;
-
     virtual bool eliminar(int id) = 0;
+
+    virtual ~IRepository() = default;
 };
 
 #endif // IREPOSITORY_H

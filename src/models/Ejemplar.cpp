@@ -6,34 +6,42 @@ Ejemplar::Ejemplar()
 Ejemplar::Ejemplar(int id, int idLibro, const QString &codigo, const QString &estado)
     : id(id), idLibro(idLibro), codigo(codigo), estado(estado) {}
 
-int Ejemplar::getId() const {
+int Ejemplar::getId() const
+{
     return id;
 }
 
-void Ejemplar::setId(int id) {
+void Ejemplar::setId(int id)
+{
     this->id = id;
 }
 
-int Ejemplar::getIdLibro() const {
+int Ejemplar::getIdLibro() const
+{
     return idLibro;
 }
 
-void Ejemplar::setIdLibro(int idLibro) {
+void Ejemplar::setIdLibro(int idLibro)
+{
     this->idLibro = idLibro;
 }
 
-QString Ejemplar::getCodigo() const {
+QString Ejemplar::getCodigo() const
+{
     return codigo;
 }
 
-void Ejemplar::setCodigo(const QString &codigo) {
+void Ejemplar::setCodigo(const QString &codigo)
+{
     this->codigo = codigo;
 }
 
-QString Ejemplar::getEstado() const {
+QString Ejemplar::getEstado() const
+{
     return estado;
 }
 
-void Ejemplar::setEstado(const QString &estado) {
+void Ejemplar::setEstado(const QString &estado)
+{
     this->estado = estado;
 }
