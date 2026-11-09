@@ -98,11 +98,37 @@ bool LibroRepository::actualizar(const Libro &entidad)
 bool LibroRepository::eliminar(int id)
 {
     QSqlQuery query(Database::obtenerConexion());
-    query.prepare("DELETE FROM libros WHERE id = :id");
+    query.prepare("UPDATE libros SET activo = 0 WHERE id = :id");
     query.bindValue(":id", id);
 
     if (!query.exec()) {
-        throw std::runtime_error("Error al eliminar libro: " + query.lastError().text().toStdString());
+        throw std::runtime_error("Error al desactivar libro: " + query.lastError().text().toStdString());
     }
     return query.numRowsAffected() > 0;
+}
+
+QList<Libro> LibroRepository::obtenerActivos()
+{
+    QList<Libro> lista;
+    QSqlQuery query(Database::obtenerConexion());
+    query.prepare("SELECT id, id_categoria, titulo, autor, year, editorial, isbn, activo "
+                  "FROM libros WHERE activo = 1");
+
+    if (!query.exec()) {
+        throw std::runtime_error("Error al obtener libros activos: " + query.lastError().text().toStdString());
+    }
+
+    while (query.next()) {
+        lista.append(Libro(
+            query.value("id").toInt(),
+            query.value("id_categoria").toInt(),
+            query.value("titulo").toString(),
+            query.value("autor").toString(),
+            query.value("year").toInt(),
+            query.value("editorial").toString(),
+            query.value("isbn").toString(),
+            true
+            ));
+    }
+    return lista;
 }

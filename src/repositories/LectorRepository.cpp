@@ -94,11 +94,36 @@ bool LectorRepository::actualizar(const Lector &entidad)
 bool LectorRepository::eliminar(int id)
 {
     QSqlQuery query(Database::obtenerConexion());
-    query.prepare("DELETE FROM lectores WHERE id = :id");
+    query.prepare("UPDATE lectores SET activo = 0 WHERE id = :id");
     query.bindValue(":id", id);
 
     if (!query.exec()) {
-        throw std::runtime_error("Error al eliminar lector: " + query.lastError().text().toStdString());
+        throw std::runtime_error("Error al desactivar lector: " + query.lastError().text().toStdString());
     }
     return query.numRowsAffected() > 0;
+}
+
+QList<Lector> LectorRepository::obtenerActivos()
+{
+    QList<Lector> lista;
+    QSqlQuery query(Database::obtenerConexion());
+    query.prepare("SELECT id, dni, nombres, apellidos, telefono, direccion, activo "
+                  "FROM lectores WHERE activo = 1");
+
+    if (!query.exec()) {
+        throw std::runtime_error("Error al obtener lectores activos: " + query.lastError().text().toStdString());
+    }
+
+    while (query.next()) {
+        lista.append(Lector(
+            query.value("id").toInt(),
+            query.value("dni").toString(),
+            query.value("nombres").toString(),
+            query.value("apellidos").toString(),
+            query.value("telefono").toString(),
+            query.value("direccion").toString(),
+            true
+            ));
+    }
+    return lista;
 }

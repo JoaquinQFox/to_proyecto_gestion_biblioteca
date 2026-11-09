@@ -15,6 +15,8 @@ public:
     QList<Libro> obtenerTodos() override;
     bool actualizar(const Libro &entidad) override;
     bool eliminar(int id) override;
+
+    QList<Libro> obtenerActivos();
 };
 
 #endif // LIBROREPOSITORY_H
