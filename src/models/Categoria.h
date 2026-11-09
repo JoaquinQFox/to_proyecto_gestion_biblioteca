@@ -3,21 +3,20 @@
 
 #include <QString>
 
-class Categoria
-{
+class Categoria {
 private:
     int id;
     QString nombre;
 
 public:
     Categoria();
-    Categoria(const QString& nombre);
-    Categoria(int id, const QString& nombre);
+    Categoria(int id, const QString &nombre);
 
     int getId() const;
-    QString getNombre() const;
+    void setId(int id);
 
-    void setNombre(const QString& nombre);
+    QString getNombre() const;
+    void setNombre(const QString &nombre);
 };
 
 #endif // CATEGORIA_H

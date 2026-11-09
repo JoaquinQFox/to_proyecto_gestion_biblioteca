@@ -31,6 +31,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         src/interfaces/IRepository.h
         src/models/Categoria.h src/models/Categoria.cpp
         src/repositories/CategoriaRepository.h src/repositories/CategoriaRepository.cpp
+        src/models/Libro.h src/models/Libro.cpp
+        src/models/Ejemplar.h src/models/Ejemplar.cpp
+        src/models/Lector.h src/models/Lector.cpp
+        src/models/Prestamo.h src/models/Prestamo.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

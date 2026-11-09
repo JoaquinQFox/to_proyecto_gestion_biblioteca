@@ -30,7 +30,7 @@ bool DatabaseInitializer::incializar() {
                 id_categoria INTEGER NOT NULL,
                 titulo TEXT NOT NULL,
                 autor TEXT NOT NULL,
-                anio INTEGER,
+                year INTEGER,
                 editorial TEXT,
                 isbn TEXT UNIQUE,
                 activo INTEGER NOT NULL DEFAULT 1
