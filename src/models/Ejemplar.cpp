@@ -53,6 +53,8 @@ QString Ejemplar::getEstadoString() const
         return "DISPONIBLE";
     case Estado::PRESTADO:
         return "PRESTADO";
+    case Estado::RETIRADO:
+        return "RETIRADO";
     }
 
     return "DESCONOCIDO";
@@ -66,5 +68,21 @@ Ejemplar::Estado Ejemplar::stringToEstado(const QString &estado)
     if (estado == "PRESTADO")
         return Estado::PRESTADO;
 
+    if (estado == "RETIRADO")
+        return Estado::PRESTADO;
+
     throw std::invalid_argument("Estado de ejemplar no valido");
+}
+
+QString Ejemplar::estadoToString(const Estado &estado) {
+    switch(estado) {
+    case Estado::DISPONIBLE:
+        return "DISPONIBLE";
+    case Estado::PRESTADO:
+        return "PRESTADO";
+    case Estado::RETIRADO:
+        return "RETIRADO";
+    }
+
+    return "DESCONOCIDO";
 }

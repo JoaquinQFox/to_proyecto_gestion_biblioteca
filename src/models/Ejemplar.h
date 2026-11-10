@@ -8,7 +8,8 @@ class Ejemplar
 public:
     enum class Estado {
         DISPONIBLE,
-        PRESTADO
+        PRESTADO,
+        RETIRADO
     };
 
 private:
@@ -35,6 +36,7 @@ public:
 
     QString getEstadoString() const;
 
+    static QString estadoToString(const Estado &estado);
     static Estado stringToEstado(const QString &estado);
 };
 
