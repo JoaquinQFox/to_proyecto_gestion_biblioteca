@@ -1,9 +1,9 @@
 #include "Ejemplar.h"
 
 Ejemplar::Ejemplar()
-    : id(0), idLibro(0), codigo(""), estado("Disponible") {}
+    : id(0), idLibro(0), codigo(""), estado(Estado::DISPONIBLE) {}
 
-Ejemplar::Ejemplar(int id, int idLibro, const QString &codigo, const QString &estado)
+Ejemplar::Ejemplar(int id, int idLibro, const QString &codigo, const Estado &estado)
     : id(id), idLibro(idLibro), codigo(codigo), estado(estado) {}
 
 int Ejemplar::getId() const
@@ -36,12 +36,35 @@ void Ejemplar::setCodigo(const QString &codigo)
     this->codigo = codigo;
 }
 
-QString Ejemplar::getEstado() const
+Ejemplar::Estado Ejemplar::getEstado() const
 {
     return estado;
 }
 
-void Ejemplar::setEstado(const QString &estado)
+void Ejemplar::setEstado(const Estado &estado)
 {
     this->estado = estado;
+}
+
+QString Ejemplar::getEstadoString() const
+{
+    switch(this->estado) {
+    case Estado::DISPONIBLE:
+        return "DISPONIBLE";
+    case Estado::PRESTADO:
+        return "PRESTADO";
+    }
+
+    return "DESCONOCIDO";
+}
+
+Ejemplar::Estado Ejemplar::stringToEstado(const QString &estado)
+{
+    if (estado == "DISPONIBLE")
+        return Estado::DISPONIBLE;
+
+    if (estado == "PRESTADO")
+        return Estado::PRESTADO;
+
+    throw std::invalid_argument("Estado de ejemplar no valido");
 }

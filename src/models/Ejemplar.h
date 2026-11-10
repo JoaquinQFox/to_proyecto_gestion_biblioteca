@@ -5,15 +5,21 @@
 
 class Ejemplar
 {
+public:
+    enum class Estado {
+        DISPONIBLE,
+        PRESTADO
+    };
+
 private:
     int id;
     int idLibro;
     QString codigo;
-    QString estado;
+    Estado estado;
 
 public:
     Ejemplar();
-    Ejemplar(int id, int idLibro, const QString &codigo, const QString &estado);
+    Ejemplar(int id, int idLibro, const QString &codigo, const Estado &estado);
 
     int getId() const;
     void setId(int id);
@@ -24,8 +30,12 @@ public:
     QString getCodigo() const;
     void setCodigo(const QString &codigo);
 
-    QString getEstado() const;
-    void setEstado(const QString &estado);
+    Estado getEstado() const;
+    void setEstado(const Estado &estado);
+
+    QString getEstadoString() const;
+
+    static Estado stringToEstado(const QString &estado);
 };
 
 #endif // EJEMPLAR_H

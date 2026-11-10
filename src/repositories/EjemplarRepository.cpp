@@ -12,7 +12,7 @@ int EjemplarRepository::agregar(const Ejemplar &entidad)
                   "VALUES (:idLibro, :codigo, :estado)");
     query.bindValue(":idLibro", entidad.getIdLibro());
     query.bindValue(":codigo", entidad.getCodigo());
-    query.bindValue(":estado", entidad.getEstado());
+    query.bindValue(":estado", entidad.getEstadoString());
 
     if (!query.exec()) {
         throw std::runtime_error("Error al agregar ejemplar: " + query.lastError().text().toStdString());
@@ -31,11 +31,12 @@ Ejemplar EjemplarRepository::obtenerPorId(int id)
     }
 
     if (query.next()) {
+
         return Ejemplar(
             query.value("id").toInt(),
             query.value("id_libro").toInt(),
             query.value("codigo").toString(),
-            query.value("estado").toString()
+            Ejemplar::stringToEstado(query.value("estado").toString())
             );
     }
     throw std::runtime_error("Ejemplar no encontrado con ID: " + std::to_string(id));
@@ -55,7 +56,7 @@ QList<Ejemplar> EjemplarRepository::obtenerTodos() {
             query.value("id").toInt(),
             query.value("id_libro").toInt(),
             query.value("codigo").toString(),
-            query.value("estado").toString()
+            Ejemplar::stringToEstado(query.value("estado").toString())
             ));
     }
     return lista;
@@ -68,7 +69,7 @@ bool EjemplarRepository::actualizar(const Ejemplar &entidad)
                   "WHERE id = :id");
     query.bindValue(":idLibro", entidad.getIdLibro());
     query.bindValue(":codigo", entidad.getCodigo());
-    query.bindValue(":estado", entidad.getEstado());
+    query.bindValue(":estado", entidad.getEstadoString());
     query.bindValue(":id", entidad.getId());
 
     if (!query.exec()) {
