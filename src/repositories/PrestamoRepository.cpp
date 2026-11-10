@@ -1,30 +1,97 @@
 #include "PrestamoRepository.h"
+#include "../models/Ejemplar.h"
 #include "../database/Database.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QVariant>
 #include <stdexcept>
 
+// Agrega un prestamo y cambia el estado del Ejemplar prestado a PRESTADO
 int PrestamoRepository::agregar(const Prestamo &entidad)
 {
-    QSqlQuery query(Database::obtenerConexion());
-    query.prepare("INSERT INTO prestamos (id_ejemplar, id_lector, fecha_prestamo, fecha_vencimiento, fecha_devolucion) "
-                  "VALUES (:idEjemplar, :idLector, :fechaPrestamo, :fechaVencimiento, :fechaDevolucion)");
-    query.bindValue(":idEjemplar", entidad.getIdEjemplar());
-    query.bindValue(":idLector", entidad.getIdLector());
-    query.bindValue(":fechaPrestamo", entidad.getFechaPrestamo().toString(Qt::ISODate));
-    query.bindValue(":fechaVencimiento", entidad.getFechaVencimiento().toString(Qt::ISODate));
+    QSqlDatabase db = Database::obtenerConexion();
 
-    if (entidad.getFechaDevolucion().isValid()) {
-        query.bindValue(":fechaDevolucion", entidad.getFechaDevolucion().toString(Qt::ISODate));
-    } else {
-        query.bindValue(":fechaDevolucion", QVariant());
+    if (!db.transaction()) {
+        throw std::runtime_error(
+            "Error al iniciar transaccion: " +
+            db.lastError().text().toStdString()
+        );
     }
 
-    if (!query.exec()) {
-        throw std::runtime_error("Error al agregar prestamo: " + query.lastError().text().toStdString());
+    try {
+        QSqlQuery update(db);
+
+        update.prepare(
+            "UPDATE ejemplares "
+            "SET estado = :estado "
+            "WHERE id = :idEjemplar AND estado = :estadoActual"
+            );
+
+        update.bindValue(":estado",
+                         Ejemplar::estadoToString(Ejemplar::Estado::PRESTADO));
+
+        update.bindValue(":idEjemplar", entidad.getIdEjemplar());
+
+        update.bindValue(":estadoActual",
+                         Ejemplar::estadoToString(Ejemplar::Estado::DISPONIBLE));
+
+        if (!update.exec()) {
+            throw std::runtime_error(
+                "Error al actualizar estado del ejemplar: " +
+                update.lastError().text().toStdString()
+                );
+        }
+
+        if (update.numRowsAffected() != 1) {
+            throw std::runtime_error(
+                "El ejemplar no existe o no esta disponible"
+            );
+        }
+
+        QSqlQuery query(db);
+        query.prepare(
+            "INSERT INTO prestamos "
+            "(id_ejemplar, id_lector, fecha_prestamo, fecha_vencimiento, fecha_devolucion) "
+            "VALUES (:idEjemplar, :idLector, :fechaPrestamo, :fechaVencimiento, :fechaDevolucion)"
+        );
+
+        query.bindValue(":idEjemplar", entidad.getIdEjemplar());
+        query.bindValue(":idLector", entidad.getIdLector());
+
+        query.bindValue(":fechaPrestamo",
+                        entidad.getFechaPrestamo().toString(Qt::ISODate));
+
+        query.bindValue(":fechaVencimiento",
+                        entidad.getFechaVencimiento().toString(Qt::ISODate));
+
+        if (entidad.getFechaDevolucion().isValid()) {
+            query.bindValue(":fechaDevolucion",
+                            entidad.getFechaDevolucion().toString(Qt::ISODate));
+        } else {
+            query.bindValue(":fechaDevolucion", QVariant());
+        }
+
+        if (!query.exec()) {
+            throw std::runtime_error(
+                "Error al agregar prestamo: " +
+                query.lastError().text().toStdString()
+            );
+        }
+        int idPrestamo = query.lastInsertId().toInt();
+
+        if (!db.commit()) {
+            throw std::runtime_error(
+                "Error al confirmar transaccion: " +
+                db.lastError().text().toStdString()
+            );
+        }
+
+        return idPrestamo;
+
+    } catch (...) {
+        db.rollback();
+        throw;
     }
-    return query.lastInsertId().toInt();
 }
 
 Prestamo PrestamoRepository::obtenerPorId(int id)

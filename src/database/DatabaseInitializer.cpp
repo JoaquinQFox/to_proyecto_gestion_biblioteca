@@ -52,12 +52,9 @@ bool DatabaseInitializer::incializar()
                 codigo TEXT NOT NULL UNIQUE,
                 estado TEXT NOT NULL
                     CHECK (estado IN (
-                        'Disponible',
-                        'Prestado',
-                        'Dañado',
-                        'Perdido',
-                        'En mantenimiento',
-                        'Retirado'
+                        'DISPONIBLE',
+                        'PRESTADO',
+                        'RETIRADO'
                     )),
 
                 FOREIGN KEY (id_libro)
