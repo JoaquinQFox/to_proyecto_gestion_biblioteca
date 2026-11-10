@@ -68,3 +68,18 @@ void Prestamo::setFechaDevolucion(const QDate &fechaDevolucion)
 {
     this->fechaDevolucion = fechaDevolucion;
 }
+
+bool Prestamo::operator<(const Prestamo &otro) const
+{
+    return fechaVencimiento < otro.fechaVencimiento;
+}
+
+bool Prestamo::operator==(const Prestamo &otro) const
+{
+    return id == otro.id &&
+           idEjemplar == otro.idEjemplar &&
+           idLector == otro.idLector &&
+           fechaPrestamo == otro.fechaPrestamo &&
+           fechaVencimiento == otro.fechaVencimiento &&
+           fechaDevolucion == otro.fechaDevolucion;
+}

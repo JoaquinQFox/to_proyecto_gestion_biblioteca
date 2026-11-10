@@ -77,3 +77,14 @@ void Lector::setActivo(bool activo)
 {
     this->activo = activo;
 }
+
+bool Lector::operator==(const Lector &otro) const
+{
+    return id == otro.id &&
+           dni == otro.dni &&
+           nombres == otro.nombres &&
+           apellidos == otro.apellidos &&
+           telefono == otro.telefono &&
+           direccion == otro.direccion &&
+           activo == otro.activo;
+}

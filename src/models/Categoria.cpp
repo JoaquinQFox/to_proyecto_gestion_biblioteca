@@ -25,3 +25,9 @@ void Categoria::setNombre(const QString &nombre)
 {
     this->nombre = nombre;
 }
+
+bool Categoria::operator==(const Categoria &otro) const
+{
+    return id == otro.id &&
+           nombre == otro.nombre;
+}

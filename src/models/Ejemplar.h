@@ -38,6 +38,8 @@ public:
 
     static QString estadoToString(const Estado &estado);
     static Estado stringToEstado(const QString &estado);
+
+    bool operator==(const Ejemplar &otro) const;
 };
 
 #endif // EJEMPLAR_H

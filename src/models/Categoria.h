@@ -18,6 +18,8 @@ public:
 
     QString getNombre() const;
     void setNombre(const QString &nombre);
+
+    bool operator==(const Categoria &otro) const;
 };
 
 #endif // CATEGORIA_H

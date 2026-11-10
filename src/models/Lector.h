@@ -39,6 +39,8 @@ public:
 
     bool isActivo() const;
     void setActivo(bool activo);
+
+    bool operator==(const Lector &otro) const;
 };
 
 #endif // LECTOR_H

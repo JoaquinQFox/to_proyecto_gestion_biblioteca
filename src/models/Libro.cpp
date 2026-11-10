@@ -87,3 +87,15 @@ void Libro::setActivo(bool activo)
 {
     this->activo = activo;
 }
+
+bool Libro::operator==(const Libro &otro) const
+{
+    return id == otro.id &&
+           idCategoria == otro.idCategoria &&
+           titulo == otro.titulo &&
+           autor == otro.autor &&
+           year == otro.year &&
+           editorial == otro.editorial &&
+           isbn == otro.isbn &&
+           activo == otro.activo;
+}

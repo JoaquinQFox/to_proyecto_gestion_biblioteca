@@ -35,6 +35,9 @@ public:
 
     QDate getFechaDevolucion() const;
     void setFechaDevolucion(const QDate &fechaDevolucion);
+
+    bool operator<(const Prestamo &otro) const;
+    bool operator==(const Prestamo &otro) const;
 };
 
 #endif // PRESTAMO_H

@@ -43,6 +43,8 @@ public:
 
     bool isActivo() const;
     void setActivo(bool activo);
+
+    bool operator==(const Libro &otro) const;
 };
 
 #endif // LIBRO_H#endif // LIBRO_H

@@ -86,3 +86,11 @@ QString Ejemplar::estadoToString(const Estado &estado) {
 
     return "DESCONOCIDO";
 }
+
+bool Ejemplar::operator==(const Ejemplar &otro) const
+{
+    return id == otro.id &&
+           idLibro == otro.idLibro &&
+           codigo == otro.codigo &&
+           estado == otro.estado;
+}
