@@ -34,6 +34,10 @@ set(PROJECT_SOURCES
     src/views/pages/EjemplaresPage.h
     src/views/pages/EjemplaresPage.ui
 
+    src/views/pages/LectoresPage.cpp
+    src/views/pages/LectoresPage.h
+    src/views/pages/LectoresPage.ui
+
     resources/resources.qrc
 )
 

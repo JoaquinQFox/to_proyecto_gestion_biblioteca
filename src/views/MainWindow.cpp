@@ -3,6 +3,7 @@
 #include "pages/CategoriasPage.h"
 #include "pages/LibrosPage.h"
 #include "pages/EjemplaresPage.h"
+#include "pages/LectoresPage.h"
 
 #include <QFile>
 #include <QDebug>
@@ -87,7 +88,32 @@ MainWindow::MainWindow(QWidget *parent)
         qWarning() << "No se encontró pageEjemplares";
     }
 
-    // 4. CARGAR LOS ESTILOS QSS
+
+    // 4. INTEGRAR LA PANTALLA DE LECTORES
+
+    LectoresPage *lectoresPage = new LectoresPage(this);
+
+    QWidget *paginaLectoresVacia = ui->pageLectores;
+
+    int indiceLectores =
+        ui->stackedWidget->indexOf(paginaLectoresVacia);
+
+    if (indiceLectores >= 0) {
+        ui->stackedWidget->removeWidget(paginaLectoresVacia);
+
+        ui->stackedWidget->insertWidget(
+            indiceLectores,
+            lectoresPage
+            );
+
+        delete paginaLectoresVacia;
+    } else {
+        delete lectoresPage;
+        qWarning() << "No se encontró pageLectores";
+    }
+
+
+    // 5. CARGAR LOS ESTILOS QSS
 
     QString estilos;
 
