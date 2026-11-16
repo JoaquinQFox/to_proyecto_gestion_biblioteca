@@ -197,7 +197,8 @@ MainWindow::MainWindow(QWidget *parent)
         ":/styles/categorias.qss",
         ":/styles/inicio.qss",
         ":/styles/libros.qss",
-        ":/styles/ejemplares.qss"
+        ":/styles/ejemplares.qss",
+        ":/styles/lectores.qss"
     };
 
     for (const QString &ruta : archivosEstilos) {

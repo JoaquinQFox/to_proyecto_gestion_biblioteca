@@ -1,0 +1,100 @@
+
+/* =====================================
+   BIBLIOTECA DIGITAL - LECTORES
+   ===================================== */
+
+/* 1. FONDO DE LA PANTALLA */
+
+QWidget#LectoresPage {
+    background-color: #F3F5F3;
+}
+
+/* 2. TÍTULO */
+
+QWidget#LectoresPage QLabel#lblTitulo {
+    color: #18392B;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* 3. DESCRIPCIÓN */
+
+QWidget#LectoresPage QLabel#lblDescripcion {
+    color: #718078;
+    font-size: 13px;
+    padding-bottom: 8px;
+}
+
+/* 4. BUSCADOR */
+
+QWidget#LectoresPage QLineEdit#txtBuscar {
+    background-color: #FFFFFF;
+    border: 1px solid #DCE5DF;
+    border-radius: 8px;
+    padding: 0px 14px;
+    color: #243B2F;
+    font-size: 13px;
+}
+
+QWidget#LectoresPage QLineEdit#txtBuscar:focus {
+    border: 2px solid #276749;
+}
+
+/* 5. BOTÓN NUEVO LECTOR */
+
+QWidget#LectoresPage QPushButton#btnNuevoLector {
+    background-color: #276749;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QWidget#LectoresPage QPushButton#btnNuevoLector:hover {
+    background-color: #20583D;
+}
+
+QWidget#LectoresPage QPushButton#btnNuevoLector:pressed {
+    background-color: #17442F;
+}
+
+/* 6. TABLA DE LECTORES */
+
+QWidget#LectoresPage QTableWidget#tablaLectores {
+    background-color: #FFFFFF;
+    color: #243B2F;
+    border: 1px solid #E1E8E3;
+    border-radius: 8px;
+    gridline-color: #EDF1EE;
+    selection-background-color: #E5F1E9;
+    selection-color: #18392B;
+    font-size: 13px;
+}
+
+QWidget#LectoresPage QTableWidget#tablaLectores QHeaderView::section {
+    background-color: #F7F9F7;
+    color: #53665A;
+    border: none;
+    border-bottom: 1px solid #E1E8E3;
+    padding: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QWidget#LectoresPage QTableWidget#tablaLectores::item {
+    padding: 10px;
+    border-bottom: 1px solid #EDF1EE;
+}
+
+QWidget#LectoresPage QTableWidget#tablaLectores::item:hover {
+    background-color: #F0F7F2;
+}
+
+/* 7. CONTADOR */
+
+QWidget#LectoresPage QLabel#lblTotal {
+    color: #718078;
+    font-size: 12px;
+}
