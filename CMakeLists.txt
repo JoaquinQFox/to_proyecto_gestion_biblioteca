@@ -16,11 +16,14 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
 )
 
 set(PROJECT_SOURCES
-        src/main.cpp
-        src/views/MainWindow.cpp
-        src/views/MainWindow.h
-        src/views/MainWindow.ui
-        resources/resources.qrc
+    src/main.cpp
+    src/views/MainWindow.cpp
+    src/views/MainWindow.h
+    src/views/MainWindow.ui
+    src/views/pages/CategoriasPage.cpp
+    src/views/pages/CategoriasPage.h
+    src/views/pages/CategoriasPage.ui
+    resources/resources.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

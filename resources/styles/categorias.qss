@@ -1,0 +1,92 @@
+
+/* =====================================
+   BIBLIOTECA DIGITAL - CATEGORÍAS
+   ===================================== */
+
+QWidget#CategoriasPage {
+    background-color: #F3F5F3;
+}
+
+/* Título */
+QLabel#lblTitulo {
+    color: #18392B;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* Descripción */
+QLabel#lblDescripcion {
+    color: #718078;
+    font-size: 13px;
+    padding-bottom: 8px;
+}
+
+/* Buscador */
+QLineEdit#txtBuscar {
+    background-color: #FFFFFF;
+    border: 1px solid #DCE5DF;
+    border-radius: 8px;
+    padding: 0px 14px;
+    color: #243B2F;
+    font-size: 13px;
+}
+
+QLineEdit#txtBuscar:focus {
+    border: 2px solid #276749;
+}
+
+/* Botón principal */
+QPushButton#btnNuevaCategoria {
+    background-color: #276749;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QPushButton#btnNuevaCategoria:hover {
+    background-color: #20583D;
+}
+
+QPushButton#btnNuevaCategoria:pressed {
+    background-color: #17442F;
+}
+
+/* Tabla */
+QTableWidget#tablaCategorias {
+    background-color: #FFFFFF;
+    color: #243B2F;
+    border: 1px solid #E1E8E3;
+    border-radius: 8px;
+    gridline-color: #EDF1EE;
+    selection-background-color: #E5F1E9;
+    selection-color: #18392B;
+    font-size: 13px;
+}
+
+QTableWidget#tablaCategorias QHeaderView::section {
+    background-color: #F7F9F7;
+    color: #53665A;
+    border: none;
+    border-bottom: 1px solid #E1E8E3;
+    padding: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QTableWidget#tablaCategorias::item {
+    padding: 10px;
+    border-bottom: 1px solid #EDF1EE;
+}
+
+QTableWidget#tablaCategorias::item:hover {
+    background-color: #F0F7F2;
+}
+
+/* Contador */
+QLabel#lblTotal {
+    color: #718078;
+    font-size: 12px;
+}

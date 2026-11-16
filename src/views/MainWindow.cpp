@@ -1,11 +1,15 @@
+
 #include "MainWindow.h"
 #include "./ui_MainWindow.h"
+#include "pages/CategoriasPage.h"
 
 #include <QFile>
 #include <QDebug>
 #include <QPushButton>
 #include <QList>
 #include <QStyle>
+#include <QStringList>
+#include <QWidget>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,15 +17,63 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QFile archivoEstilos(":/styles/main.qss");
+    // 1. INTEGRAR LA PANTALLA DE CATEGORÍAS
 
-    if (archivoEstilos.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        setStyleSheet(QString::fromUtf8(archivoEstilos.readAll()));
+    CategoriasPage *categoriasPage = new CategoriasPage(this);
+
+    QWidget *paginaVacia = ui->pageCategorias;
+
+    int indiceCategorias =
+        ui->stackedWidget->indexOf(paginaVacia);
+
+    if (indiceCategorias >= 0) {
+        ui->stackedWidget->removeWidget(paginaVacia);
+
+        ui->stackedWidget->insertWidget(
+            indiceCategorias,
+            categoriasPage
+            );
+
+        delete paginaVacia;
     } else {
-        qWarning() << "No se pudo cargar main.qss";
+        delete categoriasPage;
+        qWarning() << "No se encontró pageCategorias";
     }
 
+    // 2. CARGAR LOS ESTILOS QSS
+
+    QString estilos;
+
+    const QStringList archivosEstilos = {
+        ":/styles/main.qss",
+        ":/styles/categorias.qss"
+    };
+
+    for (const QString &ruta : archivosEstilos) {
+
+        QFile archivo(ruta);
+
+        if (archivo.open(QIODevice::ReadOnly | QIODevice::Text)) {
+
+            estilos += QString::fromUtf8(
+                archivo.readAll()
+                );
+
+            estilos += "\n";
+
+        } else {
+
+            qWarning() << "No se pudo cargar:" << ruta;
+
+        }
+    }
+
+    setStyleSheet(estilos);
+
+    // 3. CONFIGURAR NAVEGACIÓN
+
     configurarNavegacion();
+
     cambiarPagina(0, ui->btnInicio);
 }
 
@@ -29,6 +81,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+// CONFIGURACIÓN DE NAVEGACIÓN
 
 void MainWindow::configurarNavegacion()
 {
@@ -68,8 +122,20 @@ void MainWindow::configurarNavegacion()
             });
 }
 
-void MainWindow::cambiarPagina(int indice, QPushButton *botonActivo)
+// CAMBIAR DE PÁGINA Y ACTUALIZAR BOTONES
+
+void MainWindow::cambiarPagina(
+    int indice,
+    QPushButton *botonActivo
+    )
 {
+    if (indice < 0 ||
+        indice >= ui->stackedWidget->count()) {
+
+        qWarning() << "Índice de página inválido:" << indice;
+        return;
+    }
+
     ui->stackedWidget->setCurrentIndex(indice);
 
     const QList<QPushButton *> botones = {
@@ -83,7 +149,11 @@ void MainWindow::cambiarPagina(int indice, QPushButton *botonActivo)
     };
 
     for (QPushButton *boton : botones) {
-        boton->setProperty("activo", boton == botonActivo);
+
+        boton->setProperty(
+            "activo",
+            boton == botonActivo
+            );
 
         boton->style()->unpolish(boton);
         boton->style()->polish(boton);
