@@ -1,80 +1,24 @@
 
-QDialog#LectorDialog {
-    background-color: #FFFFFF;
-}
+/* =====================================
+   BIBLIOTECA DIGITAL
+   FORMULARIO DE LECTORES
+   ===================================== */
 
-QLabel#lblTitulo {
-    color: #18392C;
-    font-size: 22px;
-    font-weight: 700;
-    background: transparent;
-}
+/*
+ * Los estilos generales están definidos
+ * en dialog_common.qss.
+ *
+ * Componentes:
+ * - Fondo blanco
+ * - Título y descripción
+ * - Etiquetas de los campos
+ * - Campos Nombre, DNI, Correo y Teléfono
+ * - Botones Guardar y Cancelar
+ */
 
-QLabel#lblDescripcion {
-    color: #718096;
-    font-size: 13px;
-    background: transparent;
-}
+/* Personalización del botón Cancelar */
 
-QLabel#lblNombre,
-QLabel#lblDNI,
-QLabel#lblCorreo,
-QLabel#lblTelefono {
-    color: #334155;
-    font-size: 13px;
-    font-weight: 600;
-    background: transparent;
-}
-
-QLineEdit#txtNombre,
-QLineEdit#txtDNI,
-QLineEdit#txtCorreo,
-QLineEdit#txtTelefono {
-    background-color: #F8FAFC;
-    color: #1E293B;
-    border: 1px solid #CBD5E1;
-    border-radius: 8px;
-    padding: 0px 12px;
-    font-size: 13px;
-    selection-background-color: #27845B;
-}
-
-QLineEdit:focus {
-    background-color: #FFFFFF;
-    border: 2px solid #27845B;
-}
-
-QPushButton#btnCancelar {
-    background-color: #FFFFFF;
-    color: #475569;
-    border: 1px solid #CBD5E1;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-QPushButton#btnCancelar:hover {
+QDialog#LectorDialog QPushButton#btnCancelar:hover {
     background-color: #F1F5F9;
     border-color: #94A3B8;
-}
-
-QPushButton#btnCancelar:pressed {
-    background-color: #E2E8F0;
-}
-
-QPushButton#btnGuardar {
-    background-color: #27845B;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-QPushButton#btnGuardar:hover {
-    background-color: #206B4A;
-}
-
-QPushButton#btnGuardar:pressed {
-    background-color: #18563B;
 }

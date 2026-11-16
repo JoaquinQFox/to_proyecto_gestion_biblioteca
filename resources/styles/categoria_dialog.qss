@@ -1,65 +1,21 @@
 
-QDialog#CategoriaDialog {
-    background-color: #FFFFFF;
-}
+/* =====================================
+   BIBLIOTECA DIGITAL
+   FORMULARIO DE CATEGORÍAS
+   ===================================== */
 
-QLabel#lblTitulo {
-    color: #18392C;
-    font-size: 22px;
-    font-weight: 700;
-}
-
-QLabel#lblDescripcion {
-    color: #718096;
-    font-size: 13px;
-}
-
-QLabel#lblNombre {
-    color: #334155;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-QLineEdit#txtNombre {
-    background-color: #F8FAFC;
-    border: 1px solid #CBD5E1;
-    border-radius: 8px;
-    padding: 0 12px;
-    color: #1E293B;
-    font-size: 13px;
-}
-
-QLineEdit#txtNombre:focus {
-    background-color: #FFFFFF;
-    border: 2px solid #27845B;
-}
-
-QPushButton#btnCancelar {
-    background-color: #FFFFFF;
-    border: 1px solid #CBD5E1;
-    border-radius: 8px;
-    color: #475569;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-QPushButton#btnCancelar:hover {
-    background-color: #F1F5F9;
-}
-
-QPushButton#btnGuardar {
-    background-color: #27845B;
-    border: none;
-    border-radius: 8px;
-    color: #FFFFFF;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-QPushButton#btnGuardar:hover {
-    background-color: #206B4A;
-}
-
-QPushButton#btnGuardar:pressed {
-    background-color: #18563B;
-}
+/*
+ * Los estilos generales del formulario
+ * están centralizados en dialog_common.qss.
+ *
+ * Componentes:
+ * - Fondo blanco
+ * - Título y descripción
+ * - Etiqueta Nombre
+ * - Campo de texto
+ * - Botón Cancelar
+ * - Botón Guardar
+ *
+ * Archivo reservado para personalizaciones
+ * exclusivas del formulario de categorías.
+ */

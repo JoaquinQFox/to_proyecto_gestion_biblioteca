@@ -3,62 +3,48 @@
    BIBLIOTECA DIGITAL - INICIO
    ===================================== */
 
-/* 1. FONDO DE LA PANTALLA */
+/*
+ * Los estilos generales de títulos,
+ * descripciones, fondos y tablas
+ * están definidos en common.qss.
+ */
 
-QWidget#InicioPage {
-    background-color: #F3F5F3;
-}
+/* 1. TARJETAS DE ESTADÍSTICAS */
 
-/* 2. ENCABEZADO */
-
-QWidget#InicioPage QLabel#lblTitulo {
-    color: #18392B;
-    font-size: 26px;
-    font-weight: bold;
-}
-
-QWidget#InicioPage QLabel#lblDescripcion {
-    color: #718078;
-    font-size: 13px;
-    padding-bottom: 8px;
-}
-
-/* 3. TARJETAS DE ESTADÍSTICAS */
-
-QFrame#cardLibros,
-QFrame#cardEjemplares,
-QFrame#cardLectores,
-QFrame#cardPrestamos {
+QWidget#InicioPage QFrame#cardLibros,
+QWidget#InicioPage QFrame#cardEjemplares,
+QWidget#InicioPage QFrame#cardLectores,
+QWidget#InicioPage QFrame#cardPrestamos {
     background-color: #FFFFFF;
     border: 1px solid #E1E8E3;
     border-radius: 12px;
 }
 
-/* 4. ETIQUETAS DE LAS TARJETAS */
+/* 2. ETIQUETAS DE LAS TARJETAS */
 
-QLabel#lblCardLibros,
-QLabel#lblCardEjemplares,
-QLabel#lblCardLectores,
-QLabel#lblCardPrestamos {
+QWidget#InicioPage QLabel#lblCardLibros,
+QWidget#InicioPage QLabel#lblCardEjemplares,
+QWidget#InicioPage QLabel#lblCardLectores,
+QWidget#InicioPage QLabel#lblCardPrestamos {
     color: #718078;
     font-size: 13px;
     font-weight: 500;
     border: none;
 }
 
-/* 5. VALORES DE LAS TARJETAS */
+/* 3. VALORES DE LAS TARJETAS */
 
-QLabel#lblTotalLibros,
-QLabel#lblTotalEjemplares,
-QLabel#lblTotalLectores,
-QLabel#lblTotalPrestamos {
+QWidget#InicioPage QLabel#lblTotalLibros,
+QWidget#InicioPage QLabel#lblTotalEjemplares,
+QWidget#InicioPage QLabel#lblTotalLectores,
+QWidget#InicioPage QLabel#lblTotalPrestamos {
     color: #18392B;
     font-size: 30px;
     font-weight: bold;
     border: none;
 }
 
-/* 6. SUBTÍTULO */
+/* 4. SUBTÍTULO */
 
 QWidget#InicioPage QLabel#lblSubtitulo {
     color: #18392B;
@@ -66,39 +52,7 @@ QWidget#InicioPage QLabel#lblSubtitulo {
     font-weight: bold;
 }
 
-/* 7. TABLA DE PRÉSTAMOS RECIENTES */
-
-QTableWidget#tablaPrestamosRecientes {
-    background-color: #FFFFFF;
-    color: #243B2F;
-    border: 1px solid #E1E8E3;
-    border-radius: 8px;
-    gridline-color: #EDF1EE;
-    selection-background-color: #E5F1E9;
-    selection-color: #18392B;
-    font-size: 13px;
-}
-
-QTableWidget#tablaPrestamosRecientes QHeaderView::section {
-    background-color: #F7F9F7;
-    color: #53665A;
-    border: none;
-    border-bottom: 1px solid #E1E8E3;
-    padding: 12px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-QTableWidget#tablaPrestamosRecientes::item {
-    padding: 10px;
-    border-bottom: 1px solid #EDF1EE;
-}
-
-QTableWidget#tablaPrestamosRecientes::item:hover {
-    background-color: #F0F7F2;
-}
-
-/* 8. NOTA INFERIOR */
+/* 5. NOTA INFERIOR */
 
 QWidget#InicioPage QLabel#lblNota {
     color: #718078;

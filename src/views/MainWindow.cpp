@@ -194,8 +194,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     const QStringList archivosEstilos = {
         ":/styles/main.qss",
-        ":/styles/categorias.qss",
+        ":/styles/common.qss",
         ":/styles/inicio.qss",
+        ":/styles/categorias.qss",
         ":/styles/libros.qss",
         ":/styles/ejemplares.qss",
         ":/styles/lectores.qss",

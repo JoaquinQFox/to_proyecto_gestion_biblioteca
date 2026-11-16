@@ -1,0 +1,129 @@
+
+/* =========================================
+   BIBLIOTECA DIGITAL
+   ESTILOS COMPARTIDOS DE FORMULARIOS
+   ========================================= */
+
+/* Fondo */
+QDialog {
+    background-color: #FFFFFF;
+}
+
+/* Títulos */
+QDialog QLabel#lblTitulo {
+    color: #18392B;
+    font-size: 22px;
+    font-weight: bold;
+    background: transparent;
+}
+
+/* Descripciones */
+QDialog QLabel#lblDescripcion {
+    color: #718078;
+    font-size: 13px;
+    background: transparent;
+}
+
+/* Etiquetas de campos */
+QDialog QLabel {
+    color: #334155;
+    font-size: 13px;
+    background: transparent;
+}
+
+/* Campos de entrada */
+QDialog QLineEdit,
+QDialog QComboBox,
+QDialog QDateEdit,
+QDialog QSpinBox {
+    background-color: #F8FAFC;
+    color: #1E293B;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    padding: 0px 12px;
+    font-size: 13px;
+    selection-background-color: #276749;
+}
+
+/* Enfoque */
+QDialog QLineEdit:focus,
+QDialog QComboBox:focus,
+QDialog QDateEdit:focus,
+QDialog QSpinBox:focus {
+    background-color: #FFFFFF;
+    border: 2px solid #276749;
+}
+
+/* Desplegables */
+QDialog QComboBox::drop-down,
+QDialog QDateEdit::drop-down {
+    border: none;
+    width: 28px;
+}
+
+QDialog QComboBox QAbstractItemView {
+    background-color: #FFFFFF;
+    color: #1E293B;
+    border: 1px solid #CBD5E1;
+    selection-background-color: #E5F1E9;
+    selection-color: #18392B;
+    outline: none;
+}
+
+/* Controles numéricos */
+QDialog QSpinBox::up-button,
+QDialog QSpinBox::down-button {
+    border: none;
+    width: 24px;
+}
+
+/* Botón secundario */
+QDialog QPushButton#btnCancelar {
+    background-color: #FFFFFF;
+    color: #475569;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QDialog QPushButton#btnCancelar:hover {
+    background-color: #F1F5F9;
+}
+
+QDialog QPushButton#btnCancelar:pressed {
+    background-color: #E2E8F0;
+}
+
+/* Botones principales */
+QDialog QPushButton#btnGuardar,
+QDialog QPushButton#btnGenerar {
+    background-color: #276749;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QDialog QPushButton#btnGuardar:hover,
+QDialog QPushButton#btnGenerar:hover {
+    background-color: #20583D;
+}
+
+QDialog QPushButton#btnGuardar:pressed,
+QDialog QPushButton#btnGenerar:pressed {
+    background-color: #17442F;
+}
+
+/* Botones deshabilitados */
+QDialog QPushButton#btnGuardar:disabled,
+QDialog QPushButton#btnGenerar:disabled {
+    background-color: #A7C9B7;
+    color: #F1F5F9;
+}
+
+/* Enfoque de botones */
+QDialog QPushButton:focus {
+    border: 2px solid #68A783;
+}

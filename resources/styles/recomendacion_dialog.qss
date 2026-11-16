@@ -1,87 +1,22 @@
 
-QDialog#RecomendacionDialog {
-    background-color: #FFFFFF;
-}
+/* =====================================
+   BIBLIOTECA DIGITAL
+   FORMULARIO DE RECOMENDACIONES
+   ===================================== */
 
-QLabel#lblTitulo {
-    color: #18392C;
-    font-size: 22px;
-    font-weight: 700;
-    background: transparent;
-}
-
-QLabel#lblDescripcion {
-    color: #718096;
-    font-size: 13px;
-    background: transparent;
-}
-
-QLabel#lblLector,
-QLabel#lblCategoria,
-QLabel#lblCantidad {
-    color: #334155;
-    font-size: 13px;
-    font-weight: 600;
-    background: transparent;
-}
-
-QComboBox#cmbLector,
-QComboBox#cmbCategoria,
-QSpinBox#spinCantidad {
-    background-color: #F8FAFC;
-    color: #1E293B;
-    border: 1px solid #CBD5E1;
-    border-radius: 8px;
-    padding: 0px 12px;
-    font-size: 13px;
-}
-
-QComboBox:focus,
-QSpinBox:focus {
-    background-color: #FFFFFF;
-    border: 2px solid #27845B;
-}
-
-QComboBox::drop-down,
-QSpinBox::up-button,
-QSpinBox::down-button {
-    border: none;
-    width: 24px;
-}
-
-QComboBox QAbstractItemView {
-    background-color: #FFFFFF;
-    color: #1E293B;
-    selection-background-color: #E4F3EB;
-    selection-color: #18392C;
-}
-
-QPushButton#btnCancelar {
-    background-color: #FFFFFF;
-    color: #475569;
-    border: 1px solid #CBD5E1;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-QPushButton#btnCancelar:hover {
-    background-color: #F1F5F9;
-}
-
-QPushButton#btnGenerar {
-    background-color: #27845B;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-QPushButton#btnGenerar:hover {
-    background-color: #206B4A;
-}
-
-QPushButton#btnGenerar:pressed {
-    background-color: #18563B;
-}
+/*
+ * Los estilos generales están definidos
+ * en dialog_common.qss.
+ *
+ * Componentes:
+ * - Fondo blanco
+ * - Título y descripción
+ * - Etiquetas de los campos
+ * - Selector de lector
+ * - Selector de categoría
+ * - Selector numérico de cantidad
+ * - Botones Generar y Cancelar
+ *
+ * Archivo reservado para personalizaciones
+ * exclusivas del formulario.
+ */
