@@ -38,6 +38,10 @@ set(PROJECT_SOURCES
     src/views/pages/LectoresPage.h
     src/views/pages/LectoresPage.ui
 
+    src/views/pages/PrestamosPage.cpp
+    src/views/pages/PrestamosPage.h
+    src/views/pages/PrestamosPage.ui
+
     resources/resources.qrc
 )
 

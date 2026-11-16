@@ -4,6 +4,7 @@
 #include "pages/LibrosPage.h"
 #include "pages/EjemplaresPage.h"
 #include "pages/LectoresPage.h"
+#include "pages/PrestamosPage.h"
 
 #include <QFile>
 #include <QDebug>
@@ -113,7 +114,30 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
 
-    // 5. CARGAR LOS ESTILOS QSS
+    // 5. INTEGRAR LA PANTALLA DE PRÉSTAMOS
+
+    PrestamosPage *prestamosPage = new PrestamosPage(this);
+
+    QWidget *paginaPrestamosVacia = ui->pagePrestamos;
+
+    int indicePrestamos =
+        ui->stackedWidget->indexOf(paginaPrestamosVacia);
+
+    if (indicePrestamos >= 0) {
+        ui->stackedWidget->removeWidget(paginaPrestamosVacia);
+
+        ui->stackedWidget->insertWidget(
+            indicePrestamos,
+            prestamosPage
+            );
+
+        delete paginaPrestamosVacia;
+    } else {
+        delete prestamosPage;
+        qWarning() << "No se encontró pagePrestamos";
+    }
+
+    // 6. CARGAR LOS ESTILOS QSS
 
     QString estilos;
 
@@ -143,7 +167,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setStyleSheet(estilos);
 
-    // 5. CONFIGURAR NAVEGACIÓN
+    // 7. CONFIGURAR NAVEGACIÓN
 
     configurarNavegacion();
 
