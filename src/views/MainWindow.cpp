@@ -5,6 +5,7 @@
 #include "pages/EjemplaresPage.h"
 #include "pages/LectoresPage.h"
 #include "pages/PrestamosPage.h"
+#include "pages/RecomendacionesPage.h"
 
 #include <QFile>
 #include <QDebug>
@@ -137,7 +138,36 @@ MainWindow::MainWindow(QWidget *parent)
         qWarning() << "No se encontró pagePrestamos";
     }
 
-    // 6. CARGAR LOS ESTILOS QSS
+
+    // 6. INTEGRAR LA PANTALLA DE RECOMENDACIONES
+
+    RecomendacionesPage *recomendacionesPage =
+        new RecomendacionesPage(this);
+
+    QWidget *paginaRecomendacionesVacia =
+        ui->pageRecomendaciones;
+
+    int indiceRecomendaciones =
+        ui->stackedWidget->indexOf(paginaRecomendacionesVacia);
+
+    if (indiceRecomendaciones >= 0) {
+        ui->stackedWidget->removeWidget(
+            paginaRecomendacionesVacia
+            );
+
+        ui->stackedWidget->insertWidget(
+            indiceRecomendaciones,
+            recomendacionesPage
+            );
+
+        delete paginaRecomendacionesVacia;
+    } else {
+        delete recomendacionesPage;
+        qWarning() << "No se encontró pageRecomendaciones";
+    }
+
+
+    // 7. CARGAR LOS ESTILOS QSS
 
     QString estilos;
 
@@ -167,7 +197,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setStyleSheet(estilos);
 
-    // 7. CONFIGURAR NAVEGACIÓN
+    // 8. CONFIGURAR NAVEGACIÓN
 
     configurarNavegacion();
 

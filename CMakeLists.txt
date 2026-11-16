@@ -42,6 +42,10 @@ set(PROJECT_SOURCES
     src/views/pages/PrestamosPage.h
     src/views/pages/PrestamosPage.ui
 
+    src/views/pages/RecomendacionesPage.cpp
+    src/views/pages/RecomendacionesPage.h
+    src/views/pages/RecomendacionesPage.ui
+
     resources/resources.qrc
 )
 
