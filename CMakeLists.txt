@@ -58,6 +58,10 @@ set(PROJECT_SOURCES
     src/views/dialogs/LibroDialog.cpp
     src/views/dialogs/LibroDialog.ui
 
+    src/views/dialogs/EjemplarDialog.h
+    src/views/dialogs/EjemplarDialog.cpp
+    src/views/dialogs/EjemplarDialog.ui
+
     resources/resources.qrc
 )
 

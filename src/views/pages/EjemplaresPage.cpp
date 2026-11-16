@@ -1,5 +1,7 @@
 #include "EjemplaresPage.h"
 #include "ui_EjemplaresPage.h"
+#include "../dialogs/EjemplarDialog.h"
+#include <QPushButton>
 
 #include <QHeaderView>
 #include <QAbstractItemView>
@@ -9,6 +11,12 @@ EjemplaresPage::EjemplaresPage(QWidget *parent)
     , ui(new Ui::EjemplaresPage)
 {
     ui->setupUi(this);
+
+    connect(ui->btnNuevoEjemplar, &QPushButton::clicked,
+            this, [this]() {
+                EjemplarDialog dialog(this);
+                dialog.exec();
+            });
 
     // 1. CONFIGURAR LA TABLA DE EJEMPLARES
     ui->tablaEjemplares->horizontalHeader()->setSectionResizeMode(
