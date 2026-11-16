@@ -30,6 +30,10 @@ set(PROJECT_SOURCES
     src/views/pages/LibrosPage.h
     src/views/pages/LibrosPage.ui
 
+    src/views/pages/EjemplaresPage.cpp
+    src/views/pages/EjemplaresPage.h
+    src/views/pages/EjemplaresPage.ui
+
     resources/resources.qrc
 )
 
