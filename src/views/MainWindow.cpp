@@ -1,5 +1,7 @@
 #include "MainWindow.h"
 #include "./ui_MainWindow.h"
+
+#include "pages/InicioPage.h"
 #include "pages/CategoriasPage.h"
 #include "pages/LibrosPage.h"
 #include "pages/EjemplaresPage.h"
@@ -14,6 +16,7 @@
 #include <QStyle>
 #include <QStringList>
 #include <QWidget>
+#include <QStackedWidget>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,30 +24,53 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // 1. INTEGRAR LA PANTALLA DE CATEGORÍAS
+    // 1. INTEGRAR LA PANTALLA DE INICIO
+
+    InicioPage *inicioPage = new InicioPage(this);
+
+    QWidget *paginaInicioVacia = ui->pageInicio;
+
+    int indiceInicio =
+        ui->stackedWidget->indexOf(paginaInicioVacia);
+
+    if (indiceInicio >= 0) {
+        ui->stackedWidget->removeWidget(paginaInicioVacia);
+
+        ui->stackedWidget->insertWidget(
+            indiceInicio,
+            inicioPage
+            );
+
+        delete paginaInicioVacia;
+    } else {
+        delete inicioPage;
+        qWarning() << "No se encontró pageInicio";
+    }
+
+    // 2. INTEGRAR LA PANTALLA DE CATEGORÍAS
 
     CategoriasPage *categoriasPage = new CategoriasPage(this);
 
-    QWidget *paginaVacia = ui->pageCategorias;
+    QWidget *paginaCategoriasVacia = ui->pageCategorias;
 
     int indiceCategorias =
-        ui->stackedWidget->indexOf(paginaVacia);
+        ui->stackedWidget->indexOf(paginaCategoriasVacia);
 
     if (indiceCategorias >= 0) {
-        ui->stackedWidget->removeWidget(paginaVacia);
+        ui->stackedWidget->removeWidget(paginaCategoriasVacia);
 
         ui->stackedWidget->insertWidget(
             indiceCategorias,
             categoriasPage
             );
 
-        delete paginaVacia;
+        delete paginaCategoriasVacia;
     } else {
         delete categoriasPage;
         qWarning() << "No se encontró pageCategorias";
     }
 
-    // 2. INTEGRAR LA PANTALLA DE LIBROS
+    // 3. INTEGRAR LA PANTALLA DE LIBROS
 
     LibrosPage *librosPage = new LibrosPage(this);
 
@@ -67,7 +93,7 @@ MainWindow::MainWindow(QWidget *parent)
         qWarning() << "No se encontró pageLibros";
     }
 
-    // 3. INTEGRAR LA PANTALLA DE EJEMPLARES
+    // 4. INTEGRAR LA PANTALLA DE EJEMPLARES
 
     EjemplaresPage *ejemplaresPage = new EjemplaresPage(this);
 
@@ -90,8 +116,7 @@ MainWindow::MainWindow(QWidget *parent)
         qWarning() << "No se encontró pageEjemplares";
     }
 
-
-    // 4. INTEGRAR LA PANTALLA DE LECTORES
+    // 5. INTEGRAR LA PANTALLA DE LECTORES
 
     LectoresPage *lectoresPage = new LectoresPage(this);
 
@@ -114,8 +139,7 @@ MainWindow::MainWindow(QWidget *parent)
         qWarning() << "No se encontró pageLectores";
     }
 
-
-    // 5. INTEGRAR LA PANTALLA DE PRÉSTAMOS
+    // 6. INTEGRAR LA PANTALLA DE PRÉSTAMOS
 
     PrestamosPage *prestamosPage = new PrestamosPage(this);
 
@@ -138,8 +162,7 @@ MainWindow::MainWindow(QWidget *parent)
         qWarning() << "No se encontró pagePrestamos";
     }
 
-
-    // 6. INTEGRAR LA PANTALLA DE RECOMENDACIONES
+    // 7. INTEGRAR LA PANTALLA DE RECOMENDACIONES
 
     RecomendacionesPage *recomendacionesPage =
         new RecomendacionesPage(this);
@@ -166,8 +189,7 @@ MainWindow::MainWindow(QWidget *parent)
         qWarning() << "No se encontró pageRecomendaciones";
     }
 
-
-    // 7. CARGAR LOS ESTILOS QSS
+    // 8. CARGAR LOS ESTILOS QSS
 
     QString estilos;
 
@@ -197,7 +219,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setStyleSheet(estilos);
 
-    // 8. CONFIGURAR NAVEGACIÓN
+    // 9. CONFIGURAR NAVEGACIÓN
 
     configurarNavegacion();
 

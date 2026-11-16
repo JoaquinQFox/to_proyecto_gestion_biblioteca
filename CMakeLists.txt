@@ -46,6 +46,10 @@ set(PROJECT_SOURCES
     src/views/pages/RecomendacionesPage.h
     src/views/pages/RecomendacionesPage.ui
 
+    src/views/pages/InicioPage.cpp
+    src/views/pages/InicioPage.h
+    src/views/pages/InicioPage.ui
+
     resources/resources.qrc
 )
 
