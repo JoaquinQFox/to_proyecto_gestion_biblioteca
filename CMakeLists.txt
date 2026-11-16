@@ -62,6 +62,10 @@ set(PROJECT_SOURCES
     src/views/dialogs/EjemplarDialog.cpp
     src/views/dialogs/EjemplarDialog.ui
 
+    src/views/dialogs/LectorDialog.h
+    src/views/dialogs/LectorDialog.cpp
+    src/views/dialogs/LectorDialog.ui
+
     resources/resources.qrc
 )
 

@@ -1,5 +1,7 @@
 #include "LectoresPage.h"
 #include "ui_LectoresPage.h"
+#include "../dialogs/LectorDialog.h"
+#include <QPushButton>
 
 #include <QHeaderView>
 #include <QAbstractItemView>
@@ -9,6 +11,12 @@ LectoresPage::LectoresPage(QWidget *parent)
     , ui(new Ui::LectoresPage)
 {
     ui->setupUi(this);
+
+    connect(ui->btnNuevoLector, &QPushButton::clicked,
+            this, [this]() {
+                LectorDialog dialog(this);
+                dialog.exec();
+            });
 
     // 1. CONFIGURAR LA TABLA DE LECTORES
     ui->tablaLectores->horizontalHeader()->setSectionResizeMode(
