@@ -3,6 +3,7 @@
 #include "ui_EjemplaresPage.h"
 
 #include "../dialogs/EjemplarDialog.h"
+#include "../dialogs/ConfirmacionDialog.h"
 #include "../components/AccionesTablaWidget.h"
 #include "../components/TablaHelper.h"
 
@@ -16,11 +17,15 @@ EjemplaresPage::EjemplaresPage(QWidget *parent)
     ui->setupUi(this);
 
     // Abrir formulario de nuevo ejemplar
-    connect(ui->btnNuevoEjemplar, &QPushButton::clicked,
-            this, [this]() {
-                EjemplarDialog dialog(this);
-                dialog.exec();
-            });
+    connect(
+        ui->btnNuevoEjemplar,
+        &QPushButton::clicked,
+        this,
+        [this]() {
+            EjemplarDialog dialog(this);
+            dialog.exec();
+        }
+        );
 
     // Configuración reutilizable de la tabla
     // Columna 4: Acciones, ancho de 180 px
@@ -94,12 +99,28 @@ void EjemplaresPage::mostrarEjemplares(
             &EjemplaresPage::editarEjemplarSolicitado
             );
 
-        // Solicitud de eliminación
+        // Confirmación antes de solicitar eliminación
         connect(
             acciones,
             &AccionesTablaWidget::eliminarSolicitado,
             this,
-            &EjemplaresPage::eliminarEjemplarSolicitado
+            [this](int idEjemplar) {
+
+                const bool confirmado =
+                    ConfirmacionDialog::confirmar(
+                        "Eliminar ejemplar",
+                        QString(
+                            "¿Estás seguro de que deseas eliminar "
+                            "el ejemplar con ID %1?\n\n"
+                            "Esta acción no se puede deshacer."
+                            ).arg(idEjemplar),
+                        this
+                        );
+
+                if (confirmado) {
+                    emit eliminarEjemplarSolicitado(idEjemplar);
+                }
+            }
             );
 
         ui->tablaEjemplares->setCellWidget(

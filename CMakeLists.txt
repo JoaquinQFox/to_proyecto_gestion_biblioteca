@@ -81,6 +81,10 @@ set(PROJECT_SOURCES
     src/views/dialogs/RecomendacionDialog.cpp
     src/views/dialogs/RecomendacionDialog.ui
 
+    # Dialogo de confirmacion reutilizable
+    src/views/dialogs/ConfirmacionDialog.h
+    src/views/dialogs/ConfirmacionDialog.cpp
+
     resources/resources.qrc
 )
 

@@ -1,0 +1,83 @@
+
+/* =========================================
+   BIBLIOTECA DIGITAL - CONFIRMACION
+   ========================================= */
+
+QDialog#confirmacionDialog {
+    background-color: #FFFFFF;
+    border: 1px solid #E1E8E3;
+}
+
+/* Icono de advertencia */
+
+QLabel#lblIconoConfirmacion {
+    background-color: #FFF4E5;
+    border: 1px solid #F9DEB5;
+    border-radius: 12px;
+}
+
+/* Titulo */
+
+QLabel#lblTituloConfirmacion {
+    color: #18392B;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+/* Mensaje */
+
+QLabel#lblMensajeConfirmacion {
+    color: #617268;
+    font-size: 13px;
+}
+
+/* Separador */
+
+QFrame#separadorConfirmacion {
+    background-color: #E8EDE9;
+    border: none;
+    max-height: 1px;
+}
+
+/* Boton Cancelar */
+
+QPushButton#btnCancelarConfirmacion {
+    background-color: #FFFFFF;
+    color: #53665A;
+    border: 1px solid #DCE5DF;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QPushButton#btnCancelarConfirmacion:hover {
+    background-color: #F3F5F3;
+    border-color: #B8C8BD;
+}
+
+/* Boton Confirmar */
+
+QPushButton#btnAceptarConfirmacion {
+    background-color: #B42318;
+    color: #FFFFFF;
+    border: 1px solid #B42318;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QPushButton#btnAceptarConfirmacion:hover {
+    background-color: #921E15;
+    border-color: #921E15;
+}
+
+QPushButton#btnAceptarConfirmacion:pressed {
+    background-color: #74180F;
+}
+
+QPushButton#btnCancelarConfirmacion:focus,
+QPushButton#btnAceptarConfirmacion:focus {
+    border: 2px solid #68A783;
+}

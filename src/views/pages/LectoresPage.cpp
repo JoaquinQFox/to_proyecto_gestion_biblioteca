@@ -3,6 +3,7 @@
 #include "ui_LectoresPage.h"
 
 #include "../dialogs/LectorDialog.h"
+#include "../dialogs/ConfirmacionDialog.h"
 #include "../components/AccionesTablaWidget.h"
 #include "../components/TablaHelper.h"
 
@@ -16,11 +17,15 @@ LectoresPage::LectoresPage(QWidget *parent)
     ui->setupUi(this);
 
     // Abrir formulario de nuevo lector
-    connect(ui->btnNuevoLector, &QPushButton::clicked,
-            this, [this]() {
-                LectorDialog dialog(this);
-                dialog.exec();
-            });
+    connect(
+        ui->btnNuevoLector,
+        &QPushButton::clicked,
+        this,
+        [this]() {
+            LectorDialog dialog(this);
+            dialog.exec();
+        }
+        );
 
     // Configuración reutilizable de la tabla
     // Columna 5: Acciones, ancho de 180 px
@@ -103,12 +108,28 @@ void LectoresPage::mostrarLectores(
             &LectoresPage::editarLectorSolicitado
             );
 
-        // Solicitud de eliminación
+        // Confirmación antes de solicitar eliminación
         connect(
             acciones,
             &AccionesTablaWidget::eliminarSolicitado,
             this,
-            &LectoresPage::eliminarLectorSolicitado
+            [this](int idLector) {
+
+                const bool confirmado =
+                    ConfirmacionDialog::confirmar(
+                        "Eliminar lector",
+                        QString(
+                            "¿Estás seguro de que deseas eliminar "
+                            "el lector con ID %1?\n\n"
+                            "Esta acción no se puede deshacer."
+                            ).arg(idLector),
+                        this
+                        );
+
+                if (confirmado) {
+                    emit eliminarLectorSolicitado(idLector);
+                }
+            }
             );
 
         ui->tablaLectores->setCellWidget(

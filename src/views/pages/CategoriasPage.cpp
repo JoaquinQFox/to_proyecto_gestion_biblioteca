@@ -1,7 +1,9 @@
+
 #include "CategoriasPage.h"
 #include "ui_CategoriasPage.h"
 
 #include "../dialogs/CategoriaDialog.h"
+#include "../dialogs/ConfirmacionDialog.h"
 #include "../components/AccionesTablaWidget.h"
 #include "../components/TablaHelper.h"
 
@@ -15,11 +17,15 @@ CategoriasPage::CategoriasPage(QWidget *parent)
     ui->setupUi(this);
 
     // Abrir formulario de nueva categoría
-    connect(ui->btnNuevaCategoria, &QPushButton::clicked,
-            this, [this]() {
-                CategoriaDialog dialog(this);
-                dialog.exec();
-            });
+    connect(
+        ui->btnNuevaCategoria,
+        &QPushButton::clicked,
+        this,
+        [this]() {
+            CategoriaDialog dialog(this);
+            dialog.exec();
+        }
+        );
 
     // Configuración reutilizable de la tabla
     // Columna 2: Acciones, ancho de 180 px
@@ -77,12 +83,28 @@ void CategoriasPage::mostrarCategorias(
             &CategoriasPage::editarCategoriaSolicitado
             );
 
-        // Solicitud de eliminación
+        // Confirmación antes de solicitar eliminación
         connect(
             acciones,
             &AccionesTablaWidget::eliminarSolicitado,
             this,
-            &CategoriasPage::eliminarCategoriaSolicitado
+            [this](int idCategoria) {
+
+                const bool confirmado =
+                    ConfirmacionDialog::confirmar(
+                        "Eliminar categoría",
+                        QString(
+                            "¿Estás seguro de que deseas eliminar "
+                            "la categoría con ID %1?\n\n"
+                            "Esta acción no se puede deshacer."
+                            ).arg(idCategoria),
+                        this
+                        );
+
+                if (confirmado) {
+                    emit eliminarCategoriaSolicitado(idCategoria);
+                }
+            }
             );
 
         ui->tablaCategorias->setCellWidget(

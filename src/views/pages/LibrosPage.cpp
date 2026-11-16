@@ -3,6 +3,7 @@
 #include "ui_LibrosPage.h"
 
 #include "../dialogs/LibroDialog.h"
+#include "../dialogs/ConfirmacionDialog.h"
 #include "../components/AccionesTablaWidget.h"
 #include "../components/TablaHelper.h"
 
@@ -16,13 +17,17 @@ LibrosPage::LibrosPage(QWidget *parent)
     ui->setupUi(this);
 
     // Abrir formulario de nuevo libro
-    connect(ui->btnNuevoLibro, &QPushButton::clicked,
-            this, [this]() {
-                LibroDialog dialog(this);
-                dialog.exec();
-            });
+    connect(
+        ui->btnNuevoLibro,
+        &QPushButton::clicked,
+        this,
+        [this]() {
+            LibroDialog dialog(this);
+            dialog.exec();
+        }
+        );
 
-    // Configuración reutilizable
+    // Configuración reutilizable de la tabla
     // Columna 5: Acciones, ancho de 180 px
     TablaHelper::configurar(ui->tablaLibros, 5, 180);
 }
@@ -95,6 +100,7 @@ void LibrosPage::mostrarLibros(const QList<Libro> &libros)
             ui->tablaLibros
             );
 
+        // Solicitud de edición
         connect(
             acciones,
             &AccionesTablaWidget::editarSolicitado,
@@ -102,11 +108,28 @@ void LibrosPage::mostrarLibros(const QList<Libro> &libros)
             &LibrosPage::editarLibroSolicitado
             );
 
+        // Confirmación antes de solicitar eliminación
         connect(
             acciones,
             &AccionesTablaWidget::eliminarSolicitado,
             this,
-            &LibrosPage::eliminarLibroSolicitado
+            [this](int idLibro) {
+
+                const bool confirmado =
+                    ConfirmacionDialog::confirmar(
+                        "Eliminar libro",
+                        QString(
+                            "¿Estás seguro de que deseas eliminar "
+                            "el libro con ID %1?\n\n"
+                            "Esta acción no se puede deshacer."
+                            ).arg(idLibro),
+                        this
+                        );
+
+                if (confirmado) {
+                    emit eliminarLibroSolicitado(idLibro);
+                }
+            }
             );
 
         ui->tablaLibros->setCellWidget(
