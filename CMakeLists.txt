@@ -66,6 +66,10 @@ set(PROJECT_SOURCES
     src/views/dialogs/LectorDialog.cpp
     src/views/dialogs/LectorDialog.ui
 
+    src/views/dialogs/PrestamoDialog.h
+    src/views/dialogs/PrestamoDialog.cpp
+    src/views/dialogs/PrestamoDialog.ui
+
     resources/resources.qrc
 )
 

@@ -12,5 +12,6 @@
         <file alias="libro_dialog.qss">styles/libro_dialog.qss</file>
         <file alias="ejemplar_dialog.qss">styles/ejemplar_dialog.qss</file>
         <file alias="lector_dialog.qss">styles/lector_dialog.qss</file>
+        <file alias="prestamo_dialog.qss">styles/prestamo_dialog.qss</file>
     </qresource>
 </RCC>

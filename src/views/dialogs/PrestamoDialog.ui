@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PrestamoDialog</class>
+ <widget class="QDialog" name="PrestamoDialog">
+  <property name="windowTitle">
+   <string>Nuevo préstamo</string>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>500</width>
+    <height>480</height>
+   </size>
+  </property>
+  <layout class="QVBoxLayout" name="layoutPrincipal">
+   <property name="leftMargin"><number>28</number></property>
+   <property name="topMargin"><number>24</number></property>
+   <property name="rightMargin"><number>28</number></property>
+   <property name="bottomMargin"><number>24</number></property>
+   <property name="spacing"><number>12</number></property>
+   <item>
+    <widget class="QLabel" name="lblTitulo">
+     <property name="text"><string>Nuevo préstamo</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblDescripcion">
+     <property name="text">
+      <string>Completa los datos para registrar un préstamo.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="espacioSuperior">
+     <property name="orientation"><enum>Qt::Vertical</enum></property>
+     <property name="sizeHint" stdset="0">
+      <size><width>20</width><height>12</height></size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblLector">
+     <property name="text"><string>Lector</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="cmbLector">
+     <property name="minimumSize">
+      <size><width>0</width><height>42</height></size>
+     </property>
+     <item>
+      <property name="text"><string>Seleccionar lector</string></property>
+     </item>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblEjemplar">
+     <property name="text"><string>Ejemplar</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="cmbEjemplar">
+     <property name="minimumSize">
+      <size><width>0</width><height>42</height></size>
+     </property>
+     <item>
+      <property name="text"><string>Seleccionar ejemplar disponible</string></property>
+     </item>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblFechaPrestamo">
+     <property name="text"><string>Fecha de préstamo</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDateEdit" name="datePrestamo">
+     <property name="minimumSize">
+      <size><width>0</width><height>42</height></size>
+     </property>
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+     <property name="displayFormat">
+      <string>dd/MM/yyyy</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblFechaDevolucion">
+     <property name="text">
+      <string>Fecha prevista de devolución</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDateEdit" name="dateDevolucion">
+     <property name="minimumSize">
+      <size><width>0</width><height>42</height></size>
+     </property>
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+     <property name="displayFormat">
+      <string>dd/MM/yyyy</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="espacioInferior">
+     <property name="orientation"><enum>Qt::Vertical</enum></property>
+     <property name="sizeHint" stdset="0">
+      <size><width>20</width><height>12</height></size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutBotones">
+     <item>
+      <spacer name="espacioBotones">
+       <property name="orientation"><enum>Qt::Horizontal</enum></property>
+       <property name="sizeHint" stdset="0">
+        <size><width>40</width><height>20</height></size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancelar">
+       <property name="minimumSize">
+        <size><width>100</width><height>40</height></size>
+       </property>
+       <property name="text"><string>Cancelar</string></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnGuardar">
+       <property name="minimumSize">
+        <size><width>150</width><height>40</height></size>
+       </property>
+       <property name="text"><string>Guardar préstamo</string></property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

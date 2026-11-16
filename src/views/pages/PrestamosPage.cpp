@@ -1,5 +1,7 @@
 #include "PrestamosPage.h"
 #include "ui_PrestamosPage.h"
+#include "../dialogs/PrestamoDialog.h"
+#include <QPushButton>
 
 #include <QHeaderView>
 #include <QAbstractItemView>
@@ -9,6 +11,12 @@ PrestamosPage::PrestamosPage(QWidget *parent)
     , ui(new Ui::PrestamosPage)
 {
     ui->setupUi(this);
+
+    connect(ui->btnNuevoPrestamo, &QPushButton::clicked,
+            this, [this]() {
+                PrestamoDialog dialog(this);
+                dialog.exec();
+            });
 
     // 1. CONFIGURAR LA TABLA DE PRÉSTAMOS
     ui->tablaPrestamos->horizontalHeader()->setSectionResizeMode(
