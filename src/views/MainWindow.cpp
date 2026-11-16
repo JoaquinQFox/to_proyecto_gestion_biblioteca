@@ -1,7 +1,7 @@
-
 #include "MainWindow.h"
 #include "./ui_MainWindow.h"
 #include "pages/CategoriasPage.h"
+#include "pages/LibrosPage.h"
 
 #include <QFile>
 #include <QDebug>
@@ -40,7 +40,30 @@ MainWindow::MainWindow(QWidget *parent)
         qWarning() << "No se encontró pageCategorias";
     }
 
-    // 2. CARGAR LOS ESTILOS QSS
+    // 2. INTEGRAR LA PANTALLA DE LIBROS
+
+    LibrosPage *librosPage = new LibrosPage(this);
+
+    QWidget *paginaLibrosVacia = ui->pageLibros;
+
+    int indiceLibros =
+        ui->stackedWidget->indexOf(paginaLibrosVacia);
+
+    if (indiceLibros >= 0) {
+        ui->stackedWidget->removeWidget(paginaLibrosVacia);
+
+        ui->stackedWidget->insertWidget(
+            indiceLibros,
+            librosPage
+            );
+
+        delete paginaLibrosVacia;
+    } else {
+        delete librosPage;
+        qWarning() << "No se encontró pageLibros";
+    }
+
+    // 3. CARGAR LOS ESTILOS QSS
 
     QString estilos;
 
@@ -70,7 +93,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setStyleSheet(estilos);
 
-    // 3. CONFIGURAR NAVEGACIÓN
+    // 4. CONFIGURAR NAVEGACIÓN
 
     configurarNavegacion();
 

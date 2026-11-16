@@ -17,14 +17,22 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
 
 set(PROJECT_SOURCES
     src/main.cpp
+
     src/views/MainWindow.cpp
     src/views/MainWindow.h
     src/views/MainWindow.ui
+
     src/views/pages/CategoriasPage.cpp
     src/views/pages/CategoriasPage.h
     src/views/pages/CategoriasPage.ui
+
+    src/views/pages/LibrosPage.cpp
+    src/views/pages/LibrosPage.h
+    src/views/pages/LibrosPage.ui
+
     resources/resources.qrc
 )
+
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(GestionBiblioteca
