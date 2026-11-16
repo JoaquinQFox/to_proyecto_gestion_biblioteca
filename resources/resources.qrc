@@ -6,5 +6,6 @@
         <file alias="libros.qss">styles/libros.qss</file>
         <file alias="ejemplares.qss">styles/ejemplares.qss</file>
         <file alias="lectores.qss">styles/lectores.qss</file>
+        <file alias="prestamos.qss">styles/prestamos.qss</file>
     </qresource>
 </RCC>
