@@ -130,3 +130,84 @@ QPushButton:disabled {
 QPushButton:focus {
     border: 2px solid #68A783;
 }
+
+
+
+/* =====================================
+   BOTONES DE ACCIONES EN TABLAS
+   ===================================== */
+
+/* Contenedor */
+QWidget#accionesTablaWidget {
+    background-color: transparent;
+}
+
+/* Botón Editar */
+QPushButton#btnEditarAccion {
+    background-color: #E5F1E9;
+    color: #276749;
+    border: 1px solid #C7DFD0;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QPushButton#btnEditarAccion:hover {
+    background-color: #D2E8DA;
+    border-color: #276749;
+}
+
+QPushButton#btnEditarAccion:pressed {
+    background-color: #B9D9C5;
+}
+
+/* Botón Eliminar */
+QPushButton#btnEliminarAccion {
+    background-color: #FDECEC;
+    color: #B42318;
+    border: 1px solid #F5C6C6;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QPushButton#btnEliminarAccion:hover {
+    background-color: #FBDADA;
+    border-color: #B42318;
+}
+
+QPushButton#btnEliminarAccion:pressed {
+    background-color: #F5C1C1;
+}
+
+/* Botones deshabilitados */
+QPushButton#btnEditarAccion:disabled,
+QPushButton#btnEliminarAccion:disabled {
+    background-color: #F1F3F2;
+    color: #9CA8A0;
+    border: 1px solid #E1E8E3;
+}
+
+
+
+/* Botón Registrar devolución */
+QPushButton#btnDevolverAccion {
+    background-color: #E8F0FC;
+    color: #2457A7;
+    border: 1px solid #C6D8F5;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QPushButton#btnDevolverAccion:hover {
+    background-color: #D8E6FA;
+    border-color: #2457A7;
+}
+
+QPushButton#btnDevolverAccion:pressed {
+    background-color: #C3D8F5;
+}

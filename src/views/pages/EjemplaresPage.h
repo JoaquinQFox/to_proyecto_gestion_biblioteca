@@ -1,7 +1,11 @@
+
 #ifndef EJEMPLARESPAGE_H
 #define EJEMPLARESPAGE_H
 
 #include <QWidget>
+#include <QList>
+
+#include "../../models/Ejemplar.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,6 +20,12 @@ class EjemplaresPage : public QWidget
 public:
     explicit EjemplaresPage(QWidget *parent = nullptr);
     ~EjemplaresPage() override;
+
+    void mostrarEjemplares(const QList<Ejemplar> &ejemplares);
+
+signals:
+    void editarEjemplarSolicitado(int idEjemplar);
+    void eliminarEjemplarSolicitado(int idEjemplar);
 
 private:
     Ui::EjemplaresPage *ui;

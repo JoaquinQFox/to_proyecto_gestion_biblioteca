@@ -1,7 +1,11 @@
+
 #ifndef PRESTAMOSPAGE_H
 #define PRESTAMOSPAGE_H
 
 #include <QWidget>
+#include <QList>
+
+#include "../../models/Prestamo.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,6 +20,12 @@ class PrestamosPage : public QWidget
 public:
     explicit PrestamosPage(QWidget *parent = nullptr);
     ~PrestamosPage() override;
+
+    void mostrarPrestamos(const QList<Prestamo> &prestamos);
+
+signals:
+    void editarPrestamoSolicitado(int idPrestamo);
+    void devolverPrestamoSolicitado(int idPrestamo);
 
 private:
     Ui::PrestamosPage *ui;

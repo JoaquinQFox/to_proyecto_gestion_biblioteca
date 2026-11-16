@@ -1,7 +1,11 @@
+
 #ifndef LECTORESPAGE_H
 #define LECTORESPAGE_H
 
 #include <QWidget>
+#include <QList>
+
+#include "../../models/Lector.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,6 +20,12 @@ class LectoresPage : public QWidget
 public:
     explicit LectoresPage(QWidget *parent = nullptr);
     ~LectoresPage() override;
+
+    void mostrarLectores(const QList<Lector> &lectores);
+
+signals:
+    void editarLectorSolicitado(int idLector);
+    void eliminarLectorSolicitado(int idLector);
 
 private:
     Ui::LectoresPage *ui;

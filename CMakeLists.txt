@@ -22,6 +22,10 @@ set(PROJECT_SOURCES
     src/views/MainWindow.h
     src/views/MainWindow.ui
 
+    # Componentes visuales reutilizables
+    src/views/components/AccionesTablaWidget.h
+    src/views/components/AccionesTablaWidget.cpp
+
     src/views/pages/CategoriasPage.cpp
     src/views/pages/CategoriasPage.h
     src/views/pages/CategoriasPage.ui
