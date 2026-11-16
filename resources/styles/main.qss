@@ -28,7 +28,7 @@ QFrame#sidebar QPushButton:hover {
     color: white;
 }
 
-QFrame#sidebar QPushButton#btnInicio {
+QFrame#sidebar QPushButton[activo="true"] {
     background-color: #276749;
     color: white;
     font-weight: bold;

@@ -1,3 +1,4 @@
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -9,6 +10,8 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+class QPushButton;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -19,5 +22,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    void configurarNavegacion();
+    void cambiarPagina(int indice, QPushButton *botonActivo);
 };
+
 #endif // MAINWINDOW_H
