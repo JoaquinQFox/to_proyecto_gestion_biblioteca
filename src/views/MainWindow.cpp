@@ -190,30 +190,23 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     // 8. CARGAR LOS ESTILOS QSS
-
     QString estilos;
 
     const QStringList archivosEstilos = {
         ":/styles/main.qss",
-        ":/styles/categorias.qss"
+        ":/styles/categorias.qss",
+        ":/styles/inicio.qss"
     };
 
     for (const QString &ruta : archivosEstilos) {
-
         QFile archivo(ruta);
 
         if (archivo.open(QIODevice::ReadOnly | QIODevice::Text)) {
-
-            estilos += QString::fromUtf8(
-                archivo.readAll()
-                );
-
+            estilos += QString::fromUtf8(archivo.readAll());
             estilos += "\n";
-
+            archivo.close();
         } else {
-
             qWarning() << "No se pudo cargar:" << ruta;
-
         }
     }
 

@@ -2,5 +2,6 @@
     <qresource prefix="/styles">
         <file alias="main.qss">styles/main.qss</file>
         <file alias="categorias.qss">styles/categorias.qss</file>
+        <file alias="inicio.qss">styles/inicio.qss</file>
     </qresource>
 </RCC>
