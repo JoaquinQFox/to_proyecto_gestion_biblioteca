@@ -1,26 +1,45 @@
+
 #include "views/MainWindow.h"
 #include "database/Database.h"
 #include "database/DatabaseInitializer.h"
 
 #include <QApplication>
-#include <QSqlDatabase>
+#include <QDebug>
+
+#include <exception>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    if (!Database::conectar())
-        return 1;
+    try {
+        if (!Database::conectar()) {
+            qCritical() << "No se pudo conectar a la base de datos.";
+            Database::cerrarConexion();
+            return 1;
+        }
 
-    if (!DatabaseInitializer::incializar()) {
+        if (!DatabaseInitializer::incializar()) {
+            qCritical() << "No se pudo inicializar la base de datos.";
+            Database::cerrarConexion();
+            return 1;
+        }
+
+        MainWindow w;
+        w.show();
+
+        int resultado = a.exec();
+
         Database::cerrarConexion();
-        return 1;
+        return resultado;
+    }
+    catch (const std::exception &e) {
+        qCritical() << "Error inesperado:" << e.what();
+    }
+    catch (...) {
+        qCritical() << "Ocurrió un error desconocido.";
     }
 
-    MainWindow w;
-    w.show();
-
-    int res = a.exec();
     Database::cerrarConexion();
-    return res;
+    return 1;
 }
