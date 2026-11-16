@@ -4,10 +4,9 @@
 
 #include "../dialogs/LectorDialog.h"
 #include "../components/AccionesTablaWidget.h"
+#include "../components/TablaHelper.h"
 
 #include <QPushButton>
-#include <QHeaderView>
-#include <QAbstractItemView>
 #include <QTableWidgetItem>
 
 LectoresPage::LectoresPage(QWidget *parent)
@@ -23,22 +22,9 @@ LectoresPage::LectoresPage(QWidget *parent)
                 dialog.exec();
             });
 
-    // Configurar tabla
-    ui->tablaLectores->horizontalHeader()->setSectionResizeMode(
-        QHeaderView::Stretch
-        );
-
-    ui->tablaLectores->verticalHeader()->setVisible(false);
-
-    ui->tablaLectores->setSelectionBehavior(
-        QAbstractItemView::SelectRows
-        );
-
-    ui->tablaLectores->setEditTriggers(
-        QAbstractItemView::NoEditTriggers
-        );
-
-    ui->tablaLectores->setAlternatingRowColors(false);
+    // Configuración reutilizable de la tabla
+    // Columna 5: Acciones, ancho de 180 px
+    TablaHelper::configurar(ui->tablaLectores, 5, 180);
 }
 
 LectoresPage::~LectoresPage()
@@ -56,19 +42,17 @@ void LectoresPage::mostrarLectores(
     for (const Lector &lector : lectores) {
 
         const int fila = ui->tablaLectores->rowCount();
-
         ui->tablaLectores->insertRow(fila);
 
-        // Columna ID
+        // Columna 0: ID
         auto *itemId = new QTableWidgetItem(
             QString::number(lector.getId())
             );
 
         itemId->setTextAlignment(Qt::AlignCenter);
-
         ui->tablaLectores->setItem(fila, 0, itemId);
 
-        // Columna Nombre completo
+        // Columna 1: Nombre completo
         const QString nombreCompleto =
             lector.getNombres() + " " + lector.getApellidos();
 
@@ -76,50 +60,60 @@ void LectoresPage::mostrarLectores(
             nombreCompleto.trimmed()
             );
 
+        itemNombre->setTextAlignment(
+            Qt::AlignVCenter | Qt::AlignLeft
+            );
+
         ui->tablaLectores->setItem(fila, 1, itemNombre);
 
-        // Columna DNI
+        // Columna 2: DNI
         auto *itemDni = new QTableWidgetItem(
             lector.getDni()
             );
 
         itemDni->setTextAlignment(Qt::AlignCenter);
-
         ui->tablaLectores->setItem(fila, 2, itemDni);
 
-        // Columna Correo
-        // El modelo Lector no dispone de este atributo.
+        // Columna 3: Correo
+        // El modelo Lector aún no dispone de este atributo
         auto *itemCorreo = new QTableWidgetItem("—");
 
         itemCorreo->setTextAlignment(Qt::AlignCenter);
-
         ui->tablaLectores->setItem(fila, 3, itemCorreo);
 
-        // Columna Teléfono
+        // Columna 4: Teléfono
         auto *itemTelefono = new QTableWidgetItem(
             lector.getTelefono()
             );
 
         itemTelefono->setTextAlignment(Qt::AlignCenter);
-
         ui->tablaLectores->setItem(fila, 4, itemTelefono);
 
-        // Componente reutilizable de acciones
+        // Columna 5: Acciones reutilizables
         auto *acciones = new AccionesTablaWidget(
             lector.getId(),
             ui->tablaLectores
             );
 
-        connect(acciones, &AccionesTablaWidget::editarSolicitado,
-                this, &LectoresPage::editarLectorSolicitado);
+        // Solicitud de edición
+        connect(
+            acciones,
+            &AccionesTablaWidget::editarSolicitado,
+            this,
+            &LectoresPage::editarLectorSolicitado
+            );
 
-        connect(acciones, &AccionesTablaWidget::eliminarSolicitado,
-                this, &LectoresPage::eliminarLectorSolicitado);
+        // Solicitud de eliminación
+        connect(
+            acciones,
+            &AccionesTablaWidget::eliminarSolicitado,
+            this,
+            &LectoresPage::eliminarLectorSolicitado
+            );
 
-        ui->tablaLectores->setCellWidget(fila, 5, acciones);
-
-        // Altura de fila
-        ui->tablaLectores->setRowHeight(fila, 52);
+        ui->tablaLectores->setCellWidget(
+            fila, 5, acciones
+            );
     }
 
     // Actualizar contador

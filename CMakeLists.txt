@@ -26,6 +26,9 @@ set(PROJECT_SOURCES
     src/views/components/AccionesTablaWidget.h
     src/views/components/AccionesTablaWidget.cpp
 
+    src/views/components/TablaHelper.cpp
+    src/views/components/TablaHelper.h
+
     src/views/pages/CategoriasPage.cpp
     src/views/pages/CategoriasPage.h
     src/views/pages/CategoriasPage.ui

@@ -4,10 +4,9 @@
 
 #include "../dialogs/EjemplarDialog.h"
 #include "../components/AccionesTablaWidget.h"
+#include "../components/TablaHelper.h"
 
 #include <QPushButton>
-#include <QHeaderView>
-#include <QAbstractItemView>
 #include <QTableWidgetItem>
 
 EjemplaresPage::EjemplaresPage(QWidget *parent)
@@ -23,22 +22,9 @@ EjemplaresPage::EjemplaresPage(QWidget *parent)
                 dialog.exec();
             });
 
-    // Configurar tabla
-    ui->tablaEjemplares->horizontalHeader()->setSectionResizeMode(
-        QHeaderView::Stretch
-        );
-
-    ui->tablaEjemplares->verticalHeader()->setVisible(false);
-
-    ui->tablaEjemplares->setSelectionBehavior(
-        QAbstractItemView::SelectRows
-        );
-
-    ui->tablaEjemplares->setEditTriggers(
-        QAbstractItemView::NoEditTriggers
-        );
-
-    ui->tablaEjemplares->setAlternatingRowColors(false);
+    // Configuración reutilizable de la tabla
+    // Columna 4: Acciones, ancho de 180 px
+    TablaHelper::configurar(ui->tablaEjemplares, 4, 180);
 }
 
 EjemplaresPage::~EjemplaresPage()
@@ -56,60 +42,69 @@ void EjemplaresPage::mostrarEjemplares(
     for (const Ejemplar &ejemplar : ejemplares) {
 
         const int fila = ui->tablaEjemplares->rowCount();
-
         ui->tablaEjemplares->insertRow(fila);
 
-        // Columna ID
+        // Columna 0: ID
         auto *itemId = new QTableWidgetItem(
             QString::number(ejemplar.getId())
             );
 
         itemId->setTextAlignment(Qt::AlignCenter);
-
         ui->tablaEjemplares->setItem(fila, 0, itemId);
 
-        // Columna Código
+        // Columna 1: Código
         auto *itemCodigo = new QTableWidgetItem(
             ejemplar.getCodigo()
             );
 
+        itemCodigo->setTextAlignment(
+            Qt::AlignVCenter | Qt::AlignLeft
+            );
+
         ui->tablaEjemplares->setItem(fila, 1, itemCodigo);
 
-        // Columna Libro
-        // Temporalmente mostramos el ID del libro.
+        // Columna 2: Libro
+        // Temporalmente se muestra el ID del libro
         auto *itemLibro = new QTableWidgetItem(
             QString::number(ejemplar.getIdLibro())
             );
 
         itemLibro->setTextAlignment(Qt::AlignCenter);
-
         ui->tablaEjemplares->setItem(fila, 2, itemLibro);
 
-        // Columna Estado
+        // Columna 3: Estado
         auto *itemEstado = new QTableWidgetItem(
             ejemplar.getEstadoString()
             );
 
         itemEstado->setTextAlignment(Qt::AlignCenter);
-
         ui->tablaEjemplares->setItem(fila, 3, itemEstado);
 
-        // Componente reutilizable de acciones
+        // Columna 4: Acciones reutilizables
         auto *acciones = new AccionesTablaWidget(
             ejemplar.getId(),
             ui->tablaEjemplares
             );
 
-        connect(acciones, &AccionesTablaWidget::editarSolicitado,
-                this, &EjemplaresPage::editarEjemplarSolicitado);
+        // Solicitud de edición
+        connect(
+            acciones,
+            &AccionesTablaWidget::editarSolicitado,
+            this,
+            &EjemplaresPage::editarEjemplarSolicitado
+            );
 
-        connect(acciones, &AccionesTablaWidget::eliminarSolicitado,
-                this, &EjemplaresPage::eliminarEjemplarSolicitado);
+        // Solicitud de eliminación
+        connect(
+            acciones,
+            &AccionesTablaWidget::eliminarSolicitado,
+            this,
+            &EjemplaresPage::eliminarEjemplarSolicitado
+            );
 
-        ui->tablaEjemplares->setCellWidget(fila, 4, acciones);
-
-        // Altura de fila
-        ui->tablaEjemplares->setRowHeight(fila, 52);
+        ui->tablaEjemplares->setCellWidget(
+            fila, 4, acciones
+            );
     }
 
     // Actualizar contador

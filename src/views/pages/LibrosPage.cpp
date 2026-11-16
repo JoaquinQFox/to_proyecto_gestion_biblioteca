@@ -4,10 +4,9 @@
 
 #include "../dialogs/LibroDialog.h"
 #include "../components/AccionesTablaWidget.h"
+#include "../components/TablaHelper.h"
 
 #include <QPushButton>
-#include <QHeaderView>
-#include <QAbstractItemView>
 #include <QTableWidgetItem>
 
 LibrosPage::LibrosPage(QWidget *parent)
@@ -23,22 +22,9 @@ LibrosPage::LibrosPage(QWidget *parent)
                 dialog.exec();
             });
 
-    // Configurar tabla
-    ui->tablaLibros->horizontalHeader()->setSectionResizeMode(
-        QHeaderView::Stretch
-        );
-
-    ui->tablaLibros->verticalHeader()->setVisible(false);
-
-    ui->tablaLibros->setSelectionBehavior(
-        QAbstractItemView::SelectRows
-        );
-
-    ui->tablaLibros->setEditTriggers(
-        QAbstractItemView::NoEditTriggers
-        );
-
-    ui->tablaLibros->setAlternatingRowColors(false);
+    // Configuración reutilizable
+    // Columna 5: Acciones, ancho de 180 px
+    TablaHelper::configurar(ui->tablaLibros, 5, 180);
 }
 
 LibrosPage::~LibrosPage()
@@ -54,66 +40,78 @@ void LibrosPage::mostrarLibros(const QList<Libro> &libros)
     for (const Libro &libro : libros) {
 
         const int fila = ui->tablaLibros->rowCount();
-
         ui->tablaLibros->insertRow(fila);
 
-        // ID
+        // Columna 0: ID
         auto *itemId = new QTableWidgetItem(
             QString::number(libro.getId())
             );
 
         itemId->setTextAlignment(Qt::AlignCenter);
-
         ui->tablaLibros->setItem(fila, 0, itemId);
 
-        // Título
+        // Columna 1: Título
         auto *itemTitulo = new QTableWidgetItem(
             libro.getTitulo()
             );
 
+        itemTitulo->setTextAlignment(
+            Qt::AlignVCenter | Qt::AlignLeft
+            );
+
         ui->tablaLibros->setItem(fila, 1, itemTitulo);
 
-        // Autor
+        // Columna 2: Autor
         auto *itemAutor = new QTableWidgetItem(
             libro.getAutor()
             );
 
+        itemAutor->setTextAlignment(
+            Qt::AlignVCenter | Qt::AlignLeft
+            );
+
         ui->tablaLibros->setItem(fila, 2, itemAutor);
 
-        // ISBN
+        // Columna 3: ISBN
         auto *itemIsbn = new QTableWidgetItem(
             libro.getIsbn()
             );
 
+        itemIsbn->setTextAlignment(Qt::AlignCenter);
         ui->tablaLibros->setItem(fila, 3, itemIsbn);
 
-        // Categoría
-        // Temporalmente se muestra el ID de categoría.
-        // El nombre se resolverá al integrar los datos.
+        // Columna 4: Categoría
+        // Temporalmente se muestra el ID de categoría
         auto *itemCategoria = new QTableWidgetItem(
             QString::number(libro.getIdCategoria())
             );
 
         itemCategoria->setTextAlignment(Qt::AlignCenter);
-
         ui->tablaLibros->setItem(fila, 4, itemCategoria);
 
-        // Botones de acciones
+        // Columna 5: Acciones reutilizables
         auto *acciones = new AccionesTablaWidget(
             libro.getId(),
             ui->tablaLibros
             );
 
-        connect(acciones, &AccionesTablaWidget::editarSolicitado,
-                this, &LibrosPage::editarLibroSolicitado);
+        connect(
+            acciones,
+            &AccionesTablaWidget::editarSolicitado,
+            this,
+            &LibrosPage::editarLibroSolicitado
+            );
 
-        connect(acciones, &AccionesTablaWidget::eliminarSolicitado,
-                this, &LibrosPage::eliminarLibroSolicitado);
+        connect(
+            acciones,
+            &AccionesTablaWidget::eliminarSolicitado,
+            this,
+            &LibrosPage::eliminarLibroSolicitado
+            );
 
-        ui->tablaLibros->setCellWidget(fila, 5, acciones);
-
-        // Altura de fila
-        ui->tablaLibros->setRowHeight(fila, 52);
+        ui->tablaLibros->setCellWidget(
+            fila, 5, acciones
+            );
     }
 
     // Actualizar contador

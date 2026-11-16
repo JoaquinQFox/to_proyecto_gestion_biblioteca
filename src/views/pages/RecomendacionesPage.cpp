@@ -1,10 +1,10 @@
 #include "RecomendacionesPage.h"
 #include "ui_RecomendacionesPage.h"
-#include "../dialogs/RecomendacionDialog.h"
-#include <QPushButton>
 
-#include <QHeaderView>
-#include <QAbstractItemView>
+#include "../dialogs/RecomendacionDialog.h"
+#include "../components/TablaHelper.h"
+
+#include <QPushButton>
 
 RecomendacionesPage::RecomendacionesPage(QWidget *parent)
     : QWidget(parent)
@@ -12,28 +12,20 @@ RecomendacionesPage::RecomendacionesPage(QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect(ui->btnGenerarRecomendaciones, &QPushButton::clicked,
-            this, [this]() {
-                RecomendacionDialog dialog(this);
-                dialog.exec();
-            });
-
-    // 1. CONFIGURAR LA TABLA DE RECOMENDACIONES
-    ui->tablaRecomendaciones->horizontalHeader()->setSectionResizeMode(
-        QHeaderView::Stretch
+    // Abrir formulario para generar recomendaciones
+    connect(
+        ui->btnGenerarRecomendaciones,
+        &QPushButton::clicked,
+        this,
+        [this]() {
+            RecomendacionDialog dialog(this);
+            dialog.exec();
+        }
         );
 
-    ui->tablaRecomendaciones->verticalHeader()->setVisible(false);
-
-    ui->tablaRecomendaciones->setSelectionBehavior(
-        QAbstractItemView::SelectRows
-        );
-
-    ui->tablaRecomendaciones->setEditTriggers(
-        QAbstractItemView::NoEditTriggers
-        );
-
-    ui->tablaRecomendaciones->setAlternatingRowColors(false);
+    // Configuración reutilizable de la tabla
+    // No existe columna de acciones
+    TablaHelper::configurar(ui->tablaRecomendaciones);
 }
 
 RecomendacionesPage::~RecomendacionesPage()

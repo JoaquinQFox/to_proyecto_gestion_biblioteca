@@ -1,8 +1,8 @@
+
 #include "InicioPage.h"
 #include "ui_InicioPage.h"
 
-#include <QHeaderView>
-#include <QAbstractItemView>
+#include "../components/TablaHelper.h"
 
 InicioPage::InicioPage(QWidget *parent)
     : QWidget(parent)
@@ -10,22 +10,10 @@ InicioPage::InicioPage(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // 1. CONFIGURAR LA TABLA DE PRÉSTAMOS RECIENTES
-    ui->tablaPrestamosRecientes->horizontalHeader()->setSectionResizeMode(
-        QHeaderView::Stretch
-        );
-
-    ui->tablaPrestamosRecientes->verticalHeader()->setVisible(false);
-
-    ui->tablaPrestamosRecientes->setSelectionBehavior(
-        QAbstractItemView::SelectRows
-        );
-
-    ui->tablaPrestamosRecientes->setEditTriggers(
-        QAbstractItemView::NoEditTriggers
-        );
-
-    ui->tablaPrestamosRecientes->setAlternatingRowColors(false);
+    // Configuración reutilizable de la tabla
+    // de préstamos recientes.
+    // No contiene columna de acciones.
+    TablaHelper::configurar(ui->tablaPrestamosRecientes);
 }
 
 InicioPage::~InicioPage()

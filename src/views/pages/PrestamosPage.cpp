@@ -4,10 +4,9 @@
 
 #include "../dialogs/PrestamoDialog.h"
 #include "../components/AccionesTablaWidget.h"
+#include "../components/TablaHelper.h"
 
 #include <QPushButton>
-#include <QHeaderView>
-#include <QAbstractItemView>
 #include <QTableWidgetItem>
 #include <QDate>
 
@@ -24,37 +23,9 @@ PrestamosPage::PrestamosPage(QWidget *parent)
                 dialog.exec();
             });
 
-    // Configuración general de la tabla
-    ui->tablaPrestamos->horizontalHeader()->setSectionResizeMode(
-        QHeaderView::Stretch
-        );
-
-    ui->tablaPrestamos->verticalHeader()->setVisible(false);
-
-    ui->tablaPrestamos->setSelectionBehavior(
-        QAbstractItemView::SelectRows
-        );
-
-    ui->tablaPrestamos->setEditTriggers(
-        QAbstractItemView::NoEditTriggers
-        );
-
-    ui->tablaPrestamos->setAlternatingRowColors(false);
-
-    // Configuración de encabezados
-    ui->tablaPrestamos->horizontalHeader()->setMinimumSectionSize(65);
-
-    ui->tablaPrestamos->horizontalHeader()->setDefaultAlignment(
-        Qt::AlignCenter
-        );
-
-    // Reservar espacio para los botones de acciones
-    ui->tablaPrestamos->horizontalHeader()->setSectionResizeMode(
-        6, QHeaderView::Fixed
-        );
-
-    ui->tablaPrestamos->setColumnWidth(6, 180);
-
+    // Configuración reutilizable de la tabla
+    // Columna 6: Acciones, ancho de 180 px
+    TablaHelper::configurar(ui->tablaPrestamos, 6, 180);
 }
 
 PrestamosPage::~PrestamosPage()
@@ -140,11 +111,13 @@ void PrestamosPage::mostrarPrestamos(
         }
 
         auto *itemEstado = new QTableWidgetItem(estado);
-
         itemEstado->setTextAlignment(Qt::AlignCenter);
+
         ui->tablaPrestamos->setItem(fila, 5, itemEstado);
 
         // Columna 6: Acciones reutilizables
+        // Devuelto: solo Editar
+        // Activo o vencido: Editar y Devolver
         const auto tipoAcciones = devuelto
                                       ? AccionesTablaWidget::TipoAcciones::SoloEditar
                                       : AccionesTablaWidget::TipoAcciones::EditarDevolver;
@@ -155,7 +128,7 @@ void PrestamosPage::mostrarPrestamos(
             tipoAcciones
             );
 
-        // Emitir solicitud de edición
+        // Solicitud de edición
         connect(
             acciones,
             &AccionesTablaWidget::editarSolicitado,
@@ -163,7 +136,7 @@ void PrestamosPage::mostrarPrestamos(
             &PrestamosPage::editarPrestamoSolicitado
             );
 
-        // Emitir solicitud de devolución
+        // Solicitud de devolución
         connect(
             acciones,
             &AccionesTablaWidget::devolverSolicitado,
@@ -174,9 +147,6 @@ void PrestamosPage::mostrarPrestamos(
         ui->tablaPrestamos->setCellWidget(
             fila, 6, acciones
             );
-
-        // Altura de fila adecuada para los botones
-        ui->tablaPrestamos->setRowHeight(fila, 52);
     }
 
     // Actualizar contador de préstamos

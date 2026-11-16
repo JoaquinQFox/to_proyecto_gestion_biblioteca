@@ -3,7 +3,10 @@
    BIBLIOTECA DIGITAL - ESTILOS COMUNES
    ========================================= */
 
-/* Fondo de las pantallas */
+/* =========================================
+   1. FONDO DE LAS PANTALLAS
+   ========================================= */
+
 QWidget#InicioPage,
 QWidget#CategoriasPage,
 QWidget#LibrosPage,
@@ -14,21 +17,26 @@ QWidget#RecomendacionesPage {
     background-color: #F3F5F3;
 }
 
-/* Títulos */
+/* =========================================
+   2. TITULOS Y DESCRIPCIONES
+   ========================================= */
+
 QLabel#lblTitulo {
     color: #18392B;
     font-size: 26px;
     font-weight: bold;
 }
 
-/* Descripciones */
 QLabel#lblDescripcion {
     color: #718078;
     font-size: 13px;
     padding-bottom: 8px;
 }
 
-/* Campos de búsqueda */
+/* =========================================
+   3. CAMPOS DE BUSQUEDA
+   ========================================= */
+
 QLineEdit#txtBuscar {
     background-color: #FFFFFF;
     color: #243B2F;
@@ -42,7 +50,10 @@ QLineEdit#txtBuscar:focus {
     border: 2px solid #276749;
 }
 
-/* Botones principales */
+/* =========================================
+   4. BOTONES PRINCIPALES
+   ========================================= */
+
 QPushButton#btnNuevaCategoria,
 QPushButton#btnNuevoLibro,
 QPushButton#btnNuevoEjemplar,
@@ -76,7 +87,10 @@ QPushButton#btnGenerarRecomendaciones:pressed {
     background-color: #17442F;
 }
 
-/* Tablas */
+/* =========================================
+   5. TABLAS - ESTILO PROFESIONAL
+   ========================================= */
+
 QTableWidget#tablaPrestamosRecientes,
 QTableWidget#tablaCategorias,
 QTableWidget#tablaLibros,
@@ -88,38 +102,69 @@ QTableWidget#tablaRecomendaciones {
     color: #243B2F;
     border: 1px solid #E1E8E3;
     border-radius: 8px;
-    gridline-color: #EDF1EE;
+
     selection-background-color: #E5F1E9;
     selection-color: #18392B;
+
     font-size: 13px;
+    outline: none;
 }
+
+/* Encabezados */
 
 QTableWidget QHeaderView::section {
     background-color: #F7F9F7;
     color: #53665A;
+
     border: none;
     border-bottom: 1px solid #E1E8E3;
-    padding: 12px;
+
+    padding: 10px 12px;
+
     font-size: 12px;
     font-weight: bold;
 }
 
+/* Celdas */
+
 QTableWidget::item {
-    padding: 10px;
+    padding: 8px 10px;
     border-bottom: 1px solid #EDF1EE;
 }
+
+/* Efecto al pasar el cursor */
 
 QTableWidget::item:hover {
     background-color: #F0F7F2;
 }
 
-/* Contadores */
+/* Fila seleccionada */
+
+QTableWidget::item:selected {
+    background-color: #E5F1E9;
+    color: #18392B;
+}
+
+/* Esquina superior izquierda */
+
+QTableWidget QTableCornerButton::section {
+    background-color: #F7F9F7;
+    border: none;
+}
+
+/* =========================================
+   6. CONTADORES
+   ========================================= */
+
 QLabel#lblTotal {
     color: #718078;
     font-size: 12px;
 }
 
-/* Botones deshabilitados */
+/* =========================================
+   7. BOTONES DESHABILITADOS
+   ========================================= */
+
 QPushButton:disabled {
     background-color: #E5EAE6;
     color: #97A49B;
@@ -127,22 +172,23 @@ QPushButton:disabled {
 }
 
 /* Indicador de enfoque */
+
 QPushButton:focus {
     border: 2px solid #68A783;
 }
 
+/* =========================================
+   8. CONTENEDOR DE ACCIONES
+   ========================================= */
 
-
-/* =====================================
-   BOTONES DE ACCIONES EN TABLAS
-   ===================================== */
-
-/* Contenedor */
 QWidget#accionesTablaWidget {
     background-color: transparent;
 }
 
-/* Botón Editar */
+/* =========================================
+   9. BOTON EDITAR
+   ========================================= */
+
 QPushButton#btnEditarAccion {
     background-color: #E5F1E9;
     color: #276749;
@@ -162,7 +208,10 @@ QPushButton#btnEditarAccion:pressed {
     background-color: #B9D9C5;
 }
 
-/* Botón Eliminar */
+/* =========================================
+   10. BOTON ELIMINAR
+   ========================================= */
+
 QPushButton#btnEliminarAccion {
     background-color: #FDECEC;
     color: #B42318;
@@ -182,17 +231,10 @@ QPushButton#btnEliminarAccion:pressed {
     background-color: #F5C1C1;
 }
 
-/* Botones deshabilitados */
-QPushButton#btnEditarAccion:disabled,
-QPushButton#btnEliminarAccion:disabled {
-    background-color: #F1F3F2;
-    color: #9CA8A0;
-    border: 1px solid #E1E8E3;
-}
+/* =========================================
+   11. BOTON DEVOLVER
+   ========================================= */
 
-
-
-/* Botón Registrar devolución */
 QPushButton#btnDevolverAccion {
     background-color: #E8F0FC;
     color: #2457A7;
@@ -210,4 +252,16 @@ QPushButton#btnDevolverAccion:hover {
 
 QPushButton#btnDevolverAccion:pressed {
     background-color: #C3D8F5;
+}
+
+/* =========================================
+   12. ACCIONES DESHABILITADAS
+   ========================================= */
+
+QPushButton#btnEditarAccion:disabled,
+QPushButton#btnEliminarAccion:disabled,
+QPushButton#btnDevolverAccion:disabled {
+    background-color: #F1F3F2;
+    color: #9CA8A0;
+    border: 1px solid #E1E8E3;
 }

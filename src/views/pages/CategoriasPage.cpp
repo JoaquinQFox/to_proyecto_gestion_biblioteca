@@ -1,15 +1,12 @@
-
 #include "CategoriasPage.h"
 #include "ui_CategoriasPage.h"
 
 #include "../dialogs/CategoriaDialog.h"
 #include "../components/AccionesTablaWidget.h"
+#include "../components/TablaHelper.h"
 
 #include <QPushButton>
-#include <QHeaderView>
-#include <QAbstractItemView>
 #include <QTableWidgetItem>
-
 
 CategoriasPage::CategoriasPage(QWidget *parent)
     : QWidget(parent)
@@ -24,23 +21,9 @@ CategoriasPage::CategoriasPage(QWidget *parent)
                 dialog.exec();
             });
 
-    // Configurar tabla
-    ui->tablaCategorias->horizontalHeader()->setSectionResizeMode(
-        QHeaderView::Stretch
-        );
-
-    ui->tablaCategorias->verticalHeader()->setVisible(false);
-
-    ui->tablaCategorias->setSelectionBehavior(
-        QAbstractItemView::SelectRows
-        );
-
-    ui->tablaCategorias->setEditTriggers(
-        QAbstractItemView::NoEditTriggers
-        );
-
-    ui->tablaCategorias->setAlternatingRowColors(false);
-
+    // Configuración reutilizable de la tabla
+    // Columna 2: Acciones, ancho de 180 px
+    TablaHelper::configurar(ui->tablaCategorias, 2, 180);
 }
 
 CategoriasPage::~CategoriasPage()
@@ -59,43 +42,52 @@ void CategoriasPage::mostrarCategorias(
     for (const Categoria &categoria : categorias) {
 
         const int fila = ui->tablaCategorias->rowCount();
-
         ui->tablaCategorias->insertRow(fila);
 
-        // Columna ID
+        // Columna 0: ID
         auto *itemId = new QTableWidgetItem(
             QString::number(categoria.getId())
             );
 
         itemId->setTextAlignment(Qt::AlignCenter);
-
         ui->tablaCategorias->setItem(fila, 0, itemId);
 
-        // Columna Nombre
+        // Columna 1: Nombre
         auto *itemNombre = new QTableWidgetItem(
             categoria.getNombre()
             );
 
+        itemNombre->setTextAlignment(
+            Qt::AlignVCenter | Qt::AlignLeft
+            );
+
         ui->tablaCategorias->setItem(fila, 1, itemNombre);
 
-        // Columna Acciones
+        // Columna 2: Acciones reutilizables
         auto *acciones = new AccionesTablaWidget(
             categoria.getId(),
             ui->tablaCategorias
             );
 
-        // Señal Editar
-        connect(acciones, &AccionesTablaWidget::editarSolicitado,
-                this, &CategoriasPage::editarCategoriaSolicitado);
+        // Solicitud de edición
+        connect(
+            acciones,
+            &AccionesTablaWidget::editarSolicitado,
+            this,
+            &CategoriasPage::editarCategoriaSolicitado
+            );
 
-        // Señal Eliminar
-        connect(acciones, &AccionesTablaWidget::eliminarSolicitado,
-                this, &CategoriasPage::eliminarCategoriaSolicitado);
+        // Solicitud de eliminación
+        connect(
+            acciones,
+            &AccionesTablaWidget::eliminarSolicitado,
+            this,
+            &CategoriasPage::eliminarCategoriaSolicitado
+            );
 
-        ui->tablaCategorias->setCellWidget(fila, 2, acciones);
-
-        // Altura de fila
-        ui->tablaCategorias->setRowHeight(fila, 52);
+        ui->tablaCategorias->setCellWidget(
+            fila, 2, acciones
+            );
     }
 
     // Actualizar contador
