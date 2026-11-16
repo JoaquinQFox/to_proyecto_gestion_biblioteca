@@ -70,6 +70,10 @@ set(PROJECT_SOURCES
     src/views/dialogs/PrestamoDialog.cpp
     src/views/dialogs/PrestamoDialog.ui
 
+    src/views/dialogs/RecomendacionDialog.h
+    src/views/dialogs/RecomendacionDialog.cpp
+    src/views/dialogs/RecomendacionDialog.ui
+
     resources/resources.qrc
 )
 

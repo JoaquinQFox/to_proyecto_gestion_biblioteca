@@ -1,5 +1,7 @@
 #include "RecomendacionesPage.h"
 #include "ui_RecomendacionesPage.h"
+#include "../dialogs/RecomendacionDialog.h"
+#include <QPushButton>
 
 #include <QHeaderView>
 #include <QAbstractItemView>
@@ -9,6 +11,12 @@ RecomendacionesPage::RecomendacionesPage(QWidget *parent)
     , ui(new Ui::RecomendacionesPage)
 {
     ui->setupUi(this);
+
+    connect(ui->btnGenerarRecomendaciones, &QPushButton::clicked,
+            this, [this]() {
+                RecomendacionDialog dialog(this);
+                dialog.exec();
+            });
 
     // 1. CONFIGURAR LA TABLA DE RECOMENDACIONES
     ui->tablaRecomendaciones->horizontalHeader()->setSectionResizeMode(
