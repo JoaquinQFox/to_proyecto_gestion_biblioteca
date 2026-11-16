@@ -50,6 +50,14 @@ set(PROJECT_SOURCES
     src/views/pages/InicioPage.h
     src/views/pages/InicioPage.ui
 
+    src/views/dialogs/CategoriaDialog.h
+    src/views/dialogs/CategoriaDialog.cpp
+    src/views/dialogs/CategoriaDialog.ui
+
+    src/views/dialogs/LibroDialog.h
+    src/views/dialogs/LibroDialog.cpp
+    src/views/dialogs/LibroDialog.ui
+
     resources/resources.qrc
 )
 

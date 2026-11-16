@@ -1,5 +1,7 @@
 #include "LibrosPage.h"
 #include "ui_LibrosPage.h"
+#include "../dialogs/LibroDialog.h"
+#include <QPushButton>
 
 #include <QHeaderView>
 #include <QAbstractItemView>
@@ -9,6 +11,12 @@ LibrosPage::LibrosPage(QWidget *parent)
     , ui(new Ui::LibrosPage)
 {
     ui->setupUi(this);
+
+    connect(ui->btnNuevoLibro, &QPushButton::clicked,
+            this, [this]() {
+                LibroDialog dialog(this);
+                dialog.exec();
+            });
 
     // 1. CONFIGURAR LA TABLA DE LIBROS
     ui->tablaLibros->horizontalHeader()->setSectionResizeMode(

@@ -8,5 +8,7 @@
         <file alias="lectores.qss">styles/lectores.qss</file>
         <file alias="prestamos.qss">styles/prestamos.qss</file>
         <file alias="recomendaciones.qss">styles/recomendaciones.qss</file>
+        <file alias="categoria_dialog.qss">styles/categoria_dialog.qss</file>
+        <file alias="libro_dialog.qss">styles/libro_dialog.qss</file>
     </qresource>
 </RCC>
