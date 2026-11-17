@@ -13,6 +13,9 @@
 #include <QStringList>
 #include <QList>
 #include <QWidget>
+#include <QLayout>
+#include <QSizePolicy>
+#include <QTimer>
 
 PrestamoDialog::PrestamoDialog(QWidget *parent)
     : QDialog(parent)
@@ -20,21 +23,51 @@ PrestamoDialog::PrestamoDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Fechas predeterminadas
-    ui->datePrestamo->setDate(QDate::currentDate());
+    // =========================================
+    // CONFIGURACIÓN DEL FORMULARIO
+    // =========================================
+
+    // Ajustar tamaño según el contenido visible
+    ui->layoutPrincipal->setSizeConstraint(
+        QLayout::SetFixedSize
+        );
+
+    // Espaciado uniforme
+    ui->layoutPrincipal->setSpacing(10);
+
+    // Márgenes internos
+    ui->layoutPrincipal->setContentsMargins(
+        28, 24, 28, 24
+        );
+
+    // =========================================
+    // FECHAS PREDETERMINADAS
+    // =========================================
+
+    ui->datePrestamo->setDate(
+        QDate::currentDate()
+        );
 
     ui->dateDevolucion->setDate(
         QDate::currentDate().addDays(7)
         );
 
-    // Crear mensajes de validación
+    // =========================================
+    // MENSAJES DE VALIDACIÓN
+    // =========================================
+
     lblErrorLector = new QLabel(this);
     lblErrorEjemplar = new QLabel(this);
     lblErrorFechaPrestamo = new QLabel(this);
     lblErrorFechaDevolucion = new QLabel(this);
 
-    lblErrorLector->setObjectName("lblErrorLector");
-    lblErrorEjemplar->setObjectName("lblErrorEjemplar");
+    lblErrorLector->setObjectName(
+        "lblErrorLector"
+        );
+
+    lblErrorEjemplar->setObjectName(
+        "lblErrorEjemplar"
+        );
 
     lblErrorFechaPrestamo->setObjectName(
         "lblErrorFechaPrestamo"
@@ -53,10 +86,16 @@ PrestamoDialog::PrestamoDialog(QWidget *parent)
 
     for (QLabel *etiqueta : etiquetas) {
         etiqueta->setWordWrap(true);
+
+        etiqueta->setSizePolicy(
+            QSizePolicy::Preferred,
+            QSizePolicy::Minimum
+            );
+
         etiqueta->hide();
     }
 
-    // Insertar cada error debajo de su campo
+    // Insertar mensajes debajo de cada campo
     auto insertarError = [this](
                              QWidget *campo,
                              QLabel *etiqueta
@@ -72,8 +111,15 @@ PrestamoDialog::PrestamoDialog(QWidget *parent)
         }
     };
 
-    insertarError(ui->cmbLector, lblErrorLector);
-    insertarError(ui->cmbEjemplar, lblErrorEjemplar);
+    insertarError(
+        ui->cmbLector,
+        lblErrorLector
+        );
+
+    insertarError(
+        ui->cmbEjemplar,
+        lblErrorEjemplar
+        );
 
     insertarError(
         ui->datePrestamo,
@@ -85,7 +131,10 @@ PrestamoDialog::PrestamoDialog(QWidget *parent)
         lblErrorFechaDevolucion
         );
 
-    // Botón Cancelar
+    // =========================================
+    // BOTONES
+    // =========================================
+
     connect(
         ui->btnCancelar,
         &QPushButton::clicked,
@@ -93,7 +142,7 @@ PrestamoDialog::PrestamoDialog(QWidget *parent)
         &QDialog::reject
         );
 
-    // Botón Guardar: solo validación visual
+    // Solo validación visual
     connect(
         ui->btnGuardar,
         &QPushButton::clicked,
@@ -103,10 +152,15 @@ PrestamoDialog::PrestamoDialog(QWidget *parent)
         }
         );
 
-    // Limpiar errores de los selectores
+    // =========================================
+    // LIMPIEZA AUTOMÁTICA DE ERRORES
+    // =========================================
+
     connect(
         ui->cmbLector,
-        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        QOverload<int>::of(
+            &QComboBox::currentIndexChanged
+            ),
         this,
         [this](int) {
             limpiarError(
@@ -118,7 +172,9 @@ PrestamoDialog::PrestamoDialog(QWidget *parent)
 
     connect(
         ui->cmbEjemplar,
-        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        QOverload<int>::of(
+            &QComboBox::currentIndexChanged
+            ),
         this,
         [this](int) {
             limpiarError(
@@ -128,7 +184,10 @@ PrestamoDialog::PrestamoDialog(QWidget *parent)
         }
         );
 
-    // Revisar coherencia al cambiar las fechas
+    // =========================================
+    // VALIDACIÓN AUTOMÁTICA DE FECHAS
+    // =========================================
+
     connect(
         ui->datePrestamo,
         &QDateEdit::dateChanged,
@@ -147,7 +206,10 @@ PrestamoDialog::PrestamoDialog(QWidget *parent)
         }
         );
 
-    // Cargar estilos
+    // =========================================
+    // CARGA DE ESTILOS
+    // =========================================
+
     QString estilos;
 
     const QStringList archivosEstilos = {
@@ -167,18 +229,30 @@ PrestamoDialog::PrestamoDialog(QWidget *parent)
 
             estilos += "\n";
         } else {
-            qWarning() << "No se pudo cargar:" << ruta;
+            qWarning()
+            << "No se pudo cargar:"
+            << ruta;
         }
     }
 
     setStyleSheet(estilos);
     setModal(true);
+
+    // Ajustar geometría inicial
+    QTimer::singleShot(0, this, [this]() {
+        ui->layoutPrincipal->invalidate();
+        adjustSize();
+    });
 }
 
 PrestamoDialog::~PrestamoDialog()
 {
     delete ui;
 }
+
+// =========================================
+// VALIDACIÓN DEL FORMULARIO
+// =========================================
 
 bool PrestamoDialog::validarFormulario()
 {
@@ -222,13 +296,17 @@ bool PrestamoDialog::validarFormulario()
             );
     }
 
-    // Validar fecha de préstamo
+    // =========================================
+    // VALIDAR FECHAS
+    // =========================================
+
     const QDate fechaPrestamo =
         ui->datePrestamo->date();
 
     const QDate fechaDevolucion =
         ui->dateDevolucion->date();
 
+    // Validar fecha de préstamo
     if (!fechaPrestamo.isValid()) {
         mostrarError(
             lblErrorFechaPrestamo,
@@ -272,12 +350,21 @@ bool PrestamoDialog::validarFormulario()
             );
     }
 
+    // Enfocar primer campo incorrecto
     if (primerCampoInvalido) {
         primerCampoInvalido->setFocus();
     }
 
+    // Recalcular tamaño
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
+
     return valido;
 }
+
+// =========================================
+// VALIDACIÓN AUTOMÁTICA DE FECHAS
+// =========================================
 
 void PrestamoDialog::actualizarValidacionFechas()
 {
@@ -316,7 +403,15 @@ void PrestamoDialog::actualizarValidacionFechas()
             ui->dateDevolucion
             );
     }
+
+    // Actualizar geometría
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }
+
+// =========================================
+// MOSTRAR ERROR
+// =========================================
 
 void PrestamoDialog::mostrarError(
     QLabel *etiqueta,
@@ -328,10 +423,18 @@ void PrestamoDialog::mostrarError(
     etiqueta->show();
 
     campo->setProperty("error", true);
+
     campo->style()->unpolish(campo);
     campo->style()->polish(campo);
     campo->update();
+
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }
+
+// =========================================
+// LIMPIAR ERROR
+// =========================================
 
 void PrestamoDialog::limpiarError(
     QLabel *etiqueta,
@@ -342,7 +445,11 @@ void PrestamoDialog::limpiarError(
     etiqueta->hide();
 
     campo->setProperty("error", false);
+
     campo->style()->unpolish(campo);
     campo->style()->polish(campo);
     campo->update();
+
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }

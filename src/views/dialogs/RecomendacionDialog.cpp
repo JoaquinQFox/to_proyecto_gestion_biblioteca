@@ -11,6 +11,9 @@
 #include <QStyle>
 #include <QStringList>
 #include <QWidget>
+#include <QLayout>
+#include <QSizePolicy>
+#include <QTimer>
 
 RecomendacionDialog::RecomendacionDialog(QWidget *parent)
     : QDialog(parent)
@@ -18,24 +21,59 @@ RecomendacionDialog::RecomendacionDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Configurar cantidad permitida
+    // =========================================
+    // CONFIGURACIÓN DEL FORMULARIO
+    // =========================================
+
+    // Ajustar el tamaño según el contenido visible
+    ui->layoutPrincipal->setSizeConstraint(
+        QLayout::SetFixedSize
+        );
+
+    // Espaciado uniforme
+    ui->layoutPrincipal->setSpacing(10);
+
+    // Márgenes internos
+    ui->layoutPrincipal->setContentsMargins(
+        28, 24, 28, 24
+        );
+
+    // Cantidad permitida de recomendaciones
     ui->spinCantidad->setRange(1, 20);
     ui->spinCantidad->setValue(5);
 
-    // Crear etiquetas de validación
+    // =========================================
+    // MENSAJES DE VALIDACIÓN
+    // =========================================
+
     lblErrorLector = new QLabel(this);
     lblErrorCantidad = new QLabel(this);
 
-    lblErrorLector->setObjectName("lblErrorLector");
-    lblErrorCantidad->setObjectName("lblErrorCantidad");
+    lblErrorLector->setObjectName(
+        "lblErrorLector"
+        );
+
+    lblErrorCantidad->setObjectName(
+        "lblErrorCantidad"
+        );
 
     lblErrorLector->setWordWrap(true);
     lblErrorCantidad->setWordWrap(true);
 
+    lblErrorLector->setSizePolicy(
+        QSizePolicy::Preferred,
+        QSizePolicy::Minimum
+        );
+
+    lblErrorCantidad->setSizePolicy(
+        QSizePolicy::Preferred,
+        QSizePolicy::Minimum
+        );
+
     lblErrorLector->hide();
     lblErrorCantidad->hide();
 
-    // Insertar mensajes debajo de cada campo
+    // Insertar errores debajo de cada campo
     auto insertarError = [this](
                              QWidget *campo,
                              QLabel *etiqueta
@@ -51,14 +89,20 @@ RecomendacionDialog::RecomendacionDialog(QWidget *parent)
         }
     };
 
-    insertarError(ui->cmbLector, lblErrorLector);
+    insertarError(
+        ui->cmbLector,
+        lblErrorLector
+        );
 
     insertarError(
         ui->spinCantidad,
         lblErrorCantidad
         );
 
-    // Cancelar
+    // =========================================
+    // BOTONES
+    // =========================================
+
     connect(
         ui->btnCancelar,
         &QPushButton::clicked,
@@ -76,7 +120,10 @@ RecomendacionDialog::RecomendacionDialog(QWidget *parent)
         }
         );
 
-    // Limpiar error al seleccionar lector
+    // =========================================
+    // LIMPIEZA AUTOMÁTICA DE ERRORES
+    // =========================================
+
     connect(
         ui->cmbLector,
         QOverload<int>::of(
@@ -91,7 +138,6 @@ RecomendacionDialog::RecomendacionDialog(QWidget *parent)
         }
         );
 
-    // Limpiar error al modificar cantidad
     connect(
         ui->spinCantidad,
         QOverload<int>::of(
@@ -106,7 +152,10 @@ RecomendacionDialog::RecomendacionDialog(QWidget *parent)
         }
         );
 
-    // Cargar estilos QSS
+    // =========================================
+    // CARGA DE ESTILOS
+    // =========================================
+
     QString estilos;
 
     const QStringList archivosEstilos = {
@@ -126,18 +175,30 @@ RecomendacionDialog::RecomendacionDialog(QWidget *parent)
 
             estilos += "\n";
         } else {
-            qWarning() << "No se pudo cargar:" << ruta;
+            qWarning()
+            << "No se pudo cargar:"
+            << ruta;
         }
     }
 
     setStyleSheet(estilos);
     setModal(true);
+
+    // Ajuste inicial del tamaño
+    QTimer::singleShot(0, this, [this]() {
+        ui->layoutPrincipal->invalidate();
+        adjustSize();
+    });
 }
 
 RecomendacionDialog::~RecomendacionDialog()
 {
     delete ui;
 }
+
+// =========================================
+// VALIDACIÓN DEL FORMULARIO
+// =========================================
 
 bool RecomendacionDialog::validarFormulario()
 {
@@ -187,12 +248,21 @@ bool RecomendacionDialog::validarFormulario()
     // Categoría opcional:
     // índice 0 significa todas las categorías.
 
+    // Enfocar el primer campo incorrecto
     if (primerCampoInvalido) {
         primerCampoInvalido->setFocus();
     }
 
+    // Recalcular tamaño
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
+
     return valido;
 }
+
+// =========================================
+// MOSTRAR ERROR
+// =========================================
 
 void RecomendacionDialog::mostrarError(
     QLabel *etiqueta,
@@ -204,10 +274,18 @@ void RecomendacionDialog::mostrarError(
     etiqueta->show();
 
     campo->setProperty("error", true);
+
     campo->style()->unpolish(campo);
     campo->style()->polish(campo);
     campo->update();
+
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }
+
+// =========================================
+// LIMPIAR ERROR
+// =========================================
 
 void RecomendacionDialog::limpiarError(
     QLabel *etiqueta,
@@ -218,7 +296,11 @@ void RecomendacionDialog::limpiarError(
     etiqueta->hide();
 
     campo->setProperty("error", false);
+
     campo->style()->unpolish(campo);
     campo->style()->polish(campo);
     campo->update();
+
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }

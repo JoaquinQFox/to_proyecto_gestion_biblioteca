@@ -1,54 +1,112 @@
+
 #include "CategoriaDialog.h"
 #include "ui_CategoriaDialog.h"
 
 #include <QFile>
 #include <QDebug>
 #include <QPushButton>
+#include <QLineEdit>
 #include <QStringList>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QLayout>
+#include <QSizePolicy>
 #include <QStyle>
+#include <QTimer>
 
 CategoriaDialog::CategoriaDialog(QWidget *parent)
-    : QDialog(parent),
-    ui(new Ui::CategoriaDialog)
+    : QDialog(parent)
+    , ui(new Ui::CategoriaDialog)
 {
     ui->setupUi(this);
+
+    // =========================================
+    // CONFIGURACIÓN DEL FORMULARIO
+    // =========================================
+
+    // Ajustar la ventana al contenido visible
+    ui->layoutPrincipal->setSizeConstraint(
+        QLayout::SetFixedSize
+        );
+
+    // Espaciado y márgenes uniformes
+    ui->layoutPrincipal->setSpacing(10);
+
+    ui->layoutPrincipal->setContentsMargins(
+        28, 24, 28, 24
+        );
 
     // Configuración del campo
     ui->txtNombre->setMaxLength(60);
 
-    // Mensaje de validación
+    // =========================================
+    // MENSAJE DE VALIDACIÓN
+    // =========================================
+
     auto *lblError = new QLabel(this);
+
     lblError->setObjectName("lblErrorValidacion");
     lblError->setWordWrap(true);
+
+    lblError->setSizePolicy(
+        QSizePolicy::Preferred,
+        QSizePolicy::Minimum
+        );
+
     lblError->hide();
 
-    ui->layoutPrincipal->insertWidget(5, lblError);
+    // Insertar el mensaje debajo del campo Nombre
+    const int indiceNombre =
+        ui->layoutPrincipal->indexOf(ui->txtNombre);
 
-    connect(ui->btnCancelar, &QPushButton::clicked,
-            this, &QDialog::reject);
+    if (indiceNombre >= 0) {
+        ui->layoutPrincipal->insertWidget(
+            indiceNombre + 1,
+            lblError
+            );
+    }
 
-    // Validar al guardar
-    connect(ui->btnGuardar, &QPushButton::clicked,
-            this, [this]() {
+    // =========================================
+    // CONEXIONES
+    // =========================================
 
-                if (!validarFormulario()) {
-                    return;
-                }
+    connect(
+        ui->btnCancelar,
+        &QPushButton::clicked,
+        this,
+        &QDialog::reject
+        );
 
-                emit guardarSolicitado(
-                    ui->txtNombre->text().trimmed()
-                    );
-            });
+    // Mantener la señal existente
+    connect(
+        ui->btnGuardar,
+        &QPushButton::clicked,
+        this,
+        [this]() {
+            if (!validarFormulario()) {
+                return;
+            }
 
-    // Limpiar error mientras se escribe
-    connect(ui->txtNombre, &QLineEdit::textChanged,
-            this, [this]() {
-                limpiarError();
-            });
+            emit guardarSolicitado(
+                ui->txtNombre->text().trimmed()
+                );
+        }
+        );
 
-    // Cargar estilos
+    // Limpiar error al modificar el nombre
+    connect(
+        ui->txtNombre,
+        &QLineEdit::textChanged,
+        this,
+        [this](const QString &) {
+            limpiarError();
+        }
+        );
+
+    // =========================================
+    // CARGA DE ESTILOS
+    // =========================================
+
     QString estilos;
 
     const QStringList archivosEstilos = {
@@ -59,8 +117,13 @@ CategoriaDialog::CategoriaDialog(QWidget *parent)
     for (const QString &ruta : archivosEstilos) {
         QFile archivo(ruta);
 
-        if (archivo.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            estilos += QString::fromUtf8(archivo.readAll());
+        if (archivo.open(
+                QIODevice::ReadOnly | QIODevice::Text
+                )) {
+            estilos += QString::fromUtf8(
+                archivo.readAll()
+                );
+
             estilos += "\n";
         } else {
             qWarning() << "No se pudo cargar:" << ruta;
@@ -68,8 +131,13 @@ CategoriaDialog::CategoriaDialog(QWidget *parent)
     }
 
     setStyleSheet(estilos);
-
     setModal(true);
+
+    // Ajustar tamaño después de construir la interfaz
+    QTimer::singleShot(0, this, [this]() {
+        ui->layoutPrincipal->invalidate();
+        adjustSize();
+    });
 }
 
 CategoriaDialog::~CategoriaDialog()
@@ -77,22 +145,35 @@ CategoriaDialog::~CategoriaDialog()
     delete ui;
 }
 
+// =========================================
+// VALIDACIÓN DEL FORMULARIO
+// =========================================
+
 bool CategoriaDialog::validarFormulario()
 {
-    const QString nombre = ui->txtNombre->text().trimmed();
+    const QString nombre =
+        ui->txtNombre->text().trimmed();
 
     if (nombre.isEmpty()) {
-        mostrarError("Ingresa el nombre de la categoría.");
+        mostrarError(
+            "Ingresa el nombre de la categoría."
+            );
+
         ui->txtNombre->setFocus();
         return false;
     }
 
     limpiarError();
-
     return true;
 }
 
-void CategoriaDialog::mostrarError(const QString &mensaje)
+// =========================================
+// MOSTRAR ERROR
+// =========================================
+
+void CategoriaDialog::mostrarError(
+    const QString &mensaje
+    )
 {
     auto *lblError = findChild<QLabel *>(
         "lblErrorValidacion"
@@ -104,9 +185,25 @@ void CategoriaDialog::mostrarError(const QString &mensaje)
     }
 
     ui->txtNombre->setProperty("error", true);
-    ui->txtNombre->style()->unpolish(ui->txtNombre);
-    ui->txtNombre->style()->polish(ui->txtNombre);
+
+    ui->txtNombre->style()->unpolish(
+        ui->txtNombre
+        );
+
+    ui->txtNombre->style()->polish(
+        ui->txtNombre
+        );
+
+    ui->txtNombre->update();
+
+    // Recalcular tamaño con el error visible
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }
+
+// =========================================
+// LIMPIAR ERROR
+// =========================================
 
 void CategoriaDialog::limpiarError()
 {
@@ -120,6 +217,18 @@ void CategoriaDialog::limpiarError()
     }
 
     ui->txtNombre->setProperty("error", false);
-    ui->txtNombre->style()->unpolish(ui->txtNombre);
-    ui->txtNombre->style()->polish(ui->txtNombre);
+
+    ui->txtNombre->style()->unpolish(
+        ui->txtNombre
+        );
+
+    ui->txtNombre->style()->polish(
+        ui->txtNombre
+        );
+
+    ui->txtNombre->update();
+
+    // Recalcular tamaño sin el error
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }

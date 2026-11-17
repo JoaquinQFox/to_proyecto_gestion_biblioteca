@@ -11,19 +11,45 @@
 #include <QComboBox>
 #include <QStyle>
 #include <QMessageBox>
+#include <QLayout>
+#include <QSizePolicy>
+#include <QTimer>
+#include <QList>
+#include <QPair>
+#include <QWidget>
 
 LibroDialog::LibroDialog(QWidget *parent)
-    : QDialog(parent),
-    ui(new Ui::LibroDialog)
+    : QDialog(parent)
+    , ui(new Ui::LibroDialog)
 {
     ui->setupUi(this);
+
+    // =========================================
+    // CONFIGURACIÓN DEL FORMULARIO
+    // =========================================
+
+    // Ajustar el tamaño según el contenido visible
+    ui->layoutPrincipal->setSizeConstraint(
+        QLayout::SetFixedSize
+        );
+
+    // Espaciado uniforme
+    ui->layoutPrincipal->setSpacing(10);
+
+    // Márgenes internos
+    ui->layoutPrincipal->setContentsMargins(
+        28, 24, 28, 24
+        );
 
     // Límites de caracteres
     ui->txtTitulo->setMaxLength(150);
     ui->txtAutor->setMaxLength(100);
     ui->txtISBN->setMaxLength(17);
 
-    // Crear mensajes de error debajo de cada campo
+    // =========================================
+    // MENSAJES DE VALIDACIÓN
+    // =========================================
+
     const QList<QPair<QString, QString>> campos = {
         {"txtTitulo", "lblErrorTitulo"},
         {"txtAutor", "lblErrorAutor"},
@@ -34,67 +60,110 @@ LibroDialog::LibroDialog(QWidget *parent)
     for (const auto &campo : campos) {
 
         auto *error = new QLabel(this);
+
         error->setObjectName(campo.second);
         error->setWordWrap(true);
+
+        error->setSizePolicy(
+            QSizePolicy::Preferred,
+            QSizePolicy::Minimum
+            );
+
         error->hide();
 
-        QWidget *campoWidget = findChild<QWidget *>(campo.first);
+        QWidget *campoWidget =
+            findChild<QWidget *>(campo.first);
 
         if (campoWidget) {
             const int indice =
                 ui->layoutPrincipal->indexOf(campoWidget);
 
-            ui->layoutPrincipal->insertWidget(
-                indice + 1,
-                error
-                );
+            if (indice >= 0) {
+                ui->layoutPrincipal->insertWidget(
+                    indice + 1,
+                    error
+                    );
+            }
         }
     }
 
-    // Botón cancelar
-    connect(ui->btnCancelar, &QPushButton::clicked,
-            this, &QDialog::reject);
+    // =========================================
+    // BOTONES
+    // =========================================
 
-    // Validar al pulsar guardar
-    connect(ui->btnGuardar, &QPushButton::clicked,
-            this, [this]() {
+    connect(
+        ui->btnCancelar,
+        &QPushButton::clicked,
+        this,
+        &QDialog::reject
+        );
 
-                if (!validarFormulario()) {
-                    return;
-                }
+    connect(
+        ui->btnGuardar,
+        &QPushButton::clicked,
+        this,
+        [this]() {
 
-                // Prueba visual: todavía no se guarda en la base de datos.
-                QMessageBox::information(
-                    this,
-                    "Validación correcta",
-                    "Los datos del libro son válidos.\n\n"
-                    "El guardado se integrará posteriormente."
-                    );
-            });
+            if (!validarFormulario()) {
+                return;
+            }
 
-    // Limpiar errores al modificar los campos
-    connect(ui->txtTitulo, &QLineEdit::textChanged,
-            this, [this]() {
-                limpiarError("txtTitulo");
-            });
+            // Prueba visual: no guarda en la base de datos
+            QMessageBox::information(
+                this,
+                "Validación correcta",
+                "Los datos del libro son válidos.\n\n"
+                "El guardado se integrará posteriormente."
+                );
+        }
+        );
 
-    connect(ui->txtAutor, &QLineEdit::textChanged,
-            this, [this]() {
-                limpiarError("txtAutor");
-            });
+    // =========================================
+    // LIMPIEZA AUTOMÁTICA DE ERRORES
+    // =========================================
 
-    connect(ui->txtISBN, &QLineEdit::textChanged,
-            this, [this]() {
-                limpiarError("txtISBN");
-            });
+    connect(
+        ui->txtTitulo,
+        &QLineEdit::textChanged,
+        this,
+        [this](const QString &) {
+            limpiarError("txtTitulo");
+        }
+        );
 
-    connect(ui->cmbCategoria,
-            QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, [this]() {
-                limpiarError("cmbCategoria");
-            });
+    connect(
+        ui->txtAutor,
+        &QLineEdit::textChanged,
+        this,
+        [this](const QString &) {
+            limpiarError("txtAutor");
+        }
+        );
 
-    // Cargar estilos
+    connect(
+        ui->txtISBN,
+        &QLineEdit::textChanged,
+        this,
+        [this](const QString &) {
+            limpiarError("txtISBN");
+        }
+        );
+
+    connect(
+        ui->cmbCategoria,
+        QOverload<int>::of(
+            &QComboBox::currentIndexChanged
+            ),
+        this,
+        [this](int) {
+            limpiarError("cmbCategoria");
+        }
+        );
+
+    // =========================================
+    // CARGA DE ESTILOS
+    // =========================================
+
     QString estilos;
 
     const QStringList archivosEstilos = {
@@ -106,8 +175,13 @@ LibroDialog::LibroDialog(QWidget *parent)
 
         QFile archivo(ruta);
 
-        if (archivo.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            estilos += QString::fromUtf8(archivo.readAll());
+        if (archivo.open(
+                QIODevice::ReadOnly | QIODevice::Text
+                )) {
+            estilos += QString::fromUtf8(
+                archivo.readAll()
+                );
+
             estilos += "\n";
         } else {
             qWarning() << "No se pudo cargar:" << ruta;
@@ -116,6 +190,12 @@ LibroDialog::LibroDialog(QWidget *parent)
 
     setStyleSheet(estilos);
     setModal(true);
+
+    // Ajuste inicial de geometría
+    QTimer::singleShot(0, this, [this]() {
+        ui->layoutPrincipal->invalidate();
+        adjustSize();
+    });
 }
 
 LibroDialog::~LibroDialog()
@@ -123,13 +203,19 @@ LibroDialog::~LibroDialog()
     delete ui;
 }
 
+// =========================================
+// VALIDACIÓN DEL ISBN
+// =========================================
+
 bool LibroDialog::validarISBN(const QString &isbn)
 {
     QString limpio = isbn;
+
     limpio.remove('-');
     limpio.remove(' ');
 
-    if (limpio.length() != 10 && limpio.length() != 13) {
+    if (limpio.length() != 10 &&
+        limpio.length() != 13) {
         return false;
     }
 
@@ -151,37 +237,52 @@ bool LibroDialog::validarISBN(const QString &isbn)
     return true;
 }
 
+// =========================================
+// VALIDACIÓN DEL FORMULARIO
+// =========================================
+
 bool LibroDialog::validarFormulario()
 {
     limpiarTodosLosErrores();
 
     bool valido = true;
 
-    const QString titulo = ui->txtTitulo->text().trimmed();
-    const QString autor = ui->txtAutor->text().trimmed();
-    const QString isbn = ui->txtISBN->text().trimmed();
+    const QString titulo =
+        ui->txtTitulo->text().trimmed();
 
+    const QString autor =
+        ui->txtAutor->text().trimmed();
+
+    const QString isbn =
+        ui->txtISBN->text().trimmed();
+
+    // Validar título
     if (titulo.isEmpty()) {
         mostrarError(
             "txtTitulo",
             "Ingresa el título del libro."
             );
+
         valido = false;
     }
 
+    // Validar autor
     if (autor.isEmpty()) {
         mostrarError(
             "txtAutor",
             "Ingresa el nombre del autor."
             );
+
         valido = false;
     }
 
+    // Validar ISBN
     if (isbn.isEmpty()) {
         mostrarError(
             "txtISBN",
             "Ingresa el ISBN del libro."
             );
+
         valido = false;
     }
     else if (!validarISBN(isbn)) {
@@ -189,17 +290,21 @@ bool LibroDialog::validarFormulario()
             "txtISBN",
             "El ISBN debe contener 10 o 13 dígitos."
             );
+
         valido = false;
     }
 
+    // Validar categoría
     if (ui->cmbCategoria->currentIndex() <= 0) {
         mostrarError(
             "cmbCategoria",
             "Selecciona una categoría."
             );
+
         valido = false;
     }
 
+    // Enfocar el primer campo incorrecto
     if (!valido) {
 
         if (titulo.isEmpty()) {
@@ -208,7 +313,8 @@ bool LibroDialog::validarFormulario()
         else if (autor.isEmpty()) {
             ui->txtAutor->setFocus();
         }
-        else if (isbn.isEmpty() || !validarISBN(isbn)) {
+        else if (isbn.isEmpty() ||
+                 !validarISBN(isbn)) {
             ui->txtISBN->setFocus();
         }
         else {
@@ -216,16 +322,24 @@ bool LibroDialog::validarFormulario()
         }
     }
 
+    // Actualizar tamaño según los errores visibles
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
+
     return valido;
 }
 
+// =========================================
+// MOSTRAR ERROR
+// =========================================
+
 void LibroDialog::mostrarError(
     const QString &nombreCampo,
-    const QString &mensaje)
+    const QString &mensaje
+    )
 {
     QLabel *error = findChild<QLabel *>(
-        "lblError" +
-        nombreCampo.mid(3)
+        "lblError" + nombreCampo.mid(3)
         );
 
     if (!error) {
@@ -235,21 +349,31 @@ void LibroDialog::mostrarError(
     error->setText(mensaje);
     error->show();
 
-    QWidget *campo = findChild<QWidget *>(nombreCampo);
+    QWidget *campo =
+        findChild<QWidget *>(nombreCampo);
 
     if (campo) {
         campo->setProperty("error", true);
+
         campo->style()->unpolish(campo);
         campo->style()->polish(campo);
         campo->update();
     }
+
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }
 
-void LibroDialog::limpiarError(const QString &nombreCampo)
+// =========================================
+// LIMPIAR ERROR
+// =========================================
+
+void LibroDialog::limpiarError(
+    const QString &nombreCampo
+    )
 {
     QLabel *error = findChild<QLabel *>(
-        "lblError" +
-        nombreCampo.mid(3)
+        "lblError" + nombreCampo.mid(3)
         );
 
     if (error) {
@@ -257,15 +381,24 @@ void LibroDialog::limpiarError(const QString &nombreCampo)
         error->hide();
     }
 
-    QWidget *campo = findChild<QWidget *>(nombreCampo);
+    QWidget *campo =
+        findChild<QWidget *>(nombreCampo);
 
     if (campo) {
         campo->setProperty("error", false);
+
         campo->style()->unpolish(campo);
         campo->style()->polish(campo);
         campo->update();
     }
+
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }
+
+// =========================================
+// LIMPIAR TODOS LOS ERRORES
+// =========================================
 
 void LibroDialog::limpiarTodosLosErrores()
 {

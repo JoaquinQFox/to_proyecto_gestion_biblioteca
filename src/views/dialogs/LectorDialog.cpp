@@ -12,6 +12,10 @@
 #include <QStyle>
 #include <QRegularExpression>
 #include <QList>
+#include <QLayout>
+#include <QSizePolicy>
+#include <QTimer>
+#include <QWidget>
 
 LectorDialog::LectorDialog(QWidget *parent)
     : QDialog(parent)
@@ -19,13 +23,30 @@ LectorDialog::LectorDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // =========================================
+    // CONFIGURACIÓN DEL FORMULARIO
+    // =========================================
+
+    // Ajustar el tamaño según el contenido visible
+    ui->layoutPrincipal->setSizeConstraint(
+        QLayout::SetFixedSize
+        );
+
+    // Espaciado uniforme
+    ui->layoutPrincipal->setSpacing(10);
+
+    // Márgenes internos
+    ui->layoutPrincipal->setContentsMargins(
+        28, 24, 28, 24
+        );
+
     // Límites de caracteres
     ui->txtNombre->setMaxLength(100);
     ui->txtDNI->setMaxLength(8);
     ui->txtCorreo->setMaxLength(150);
     ui->txtTelefono->setMaxLength(9);
 
-    // Configuración de campos
+    // Configuración de campos numéricos
     ui->txtDNI->setInputMethodHints(
         Qt::ImhDigitsOnly
         );
@@ -34,7 +55,10 @@ LectorDialog::LectorDialog(QWidget *parent)
         Qt::ImhDigitsOnly
         );
 
-    // Crear etiquetas de validación
+    // =========================================
+    // MENSAJES DE VALIDACIÓN
+    // =========================================
+
     lblErrorNombre = new QLabel(this);
     lblErrorDNI = new QLabel(this);
     lblErrorCorreo = new QLabel(this);
@@ -54,12 +78,16 @@ LectorDialog::LectorDialog(QWidget *parent)
 
     for (QLabel *etiqueta : etiquetas) {
         etiqueta->setWordWrap(true);
+
+        etiqueta->setSizePolicy(
+            QSizePolicy::Preferred,
+            QSizePolicy::Minimum
+            );
+
         etiqueta->hide();
     }
 
-    // Insertar errores debajo de cada campo
-    // Se calcula la posición actual para evitar
-    // problemas al insertar nuevos widgets.
+    // Insertar cada error debajo de su campo
     auto insertarError = [this](
                              QWidget *campo,
                              QLabel *etiqueta
@@ -80,7 +108,10 @@ LectorDialog::LectorDialog(QWidget *parent)
     insertarError(ui->txtCorreo, lblErrorCorreo);
     insertarError(ui->txtTelefono, lblErrorTelefono);
 
-    // Botón Cancelar
+    // =========================================
+    // BOTONES
+    // =========================================
+
     connect(
         ui->btnCancelar,
         &QPushButton::clicked,
@@ -88,7 +119,7 @@ LectorDialog::LectorDialog(QWidget *parent)
         &QDialog::reject
         );
 
-    // Botón Guardar: validación visual
+    // Validación visual, sin modificar backend
     connect(
         ui->btnGuardar,
         &QPushButton::clicked,
@@ -98,13 +129,19 @@ LectorDialog::LectorDialog(QWidget *parent)
         }
         );
 
-    // Limpiar errores al modificar campos
+    // =========================================
+    // LIMPIEZA AUTOMÁTICA DE ERRORES
+    // =========================================
+
     connect(
         ui->txtNombre,
         &QLineEdit::textChanged,
         this,
-        [this]() {
-            limpiarError(lblErrorNombre, ui->txtNombre);
+        [this](const QString &) {
+            limpiarError(
+                lblErrorNombre,
+                ui->txtNombre
+                );
         }
         );
 
@@ -112,8 +149,11 @@ LectorDialog::LectorDialog(QWidget *parent)
         ui->txtDNI,
         &QLineEdit::textChanged,
         this,
-        [this]() {
-            limpiarError(lblErrorDNI, ui->txtDNI);
+        [this](const QString &) {
+            limpiarError(
+                lblErrorDNI,
+                ui->txtDNI
+                );
         }
         );
 
@@ -121,8 +161,11 @@ LectorDialog::LectorDialog(QWidget *parent)
         ui->txtCorreo,
         &QLineEdit::textChanged,
         this,
-        [this]() {
-            limpiarError(lblErrorCorreo, ui->txtCorreo);
+        [this](const QString &) {
+            limpiarError(
+                lblErrorCorreo,
+                ui->txtCorreo
+                );
         }
         );
 
@@ -130,12 +173,18 @@ LectorDialog::LectorDialog(QWidget *parent)
         ui->txtTelefono,
         &QLineEdit::textChanged,
         this,
-        [this]() {
-            limpiarError(lblErrorTelefono, ui->txtTelefono);
+        [this](const QString &) {
+            limpiarError(
+                lblErrorTelefono,
+                ui->txtTelefono
+                );
         }
         );
 
-    // Cargar estilos QSS
+    // =========================================
+    // CARGA DE ESTILOS
+    // =========================================
+
     QString estilos;
 
     const QStringList archivosEstilos = {
@@ -152,6 +201,7 @@ LectorDialog::LectorDialog(QWidget *parent)
             estilos += QString::fromUtf8(
                 archivo.readAll()
                 );
+
             estilos += "\n";
         } else {
             qWarning() << "No se pudo cargar:" << ruta;
@@ -160,12 +210,22 @@ LectorDialog::LectorDialog(QWidget *parent)
 
     setStyleSheet(estilos);
     setModal(true);
+
+    // Ajuste inicial del tamaño
+    QTimer::singleShot(0, this, [this]() {
+        ui->layoutPrincipal->invalidate();
+        adjustSize();
+    });
 }
 
 LectorDialog::~LectorDialog()
 {
     delete ui;
 }
+
+// =========================================
+// VALIDACIÓN DEL FORMULARIO
+// =========================================
 
 bool LectorDialog::validarFormulario()
 {
@@ -195,7 +255,10 @@ bool LectorDialog::validarFormulario()
         valido = false;
         primerCampoInvalido = ui->txtNombre;
     } else {
-        limpiarError(lblErrorNombre, ui->txtNombre);
+        limpiarError(
+            lblErrorNombre,
+            ui->txtNombre
+            );
     }
 
     // Validar DNI
@@ -216,7 +279,10 @@ bool LectorDialog::validarFormulario()
 
         valido = false;
     } else {
-        limpiarError(lblErrorDNI, ui->txtDNI);
+        limpiarError(
+            lblErrorDNI,
+            ui->txtDNI
+            );
     }
 
     // Validar correo electrónico
@@ -237,7 +303,10 @@ bool LectorDialog::validarFormulario()
 
         valido = false;
     } else {
-        limpiarError(lblErrorCorreo, ui->txtCorreo);
+        limpiarError(
+            lblErrorCorreo,
+            ui->txtCorreo
+            );
     }
 
     // Validar teléfono
@@ -258,7 +327,10 @@ bool LectorDialog::validarFormulario()
 
         valido = false;
     } else {
-        limpiarError(lblErrorTelefono, ui->txtTelefono);
+        limpiarError(
+            lblErrorTelefono,
+            ui->txtTelefono
+            );
     }
 
     // Enfocar el primer campo incorrecto
@@ -266,8 +338,16 @@ bool LectorDialog::validarFormulario()
         primerCampoInvalido->setFocus();
     }
 
+    // Actualizar tamaño según errores visibles
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
+
     return valido;
 }
+
+// =========================================
+// MOSTRAR ERROR
+// =========================================
 
 void LectorDialog::mostrarError(
     QLabel *etiqueta,
@@ -279,10 +359,18 @@ void LectorDialog::mostrarError(
     etiqueta->show();
 
     campo->setProperty("error", true);
+
     campo->style()->unpolish(campo);
     campo->style()->polish(campo);
     campo->update();
+
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }
+
+// =========================================
+// LIMPIAR ERROR
+// =========================================
 
 void LectorDialog::limpiarError(
     QLabel *etiqueta,
@@ -293,7 +381,11 @@ void LectorDialog::limpiarError(
     etiqueta->hide();
 
     campo->setProperty("error", false);
+
     campo->style()->unpolish(campo);
     campo->style()->polish(campo);
     campo->update();
+
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }

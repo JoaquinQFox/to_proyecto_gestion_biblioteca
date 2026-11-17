@@ -1,3 +1,4 @@
+
 #include "EjemplarDialog.h"
 #include "ui_EjemplarDialog.h"
 
@@ -10,6 +11,10 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QStyle>
+#include <QLayout>
+#include <QTimer>
+#include <QWidget>
+#include <QList>
 
 EjemplarDialog::EjemplarDialog(QWidget *parent)
     : QDialog(parent)
@@ -20,10 +25,30 @@ EjemplarDialog::EjemplarDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Configuración del código
+    // =========================================
+    // CONFIGURACIÓN DEL FORMULARIO
+    // =========================================
+
+    // Ajustar el tamaño según el contenido visible
+    ui->layoutPrincipal->setSizeConstraint(
+        QLayout::SetFixedSize
+        );
+
+    // Espaciado uniforme
+    ui->layoutPrincipal->setSpacing(10);
+
+    // Márgenes internos
+    ui->layoutPrincipal->setContentsMargins(
+        28, 24, 28, 24
+        );
+
+    // Configuración del campo Código
     ui->txtCodigo->setMaxLength(30);
 
-    // Configuración de mensajes de validación
+    // =========================================
+    // ETIQUETAS DE VALIDACIÓN
+    // =========================================
+
     lblErrorLibro->setObjectName("lblErrorLibro");
     lblErrorCodigo->setObjectName("lblErrorCodigo");
     lblErrorEstado->setObjectName("lblErrorEstado");
@@ -36,48 +61,98 @@ EjemplarDialog::EjemplarDialog(QWidget *parent)
 
     for (QLabel *etiqueta : etiquetas) {
         etiqueta->setWordWrap(true);
+        etiqueta->setSizePolicy(
+            QSizePolicy::Preferred,
+            QSizePolicy::Minimum
+            );
         etiqueta->hide();
     }
 
-    // Insertar mensajes debajo de sus respectivos campos
-    ui->layoutPrincipal->insertWidget(5, lblErrorLibro);
-    ui->layoutPrincipal->insertWidget(8, lblErrorCodigo);
-    ui->layoutPrincipal->insertWidget(11, lblErrorEstado);
+    // Insertar cada mensaje debajo de su campo
+    auto insertarError = [this](
+                             QWidget *campo,
+                             QLabel *etiqueta
+                             ) {
+        const int indice =
+            ui->layoutPrincipal->indexOf(campo);
 
-    // Cancelar
-    connect(ui->btnCancelar, &QPushButton::clicked,
-            this, &QDialog::reject);
+        if (indice >= 0) {
+            ui->layoutPrincipal->insertWidget(
+                indice + 1,
+                etiqueta
+                );
+        }
+    };
 
-    // Validar al guardar
-    connect(ui->btnGuardar, &QPushButton::clicked,
-            this, [this]() {
+    insertarError(ui->cmbLibro, lblErrorLibro);
+    insertarError(ui->txtCodigo, lblErrorCodigo);
+    insertarError(ui->cmbEstado, lblErrorEstado);
 
-                if (!validarFormulario()) {
-                    return;
-                }
+    // =========================================
+    // CONEXIONES DE BOTONES
+    // =========================================
 
-                accept();
-            });
+    connect(
+        ui->btnCancelar,
+        &QPushButton::clicked,
+        this,
+        &QDialog::reject
+        );
 
-    // Limpiar errores al modificar los campos
-    connect(ui->cmbLibro,
-            QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, [this]() {
-                limpiarError(lblErrorLibro, ui->cmbLibro);
-            });
+    // Guardar: comprobar únicamente los campos
+    connect(
+        ui->btnGuardar,
+        &QPushButton::clicked,
+        this,
+        [this]() {
+            validarFormulario();
+        }
+        );
 
-    connect(ui->txtCodigo, &QLineEdit::textChanged,
-            this, [this]() {
-                limpiarError(lblErrorCodigo, ui->txtCodigo);
-            });
+    // =========================================
+    // LIMPIEZA AUTOMÁTICA DE ERRORES
+    // =========================================
 
-    connect(ui->cmbEstado,
-            QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, [this]() {
-                limpiarError(lblErrorEstado, ui->cmbEstado);
-            });
+    connect(
+        ui->cmbLibro,
+        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this,
+        [this](int) {
+            limpiarError(
+                lblErrorLibro,
+                ui->cmbLibro
+                );
+        }
+        );
 
-    // Cargar estilos
+    connect(
+        ui->txtCodigo,
+        &QLineEdit::textChanged,
+        this,
+        [this](const QString &) {
+            limpiarError(
+                lblErrorCodigo,
+                ui->txtCodigo
+                );
+        }
+        );
+
+    connect(
+        ui->cmbEstado,
+        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this,
+        [this](int) {
+            limpiarError(
+                lblErrorEstado,
+                ui->cmbEstado
+                );
+        }
+        );
+
+    // =========================================
+    // CARGA DE ESTILOS
+    // =========================================
+
     QString estilos;
 
     const QStringList archivosEstilos = {
@@ -88,18 +163,26 @@ EjemplarDialog::EjemplarDialog(QWidget *parent)
     for (const QString &ruta : archivosEstilos) {
         QFile archivo(ruta);
 
-        if (archivo.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            estilos += QString::fromUtf8(archivo.readAll());
+        if (archivo.open(
+                QIODevice::ReadOnly | QIODevice::Text
+                )) {
+            estilos += QString::fromUtf8(
+                archivo.readAll()
+                );
             estilos += "\n";
-            archivo.close();
         } else {
             qWarning() << "No se pudo cargar:" << ruta;
         }
     }
 
     setStyleSheet(estilos);
-
     setModal(true);
+
+    // Ajustar geometría después de construir la interfaz
+    QTimer::singleShot(0, this, [this]() {
+        ui->layoutPrincipal->invalidate();
+        adjustSize();
+    });
 }
 
 EjemplarDialog::~EjemplarDialog()
@@ -107,11 +190,14 @@ EjemplarDialog::~EjemplarDialog()
     delete ui;
 }
 
+// =========================================
 // VALIDACIÓN DEL FORMULARIO
+// =========================================
 
 bool EjemplarDialog::validarFormulario()
 {
     bool valido = true;
+    QWidget *primerCampoInvalido = nullptr;
 
     // Validar libro
     if (ui->cmbLibro->currentIndex() <= 0) {
@@ -122,8 +208,12 @@ bool EjemplarDialog::validarFormulario()
             );
 
         valido = false;
+        primerCampoInvalido = ui->cmbLibro;
     } else {
-        limpiarError(lblErrorLibro, ui->cmbLibro);
+        limpiarError(
+            lblErrorLibro,
+            ui->cmbLibro
+            );
     }
 
     // Validar código
@@ -134,13 +224,16 @@ bool EjemplarDialog::validarFormulario()
             ui->txtCodigo
             );
 
-        if (valido) {
-            ui->txtCodigo->setFocus();
+        if (!primerCampoInvalido) {
+            primerCampoInvalido = ui->txtCodigo;
         }
 
         valido = false;
     } else {
-        limpiarError(lblErrorCodigo, ui->txtCodigo);
+        limpiarError(
+            lblErrorCodigo,
+            ui->txtCodigo
+            );
     }
 
     // Validar estado
@@ -151,19 +244,33 @@ bool EjemplarDialog::validarFormulario()
             ui->cmbEstado
             );
 
-        if (valido) {
-            ui->cmbEstado->setFocus();
+        if (!primerCampoInvalido) {
+            primerCampoInvalido = ui->cmbEstado;
         }
 
         valido = false;
     } else {
-        limpiarError(lblErrorEstado, ui->cmbEstado);
+        limpiarError(
+            lblErrorEstado,
+            ui->cmbEstado
+            );
     }
+
+    // Enfocar el primer campo incorrecto
+    if (primerCampoInvalido) {
+        primerCampoInvalido->setFocus();
+    }
+
+    // Actualizar geometría del formulario
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 
     return valido;
 }
 
+// =========================================
 // MOSTRAR ERROR
+// =========================================
 
 void EjemplarDialog::mostrarError(
     QLabel *etiqueta,
@@ -175,11 +282,18 @@ void EjemplarDialog::mostrarError(
     etiqueta->show();
 
     campo->setProperty("error", true);
+
     campo->style()->unpolish(campo);
     campo->style()->polish(campo);
+    campo->update();
+
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }
 
+// =========================================
 // LIMPIAR ERROR
+// =========================================
 
 void EjemplarDialog::limpiarError(
     QLabel *etiqueta,
@@ -190,15 +304,33 @@ void EjemplarDialog::limpiarError(
     etiqueta->hide();
 
     campo->setProperty("error", false);
+
     campo->style()->unpolish(campo);
     campo->style()->polish(campo);
+    campo->update();
+
+    ui->layoutPrincipal->invalidate();
+    adjustSize();
 }
 
+// =========================================
 // LIMPIAR TODOS LOS ERRORES
+// =========================================
 
 void EjemplarDialog::limpiarErrores()
 {
-    limpiarError(lblErrorLibro, ui->cmbLibro);
-    limpiarError(lblErrorCodigo, ui->txtCodigo);
-    limpiarError(lblErrorEstado, ui->cmbEstado);
+    limpiarError(
+        lblErrorLibro,
+        ui->cmbLibro
+        );
+
+    limpiarError(
+        lblErrorCodigo,
+        ui->txtCodigo
+        );
+
+    limpiarError(
+        lblErrorEstado,
+        ui->cmbEstado
+        );
 }
