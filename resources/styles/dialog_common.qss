@@ -1,0 +1,196 @@
+
+/* =========================================
+   BIBLIOTECA DIGITAL
+   ESTILOS COMPARTIDOS DE FORMULARIOS
+   ========================================= */
+
+/* Fondo principal */
+
+QDialog {
+    background-color: #FFFFFF;
+}
+
+/* Títulos */
+
+QDialog QLabel#lblTitulo {
+    color: #18392B;
+    font-size: 22px;
+    font-weight: bold;
+    background: transparent;
+}
+
+/* Descripciones */
+
+QDialog QLabel#lblDescripcion {
+    color: #718078;
+    font-size: 13px;
+    background: transparent;
+}
+
+/* Etiquetas generales */
+
+QDialog QLabel {
+    color: #334155;
+    font-size: 13px;
+    background: transparent;
+}
+
+/* Campos de entrada */
+
+QDialog QLineEdit,
+QDialog QComboBox,
+QDialog QDateEdit,
+QDialog QSpinBox {
+    background-color: #FFFFFF;
+    color: #1E293B;
+    border: 1px solid #DCE5DF;
+    border-radius: 8px;
+    padding: 0px 12px;
+    font-size: 13px;
+    selection-background-color: #276749;
+    selection-color: #FFFFFF;
+}
+
+/* Campos enfocados */
+
+QDialog QLineEdit:focus,
+QDialog QComboBox:focus,
+QDialog QDateEdit:focus,
+QDialog QSpinBox:focus {
+    background-color: #FFFFFF;
+    border: 2px solid #276749;
+}
+
+/* Campos con errores */
+
+QDialog QLineEdit[error="true"],
+QDialog QComboBox[error="true"],
+QDialog QDateEdit[error="true"],
+QDialog QSpinBox[error="true"],
+QDialog QLineEdit[error="true"]:focus,
+QDialog QComboBox[error="true"]:focus,
+QDialog QDateEdit[error="true"]:focus,
+QDialog QSpinBox[error="true"]:focus {
+    border: 2px solid #B42318;
+    background-color: #FFF8F8;
+}
+
+/* Campos deshabilitados */
+
+QDialog QLineEdit:disabled,
+QDialog QComboBox:disabled,
+QDialog QDateEdit:disabled,
+QDialog QSpinBox:disabled {
+    background-color: #F1F5F9;
+    color: #94A3B8;
+    border: 1px solid #E2E8F0;
+}
+
+/* Desplegables */
+
+QDialog QComboBox::drop-down,
+QDialog QDateEdit::drop-down {
+    border: none;
+    width: 28px;
+}
+
+QDialog QComboBox QAbstractItemView {
+    background-color: #FFFFFF;
+    color: #1E293B;
+    border: 1px solid #DCE5DF;
+    selection-background-color: #E5F1E9;
+    selection-color: #18392B;
+    outline: none;
+}
+
+/* Controles numéricos */
+
+QDialog QSpinBox::up-button,
+QDialog QSpinBox::down-button {
+    border: none;
+    width: 24px;
+}
+
+/* Botón secundario */
+
+QDialog QPushButton#btnCancelar {
+    background-color: #FFFFFF;
+    color: #475569;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QDialog QPushButton#btnCancelar:hover {
+    background-color: #F1F5F9;
+    border-color: #94A3B8;
+}
+
+QDialog QPushButton#btnCancelar:pressed {
+    background-color: #E2E8F0;
+}
+
+/* Botones principales */
+
+QDialog QPushButton#btnGuardar,
+QDialog QPushButton#btnGenerar {
+    background-color: #276749;
+    color: #FFFFFF;
+    border: 1px solid #276749;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QDialog QPushButton#btnGuardar:hover,
+QDialog QPushButton#btnGenerar:hover {
+    background-color: #20583D;
+    border-color: #20583D;
+}
+
+QDialog QPushButton#btnGuardar:pressed,
+QDialog QPushButton#btnGenerar:pressed {
+    background-color: #17442F;
+    border-color: #17442F;
+}
+
+/* Botones deshabilitados */
+
+QDialog QPushButton#btnGuardar:disabled,
+QDialog QPushButton#btnGenerar:disabled {
+    background-color: #A7C9B7;
+    color: #F1F5F9;
+    border-color: #A7C9B7;
+}
+
+/* Enfoque de botones */
+
+QDialog QPushButton:focus {
+    border: 2px solid #68A783;
+}
+
+/* Mensajes de validación */
+
+QDialog QLabel#lblErrorValidacion,
+QDialog QLabel#lblErrorNombre,
+QDialog QLabel#lblErrorDNI,
+QDialog QLabel#lblErrorCorreo,
+QDialog QLabel#lblErrorTelefono,
+QDialog QLabel#lblErrorTitulo,
+QDialog QLabel#lblErrorAutor,
+QDialog QLabel#lblErrorISBN,
+QDialog QLabel#lblErrorCategoria,
+QDialog QLabel#lblErrorLibro,
+QDialog QLabel#lblErrorCodigo,
+QDialog QLabel#lblErrorEstado,
+QDialog QLabel#lblErrorLector,
+QDialog QLabel#lblErrorEjemplar,
+QDialog QLabel#lblErrorFechaPrestamo,
+QDialog QLabel#lblErrorFechaDevolucion,
+QDialog QLabel#lblErrorCantidad {
+    color: #B42318;
+    font-size: 12px;
+    background: transparent;
+    padding-left: 2px;
+}

@@ -1,0 +1,20 @@
+
+/* =====================================
+   BIBLIOTECA DIGITAL - LIBROS
+   ===================================== */
+
+/*
+ * Los estilos generales de esta pantalla
+ * están centralizados en common.qss.
+ *
+ * Componentes:
+ * - Fondo de pantalla
+ * - Título y descripción
+ * - Buscador de libros
+ * - Botón Nuevo libro
+ * - Tabla de libros
+ * - Contador de registros
+ *
+ * Este archivo queda reservado para
+ * personalizaciones exclusivas de Libros.
+ */

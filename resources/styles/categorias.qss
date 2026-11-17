@@ -1,0 +1,17 @@
+
+/* =====================================
+   BIBLIOTECA DIGITAL - CATEGORÍAS
+   ===================================== */
+
+/*
+ * Los estilos de esta pantalla se encuentran
+ * centralizados en common.qss.
+ *
+ * Incluyen:
+ * - Fondo de pantalla
+ * - Título y descripción
+ * - Campo de búsqueda
+ * - Botón Nueva categoría
+ * - Tabla de categorías
+ * - Contador de registros
+ */

@@ -1,0 +1,20 @@
+
+/* =====================================
+   BIBLIOTECA DIGITAL - EJEMPLARES
+   ===================================== */
+
+/*
+ * Los estilos generales están definidos
+ * en common.qss.
+ *
+ * Componentes:
+ * - Fondo de pantalla
+ * - Título y descripción
+ * - Buscador de ejemplares
+ * - Botón Nuevo ejemplar
+ * - Tabla de ejemplares
+ * - Contador de registros
+ *
+ * Archivo reservado para estilos
+ * exclusivos de esta pantalla.
+ */

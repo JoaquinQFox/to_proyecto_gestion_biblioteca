@@ -1,0 +1,36 @@
+QWidget#centralwidget {
+    background-color: #F3F5F3;
+}
+
+QFrame#sidebar {
+    background-color: #122A20;
+    border: none;
+}
+
+QLabel#lblLogo {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px 4px 32px 4px;
+}
+
+QFrame#sidebar QPushButton {
+    background-color: transparent;
+    color: #DCE8DF;
+    border: none;
+    border-radius: 8px;
+    text-align: left;
+    padding: 13px 16px;
+}
+
+QFrame#sidebar QPushButton:hover {
+    background-color: #244837;
+    color: white;
+}
+
+QFrame#sidebar QPushButton[activo="true"],
+QFrame#sidebar QPushButton[activo="true"]:hover {
+    background-color: #276749;
+    color: white;
+    font-weight: bold;
+}

@@ -1,0 +1,20 @@
+
+/* =====================================
+   BIBLIOTECA DIGITAL - LECTORES
+   ===================================== */
+
+/*
+ * Los estilos generales están definidos
+ * en common.qss.
+ *
+ * Componentes:
+ * - Fondo de pantalla
+ * - Título y descripción
+ * - Buscador de lectores
+ * - Botón Nuevo lector
+ * - Tabla de lectores
+ * - Contador de registros
+ *
+ * Este archivo queda reservado para
+ * estilos exclusivos de Lectores.
+ */

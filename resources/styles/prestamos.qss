@@ -1,0 +1,23 @@
+
+/* =====================================
+   BIBLIOTECA DIGITAL - PRÉSTAMOS
+   ===================================== */
+
+/*
+ * Los estilos generales se encuentran
+ * centralizados en common.qss.
+ *
+ * Este archivo conserva únicamente
+ * las personalizaciones de Préstamos.
+ */
+
+/* Encabezados compactos */
+QWidget#PrestamosPage QTableWidget#tablaPrestamos QHeaderView::section {
+    padding: 8px 4px;
+    font-size: 11px;
+}
+
+/* Filas compactas */
+QWidget#PrestamosPage QTableWidget#tablaPrestamos::item {
+    padding: 8px;
+}

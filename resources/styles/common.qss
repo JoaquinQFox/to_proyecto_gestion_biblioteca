@@ -1,0 +1,267 @@
+
+/* =========================================
+   BIBLIOTECA DIGITAL - ESTILOS COMUNES
+   ========================================= */
+
+/* =========================================
+   1. FONDO DE LAS PANTALLAS
+   ========================================= */
+
+QWidget#InicioPage,
+QWidget#CategoriasPage,
+QWidget#LibrosPage,
+QWidget#EjemplaresPage,
+QWidget#LectoresPage,
+QWidget#PrestamosPage,
+QWidget#RecomendacionesPage {
+    background-color: #F3F5F3;
+}
+
+/* =========================================
+   2. TITULOS Y DESCRIPCIONES
+   ========================================= */
+
+QLabel#lblTitulo {
+    color: #18392B;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+QLabel#lblDescripcion {
+    color: #718078;
+    font-size: 13px;
+    padding-bottom: 8px;
+}
+
+/* =========================================
+   3. CAMPOS DE BUSQUEDA
+   ========================================= */
+
+QLineEdit#txtBuscar {
+    background-color: #FFFFFF;
+    color: #243B2F;
+    border: 1px solid #DCE5DF;
+    border-radius: 8px;
+    padding: 0px 14px;
+    font-size: 13px;
+}
+
+QLineEdit#txtBuscar:focus {
+    border: 2px solid #276749;
+}
+
+/* =========================================
+   4. BOTONES PRINCIPALES
+   ========================================= */
+
+QPushButton#btnNuevaCategoria,
+QPushButton#btnNuevoLibro,
+QPushButton#btnNuevoEjemplar,
+QPushButton#btnNuevoLector,
+QPushButton#btnNuevoPrestamo,
+QPushButton#btnGenerarRecomendaciones {
+    background-color: #276749;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QPushButton#btnNuevaCategoria:hover,
+QPushButton#btnNuevoLibro:hover,
+QPushButton#btnNuevoEjemplar:hover,
+QPushButton#btnNuevoLector:hover,
+QPushButton#btnNuevoPrestamo:hover,
+QPushButton#btnGenerarRecomendaciones:hover {
+    background-color: #20583D;
+}
+
+QPushButton#btnNuevaCategoria:pressed,
+QPushButton#btnNuevoLibro:pressed,
+QPushButton#btnNuevoEjemplar:pressed,
+QPushButton#btnNuevoLector:pressed,
+QPushButton#btnNuevoPrestamo:pressed,
+QPushButton#btnGenerarRecomendaciones:pressed {
+    background-color: #17442F;
+}
+
+/* =========================================
+   5. TABLAS - ESTILO PROFESIONAL
+   ========================================= */
+
+QTableWidget#tablaPrestamosRecientes,
+QTableWidget#tablaCategorias,
+QTableWidget#tablaLibros,
+QTableWidget#tablaEjemplares,
+QTableWidget#tablaLectores,
+QTableWidget#tablaPrestamos,
+QTableWidget#tablaRecomendaciones {
+    background-color: #FFFFFF;
+    color: #243B2F;
+    border: 1px solid #E1E8E3;
+    border-radius: 8px;
+
+    selection-background-color: #E5F1E9;
+    selection-color: #18392B;
+
+    font-size: 13px;
+    outline: none;
+}
+
+/* Encabezados */
+
+QTableWidget QHeaderView::section {
+    background-color: #F7F9F7;
+    color: #53665A;
+
+    border: none;
+    border-bottom: 1px solid #E1E8E3;
+
+    padding: 10px 12px;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Celdas */
+
+QTableWidget::item {
+    padding: 8px 10px;
+    border-bottom: 1px solid #EDF1EE;
+}
+
+/* Efecto al pasar el cursor */
+
+QTableWidget::item:hover {
+    background-color: #F0F7F2;
+}
+
+/* Fila seleccionada */
+
+QTableWidget::item:selected {
+    background-color: #E5F1E9;
+    color: #18392B;
+}
+
+/* Esquina superior izquierda */
+
+QTableWidget QTableCornerButton::section {
+    background-color: #F7F9F7;
+    border: none;
+}
+
+/* =========================================
+   6. CONTADORES
+   ========================================= */
+
+QLabel#lblTotal {
+    color: #718078;
+    font-size: 12px;
+}
+
+/* =========================================
+   7. BOTONES DESHABILITADOS
+   ========================================= */
+
+QPushButton:disabled {
+    background-color: #E5EAE6;
+    color: #97A49B;
+    border: 1px solid #DCE5DF;
+}
+
+/* Indicador de enfoque */
+
+QPushButton:focus {
+    border: 2px solid #68A783;
+}
+
+/* =========================================
+   8. CONTENEDOR DE ACCIONES
+   ========================================= */
+
+QWidget#accionesTablaWidget {
+    background-color: transparent;
+}
+
+/* =========================================
+   9. BOTON EDITAR
+   ========================================= */
+
+QPushButton#btnEditarAccion {
+    background-color: #E5F1E9;
+    color: #276749;
+    border: 1px solid #C7DFD0;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QPushButton#btnEditarAccion:hover {
+    background-color: #D2E8DA;
+    border-color: #276749;
+}
+
+QPushButton#btnEditarAccion:pressed {
+    background-color: #B9D9C5;
+}
+
+/* =========================================
+   10. BOTON ELIMINAR
+   ========================================= */
+
+QPushButton#btnEliminarAccion {
+    background-color: #FDECEC;
+    color: #B42318;
+    border: 1px solid #F5C6C6;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QPushButton#btnEliminarAccion:hover {
+    background-color: #FBDADA;
+    border-color: #B42318;
+}
+
+QPushButton#btnEliminarAccion:pressed {
+    background-color: #F5C1C1;
+}
+
+/* =========================================
+   11. BOTON DEVOLVER
+   ========================================= */
+
+QPushButton#btnDevolverAccion {
+    background-color: #E8F0FC;
+    color: #2457A7;
+    border: 1px solid #C6D8F5;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QPushButton#btnDevolverAccion:hover {
+    background-color: #D8E6FA;
+    border-color: #2457A7;
+}
+
+QPushButton#btnDevolverAccion:pressed {
+    background-color: #C3D8F5;
+}
+
+/* =========================================
+   12. ACCIONES DESHABILITADAS
+   ========================================= */
+
+QPushButton#btnEditarAccion:disabled,
+QPushButton#btnEliminarAccion:disabled,
+QPushButton#btnDevolverAccion:disabled {
+    background-color: #F1F3F2;
+    color: #9CA8A0;
+    border: 1px solid #E1E8E3;
+}

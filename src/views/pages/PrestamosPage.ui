@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PrestamosPage</class>
+ <widget class="QWidget" name="PrestamosPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>950</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Préstamos</string>
+  </property>
+  <layout class="QVBoxLayout" name="layoutPrincipal">
+   <property name="spacing">
+    <number>20</number>
+   </property>
+   <property name="leftMargin">
+    <number>32</number>
+   </property>
+   <property name="topMargin">
+    <number>32</number>
+   </property>
+   <property name="rightMargin">
+    <number>32</number>
+   </property>
+   <property name="bottomMargin">
+    <number>32</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="lblTitulo">
+     <property name="text">
+      <string>Préstamos</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblDescripcion">
+     <property name="text">
+      <string>Gestiona los préstamos y devoluciones de libros de la biblioteca.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutHerramientas">
+     <property name="spacing">
+      <number>16</number>
+     </property>
+     <item>
+      <widget class="QLineEdit" name="txtBuscar">
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>42</height>
+        </size>
+       </property>
+       <property name="placeholderText">
+        <string>Buscar por lector, libro o código...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="espaciadorHorizontal">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnNuevoPrestamo">
+       <property name="minimumSize">
+        <size>
+         <width>180</width>
+         <height>42</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>+ Nuevo préstamo</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tablaPrestamos">
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="columnCount">
+      <number>7</number>
+     </property>
+     <column>
+      <property name="text">
+       <string>ID</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Lector</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Libro</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Fecha préstamo</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Fecha devolución</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Estado</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Acciones</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblTotal">
+     <property name="text">
+      <string>Total: 0 préstamos</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

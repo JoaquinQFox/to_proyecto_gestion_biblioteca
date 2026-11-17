@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RecomendacionDialog</class>
+ <widget class="QDialog" name="RecomendacionDialog">
+  <property name="windowTitle">
+   <string>Generar recomendaciones</string>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>500</width>
+    <height>400</height>
+   </size>
+  </property>
+  <layout class="QVBoxLayout" name="layoutPrincipal">
+   <property name="leftMargin"><number>28</number></property>
+   <property name="topMargin"><number>24</number></property>
+   <property name="rightMargin"><number>28</number></property>
+   <property name="bottomMargin"><number>24</number></property>
+   <property name="spacing"><number>12</number></property>
+
+   <item>
+    <widget class="QLabel" name="lblTitulo">
+     <property name="text">
+      <string>Generar recomendaciones</string>
+     </property>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QLabel" name="lblDescripcion">
+     <property name="text">
+      <string>Selecciona los criterios para obtener sugerencias de lectura.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+
+   <item>
+    <spacer name="espacioSuperior">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size><width>20</width><height>12</height></size>
+     </property>
+    </spacer>
+   </item>
+
+   <item>
+    <widget class="QLabel" name="lblLector">
+     <property name="text">
+      <string>Lector</string>
+     </property>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QComboBox" name="cmbLector">
+     <property name="minimumSize">
+      <size><width>0</width><height>42</height></size>
+     </property>
+     <item>
+      <property name="text">
+       <string>Seleccionar lector</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QLabel" name="lblCategoria">
+     <property name="text">
+      <string>Categoría de interés</string>
+     </property>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QComboBox" name="cmbCategoria">
+     <property name="minimumSize">
+      <size><width>0</width><height>42</height></size>
+     </property>
+     <item>
+      <property name="text">
+       <string>Todas las categorías</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QLabel" name="lblCantidad">
+     <property name="text">
+      <string>Cantidad de recomendaciones</string>
+     </property>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QSpinBox" name="spinCantidad">
+     <property name="minimumSize">
+      <size><width>0</width><height>42</height></size>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>20</number>
+     </property>
+     <property name="value">
+      <number>5</number>
+     </property>
+    </widget>
+   </item>
+
+   <item>
+    <spacer name="espacioInferior">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size><width>20</width><height>12</height></size>
+     </property>
+    </spacer>
+   </item>
+
+   <item>
+    <layout class="QHBoxLayout" name="layoutBotones">
+     <item>
+      <spacer name="espacioBotones">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size><width>40</width><height>20</height></size>
+       </property>
+      </spacer>
+     </item>
+
+     <item>
+      <widget class="QPushButton" name="btnCancelar">
+       <property name="minimumSize">
+        <size><width>100</width><height>40</height></size>
+       </property>
+       <property name="text">
+        <string>Cancelar</string>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <widget class="QPushButton" name="btnGenerar">
+       <property name="minimumSize">
+        <size><width>180</width><height>40</height></size>
+       </property>
+       <property name="text">
+        <string>Generar recomendaciones</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,22 @@
+/* =====================================
+   VALIDACIÓN DEL FORMULARIO
+   ===================================== */
+
+QLabel#lblErrorValidacion {
+    color: #B42318;
+    font-size: 12px;
+    padding-left: 2px;
+}
+
+QLineEdit#txtNombre[error="true"] {
+    border: 2px solid #B42318;
+    background-color: #FFF8F8;
+}
+
+QLineEdit#txtNombre[error="false"] {
+    border: 1px solid #DCE5DF;
+}
+
+QLineEdit#txtNombre[error="false"]:focus {
+    border: 2px solid #276749;
+}

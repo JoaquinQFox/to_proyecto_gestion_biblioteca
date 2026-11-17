@@ -16,11 +16,78 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
 )
 
 set(PROJECT_SOURCES
-        src/main.cpp
-        src/views/MainWindow.cpp
-        src/views/MainWindow.h
-        src/views/MainWindow.ui
+    src/main.cpp
+
+    src/views/MainWindow.cpp
+    src/views/MainWindow.h
+    src/views/MainWindow.ui
+
+    # Componentes visuales reutilizables
+    src/views/components/AccionesTablaWidget.h
+    src/views/components/AccionesTablaWidget.cpp
+
+    src/views/components/TablaHelper.cpp
+    src/views/components/TablaHelper.h
+
+    src/views/pages/CategoriasPage.cpp
+    src/views/pages/CategoriasPage.h
+    src/views/pages/CategoriasPage.ui
+
+    src/views/pages/LibrosPage.cpp
+    src/views/pages/LibrosPage.h
+    src/views/pages/LibrosPage.ui
+
+    src/views/pages/EjemplaresPage.cpp
+    src/views/pages/EjemplaresPage.h
+    src/views/pages/EjemplaresPage.ui
+
+    src/views/pages/LectoresPage.cpp
+    src/views/pages/LectoresPage.h
+    src/views/pages/LectoresPage.ui
+
+    src/views/pages/PrestamosPage.cpp
+    src/views/pages/PrestamosPage.h
+    src/views/pages/PrestamosPage.ui
+
+    src/views/pages/RecomendacionesPage.cpp
+    src/views/pages/RecomendacionesPage.h
+    src/views/pages/RecomendacionesPage.ui
+
+    src/views/pages/InicioPage.cpp
+    src/views/pages/InicioPage.h
+    src/views/pages/InicioPage.ui
+
+    src/views/dialogs/CategoriaDialog.h
+    src/views/dialogs/CategoriaDialog.cpp
+    src/views/dialogs/CategoriaDialog.ui
+
+    src/views/dialogs/LibroDialog.h
+    src/views/dialogs/LibroDialog.cpp
+    src/views/dialogs/LibroDialog.ui
+
+    src/views/dialogs/EjemplarDialog.h
+    src/views/dialogs/EjemplarDialog.cpp
+    src/views/dialogs/EjemplarDialog.ui
+
+    src/views/dialogs/LectorDialog.h
+    src/views/dialogs/LectorDialog.cpp
+    src/views/dialogs/LectorDialog.ui
+
+    src/views/dialogs/PrestamoDialog.h
+    src/views/dialogs/PrestamoDialog.cpp
+    src/views/dialogs/PrestamoDialog.ui
+
+    src/views/dialogs/RecomendacionDialog.h
+    src/views/dialogs/RecomendacionDialog.cpp
+    src/views/dialogs/RecomendacionDialog.ui
+
+    # Dialogo de confirmacion reutilizable
+    src/views/dialogs/ConfirmacionDialog.h
+    src/views/dialogs/ConfirmacionDialog.cpp
+
+    resources/resources.qrc
 )
+
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(GestionBiblioteca

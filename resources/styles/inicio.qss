@@ -1,0 +1,60 @@
+
+/* =====================================
+   BIBLIOTECA DIGITAL - INICIO
+   ===================================== */
+
+/*
+ * Los estilos generales de títulos,
+ * descripciones, fondos y tablas
+ * están definidos en common.qss.
+ */
+
+/* 1. TARJETAS DE ESTADÍSTICAS */
+
+QWidget#InicioPage QFrame#cardLibros,
+QWidget#InicioPage QFrame#cardEjemplares,
+QWidget#InicioPage QFrame#cardLectores,
+QWidget#InicioPage QFrame#cardPrestamos {
+    background-color: #FFFFFF;
+    border: 1px solid #E1E8E3;
+    border-radius: 12px;
+}
+
+/* 2. ETIQUETAS DE LAS TARJETAS */
+
+QWidget#InicioPage QLabel#lblCardLibros,
+QWidget#InicioPage QLabel#lblCardEjemplares,
+QWidget#InicioPage QLabel#lblCardLectores,
+QWidget#InicioPage QLabel#lblCardPrestamos {
+    color: #718078;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+}
+
+/* 3. VALORES DE LAS TARJETAS */
+
+QWidget#InicioPage QLabel#lblTotalLibros,
+QWidget#InicioPage QLabel#lblTotalEjemplares,
+QWidget#InicioPage QLabel#lblTotalLectores,
+QWidget#InicioPage QLabel#lblTotalPrestamos {
+    color: #18392B;
+    font-size: 30px;
+    font-weight: bold;
+    border: none;
+}
+
+/* 4. SUBTÍTULO */
+
+QWidget#InicioPage QLabel#lblSubtitulo {
+    color: #18392B;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+/* 5. NOTA INFERIOR */
+
+QWidget#InicioPage QLabel#lblNota {
+    color: #718078;
+    font-size: 12px;
+}

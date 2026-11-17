@@ -1,0 +1,20 @@
+
+/* =====================================
+   BIBLIOTECA DIGITAL - RECOMENDACIONES
+   ===================================== */
+
+/*
+ * Los estilos generales de esta pantalla
+ * están centralizados en common.qss.
+ *
+ * Componentes:
+ * - Fondo de pantalla
+ * - Título y descripción
+ * - Buscador de recomendaciones
+ * - Botón Generar recomendaciones
+ * - Tabla de recomendaciones
+ * - Contador de registros
+ *
+ * Archivo reservado para estilos
+ * exclusivos de Recomendaciones.
+ */

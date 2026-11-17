@@ -1,0 +1,47 @@
+
+/* =====================================
+   BIBLIOTECA DIGITAL
+   FORMULARIO DE LECTORES
+   ===================================== */
+
+/* Campos normales */
+
+QDialog#LectorDialog QLineEdit {
+    border: 1px solid #DCE5DF;
+    border-radius: 7px;
+    padding: 8px 10px;
+    background-color: #FFFFFF;
+    color: #173B2E;
+}
+
+/* Campo enfocado */
+
+QDialog#LectorDialog QLineEdit:focus {
+    border: 2px solid #276749;
+}
+
+/* Campos inválidos */
+
+QDialog#LectorDialog QLineEdit[error="true"],
+QDialog#LectorDialog QLineEdit[error="true"]:focus {
+    border: 2px solid #B42318;
+    background-color: #FFF8F8;
+}
+
+/* Mensajes de error */
+
+QDialog#LectorDialog QLabel#lblErrorNombre,
+QDialog#LectorDialog QLabel#lblErrorDNI,
+QDialog#LectorDialog QLabel#lblErrorCorreo,
+QDialog#LectorDialog QLabel#lblErrorTelefono {
+    color: #B42318;
+    font-size: 12px;
+    padding-left: 2px;
+}
+
+/* Botón Cancelar */
+
+QDialog#LectorDialog QPushButton#btnCancelar:hover {
+    background-color: #F1F5F9;
+    border-color: #94A3B8;
+}

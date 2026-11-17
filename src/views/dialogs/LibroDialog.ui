@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LibroDialog</class>
+ <widget class="QDialog" name="LibroDialog">
+  <property name="windowTitle">
+   <string>Nuevo libro</string>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>500</width>
+    <height>460</height>
+   </size>
+  </property>
+  <layout class="QVBoxLayout" name="layoutPrincipal">
+   <property name="leftMargin"><number>28</number></property>
+   <property name="topMargin"><number>24</number></property>
+   <property name="rightMargin"><number>28</number></property>
+   <property name="bottomMargin"><number>24</number></property>
+   <property name="spacing"><number>12</number></property>
+   <item>
+    <widget class="QLabel" name="lblTitulo">
+     <property name="text"><string>Nuevo libro</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblDescripcion">
+     <property name="text"><string>Completa la información del libro.</string></property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="espacioSuperior">
+     <property name="orientation"><enum>Qt::Vertical</enum></property>
+     <property name="sizeHint" stdset="0">
+      <size><width>20</width><height>12</height></size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblNombreLibro">
+     <property name="text"><string>Título del libro</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="txtTitulo">
+     <property name="minimumSize">
+      <size><width>0</width><height>40</height></size>
+     </property>
+     <property name="placeholderText"><string>Ej. Cien años de soledad</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblAutor">
+     <property name="text"><string>Autor</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="txtAutor">
+     <property name="minimumSize">
+      <size><width>0</width><height>40</height></size>
+     </property>
+     <property name="placeholderText"><string>Ej. Gabriel García Márquez</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblISBN">
+     <property name="text"><string>ISBN</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="txtISBN">
+     <property name="minimumSize">
+      <size><width>0</width><height>40</height></size>
+     </property>
+     <property name="placeholderText"><string>Ej. 9780307474728</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblCategoria">
+     <property name="text"><string>Categoría</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="cmbCategoria">
+     <property name="minimumSize">
+      <size><width>0</width><height>40</height></size>
+     </property>
+     <item>
+      <property name="text"><string>Seleccionar categoría</string></property>
+     </item>
+    </widget>
+   </item>
+   <item>
+    <spacer name="espacioInferior">
+     <property name="orientation"><enum>Qt::Vertical</enum></property>
+     <property name="sizeHint" stdset="0">
+      <size><width>20</width><height>12</height></size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutBotones">
+     <item>
+      <spacer name="espacioBotones">
+       <property name="orientation"><enum>Qt::Horizontal</enum></property>
+       <property name="sizeHint" stdset="0">
+        <size><width>40</width><height>20</height></size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancelar">
+       <property name="minimumSize">
+        <size><width>100</width><height>40</height></size>
+       </property>
+       <property name="text"><string>Cancelar</string></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnGuardar">
+       <property name="minimumSize">
+        <size><width>140</width><height>40</height></size>
+       </property>
+       <property name="text"><string>Guardar libro</string></property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

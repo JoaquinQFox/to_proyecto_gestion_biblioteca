@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/styles">
+        <file alias="main.qss">styles/main.qss</file>
+        <file alias="categorias.qss">styles/categorias.qss</file>
+        <file alias="inicio.qss">styles/inicio.qss</file>
+        <file alias="libros.qss">styles/libros.qss</file>
+        <file alias="ejemplares.qss">styles/ejemplares.qss</file>
+        <file alias="lectores.qss">styles/lectores.qss</file>
+        <file alias="prestamos.qss">styles/prestamos.qss</file>
+        <file alias="recomendaciones.qss">styles/recomendaciones.qss</file>
+        <file alias="categoria_dialog.qss">styles/categoria_dialog.qss</file>
+        <file alias="libro_dialog.qss">styles/libro_dialog.qss</file>
+        <file alias="ejemplar_dialog.qss">styles/ejemplar_dialog.qss</file>
+        <file alias="lector_dialog.qss">styles/lector_dialog.qss</file>
+        <file alias="prestamo_dialog.qss">styles/prestamo_dialog.qss</file>
+        <file alias="recomendacion_dialog.qss">styles/recomendacion_dialog.qss</file>
+        <file alias="common.qss">styles/common.qss</file>
+        <file alias="dialog_common.qss">styles/dialog_common.qss</file>
+        <file alias="confirmacion_dialog.qss">styles/confirmacion_dialog.qss</file>
+    </qresource>
+</RCC>
