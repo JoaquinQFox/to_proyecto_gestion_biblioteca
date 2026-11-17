@@ -4,18 +4,48 @@
    FORMULARIO DE PRÉSTAMOS
    ===================================== */
 
-/*
- * Los estilos generales están definidos
- * en dialog_common.qss.
- *
- * Componentes:
- * - Fondo blanco
- * - Título y descripción
- * - Etiquetas de los campos
- * - Selectores Lector y Ejemplar
- * - Fechas de préstamo y devolución
- * - Botones Guardar y Cancelar
- *
- * Archivo reservado para estilos
- * exclusivos del formulario de préstamos.
- */
+/* Campos y selectores */
+
+QDialog#PrestamoDialog QComboBox,
+QDialog#PrestamoDialog QDateEdit {
+    border: 1px solid #DCE5DF;
+    border-radius: 7px;
+    padding: 8px 10px;
+    background-color: #FFFFFF;
+    color: #173B2E;
+}
+
+/* Campos enfocados */
+
+QDialog#PrestamoDialog QComboBox:focus,
+QDialog#PrestamoDialog QDateEdit:focus {
+    border: 2px solid #276749;
+}
+
+/* Campos con errores */
+
+QDialog#PrestamoDialog QComboBox[error="true"],
+QDialog#PrestamoDialog QComboBox[error="true"]:focus,
+QDialog#PrestamoDialog QDateEdit[error="true"],
+QDialog#PrestamoDialog QDateEdit[error="true"]:focus {
+    border: 2px solid #B42318;
+    background-color: #FFF8F8;
+}
+
+/* Mensajes de validación */
+
+QDialog#PrestamoDialog QLabel#lblErrorLector,
+QDialog#PrestamoDialog QLabel#lblErrorEjemplar,
+QDialog#PrestamoDialog QLabel#lblErrorFechaPrestamo,
+QDialog#PrestamoDialog QLabel#lblErrorFechaDevolucion {
+    color: #B42318;
+    font-size: 12px;
+    padding-left: 2px;
+}
+
+/* Botón Cancelar */
+
+QDialog#PrestamoDialog QPushButton#btnCancelar:hover {
+    background-color: #F1F5F9;
+    border-color: #94A3B8;
+}

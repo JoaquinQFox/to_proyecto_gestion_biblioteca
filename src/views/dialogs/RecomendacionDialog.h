@@ -3,6 +3,10 @@
 #define RECOMENDACIONDIALOG_H
 
 #include <QDialog>
+#include <QString>
+
+class QLabel;
+class QWidget;
 
 namespace Ui {
 class RecomendacionDialog;
@@ -18,6 +22,22 @@ public:
 
 private:
     Ui::RecomendacionDialog *ui;
+
+    QLabel *lblErrorLector = nullptr;
+    QLabel *lblErrorCantidad = nullptr;
+
+    bool validarFormulario();
+
+    void mostrarError(
+        QLabel *etiqueta,
+        const QString &mensaje,
+        QWidget *campo
+        );
+
+    void limpiarError(
+        QLabel *etiqueta,
+        QWidget *campo
+        );
 };
 
-#endif
+#endif // RECOMENDACIONDIALOG_H

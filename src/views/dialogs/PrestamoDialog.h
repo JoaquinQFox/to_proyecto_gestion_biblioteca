@@ -3,6 +3,10 @@
 #define PRESTAMODIALOG_H
 
 #include <QDialog>
+#include <QString>
+
+class QLabel;
+class QWidget;
 
 namespace Ui {
 class PrestamoDialog;
@@ -18,6 +22,26 @@ public:
 
 private:
     Ui::PrestamoDialog *ui;
+
+    QLabel *lblErrorLector = nullptr;
+    QLabel *lblErrorEjemplar = nullptr;
+    QLabel *lblErrorFechaPrestamo = nullptr;
+    QLabel *lblErrorFechaDevolucion = nullptr;
+
+    bool validarFormulario();
+
+    void mostrarError(
+        QLabel *etiqueta,
+        const QString &mensaje,
+        QWidget *campo
+        );
+
+    void limpiarError(
+        QLabel *etiqueta,
+        QWidget *campo
+        );
+
+    void actualizarValidacionFechas();
 };
 
-#endif
+#endif // PRESTAMODIALOG_H

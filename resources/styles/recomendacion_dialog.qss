@@ -4,19 +4,46 @@
    FORMULARIO DE RECOMENDACIONES
    ===================================== */
 
-/*
- * Los estilos generales están definidos
- * en dialog_common.qss.
- *
- * Componentes:
- * - Fondo blanco
- * - Título y descripción
- * - Etiquetas de los campos
- * - Selector de lector
- * - Selector de categoría
- * - Selector numérico de cantidad
- * - Botones Generar y Cancelar
- *
- * Archivo reservado para personalizaciones
- * exclusivas del formulario.
- */
+/* Selectores y cantidad */
+
+QDialog#RecomendacionDialog QComboBox,
+QDialog#RecomendacionDialog QSpinBox {
+    border: 1px solid #DCE5DF;
+    border-radius: 7px;
+    padding: 8px 10px;
+    background-color: #FFFFFF;
+    color: #173B2E;
+}
+
+/* Campos enfocados */
+
+QDialog#RecomendacionDialog QComboBox:focus,
+QDialog#RecomendacionDialog QSpinBox:focus {
+    border: 2px solid #276749;
+}
+
+/* Campos inválidos */
+
+QDialog#RecomendacionDialog QComboBox[error="true"],
+QDialog#RecomendacionDialog QComboBox[error="true"]:focus,
+QDialog#RecomendacionDialog QSpinBox[error="true"],
+QDialog#RecomendacionDialog QSpinBox[error="true"]:focus {
+    border: 2px solid #B42318;
+    background-color: #FFF8F8;
+}
+
+/* Mensajes de validación */
+
+QDialog#RecomendacionDialog QLabel#lblErrorLector,
+QDialog#RecomendacionDialog QLabel#lblErrorCantidad {
+    color: #B42318;
+    font-size: 12px;
+    padding-left: 2px;
+}
+
+/* Botón Cancelar */
+
+QDialog#RecomendacionDialog QPushButton#btnCancelar:hover {
+    background-color: #F1F5F9;
+    border-color: #94A3B8;
+}

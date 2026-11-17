@@ -1,21 +1,22 @@
-
 /* =====================================
-   BIBLIOTECA DIGITAL
-   FORMULARIO DE CATEGORÍAS
+   VALIDACIÓN DEL FORMULARIO
    ===================================== */
 
-/*
- * Los estilos generales del formulario
- * están centralizados en dialog_common.qss.
- *
- * Componentes:
- * - Fondo blanco
- * - Título y descripción
- * - Etiqueta Nombre
- * - Campo de texto
- * - Botón Cancelar
- * - Botón Guardar
- *
- * Archivo reservado para personalizaciones
- * exclusivas del formulario de categorías.
- */
+QLabel#lblErrorValidacion {
+    color: #B42318;
+    font-size: 12px;
+    padding-left: 2px;
+}
+
+QLineEdit#txtNombre[error="true"] {
+    border: 2px solid #B42318;
+    background-color: #FFF8F8;
+}
+
+QLineEdit#txtNombre[error="false"] {
+    border: 1px solid #DCE5DF;
+}
+
+QLineEdit#txtNombre[error="false"]:focus {
+    border: 2px solid #276749;
+}

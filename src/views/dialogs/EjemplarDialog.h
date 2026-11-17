@@ -1,8 +1,9 @@
-
 #ifndef EJEMPLARDIALOG_H
 #define EJEMPLARDIALOG_H
 
 #include <QDialog>
+
+class QLabel;
 
 namespace Ui {
 class EjemplarDialog;
@@ -18,6 +19,25 @@ public:
 
 private:
     Ui::EjemplarDialog *ui;
+
+    QLabel *lblErrorLibro;
+    QLabel *lblErrorCodigo;
+    QLabel *lblErrorEstado;
+
+    bool validarFormulario();
+
+    void mostrarError(
+        QLabel *etiqueta,
+        const QString &mensaje,
+        QWidget *campo
+        );
+
+    void limpiarError(
+        QLabel *etiqueta,
+        QWidget *campo
+        );
+
+    void limpiarErrores();
 };
 
 #endif

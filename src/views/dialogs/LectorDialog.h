@@ -3,6 +3,10 @@
 #define LECTORDIALOG_H
 
 #include <QDialog>
+#include <QString>
+
+class QLabel;
+class QWidget;
 
 namespace Ui {
 class LectorDialog;
@@ -18,6 +22,24 @@ public:
 
 private:
     Ui::LectorDialog *ui;
+
+    QLabel *lblErrorNombre = nullptr;
+    QLabel *lblErrorDNI = nullptr;
+    QLabel *lblErrorCorreo = nullptr;
+    QLabel *lblErrorTelefono = nullptr;
+
+    bool validarFormulario();
+
+    void mostrarError(
+        QLabel *etiqueta,
+        const QString &mensaje,
+        QWidget *campo
+        );
+
+    void limpiarError(
+        QLabel *etiqueta,
+        QWidget *campo
+        );
 };
 
-#endif
+#endif // LECTORDIALOG_H

@@ -4,20 +4,50 @@
    FORMULARIO DE LIBROS
    ===================================== */
 
-/*
- * Los estilos generales están definidos
- * en dialog_common.qss.
- *
- * Componentes:
- * - Título y descripción
- * - Campos de texto
- * - Selector de categoría
- * - Botones Guardar y Cancelar
- */
-
 /* Personalización del botón Cancelar */
 
 QDialog#LibroDialog QPushButton#btnCancelar:hover {
     background-color: #F1F5F9;
     border-color: #94A3B8;
+}
+
+/* =====================================
+   VALIDACIÓN DE CAMPOS
+   ===================================== */
+
+QLabel#lblErrorTitulo,
+QLabel#lblErrorAutor,
+QLabel#lblErrorISBN,
+QLabel#lblErrorCategoria {
+    color: #B42318;
+    font-size: 11px;
+    padding-left: 2px;
+}
+
+/* Campos con errores */
+
+QLineEdit#txtTitulo[error="true"],
+QLineEdit#txtAutor[error="true"],
+QLineEdit#txtISBN[error="true"],
+QComboBox#cmbCategoria[error="true"] {
+    border: 2px solid #B42318;
+    background-color: #FFF8F8;
+}
+
+/* Estados normales */
+
+QLineEdit#txtTitulo[error="false"],
+QLineEdit#txtAutor[error="false"],
+QLineEdit#txtISBN[error="false"],
+QComboBox#cmbCategoria[error="false"] {
+    border: 1px solid #DCE5DF;
+}
+
+/* Enfoque normal */
+
+QLineEdit#txtTitulo[error="false"]:focus,
+QLineEdit#txtAutor[error="false"]:focus,
+QLineEdit#txtISBN[error="false"]:focus,
+QComboBox#cmbCategoria[error="false"]:focus {
+    border: 2px solid #276749;
 }

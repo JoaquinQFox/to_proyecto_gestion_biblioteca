@@ -1,21 +1,42 @@
-
 /* =====================================
    BIBLIOTECA DIGITAL
    FORMULARIO DE EJEMPLARES
    ===================================== */
 
-/*
- * Los estilos compartidos están definidos
- * en dialog_common.qss.
- *
- * Componentes:
- * - Fondo blanco
- * - Título y descripción
- * - Etiquetas de los campos
- * - Campo Código
- * - Selectores Libro y Estado
- * - Botones Guardar y Cancelar
- *
- * Archivo reservado para estilos
- * exclusivos del formulario.
- */
+/* Campos normales */
+QDialog#EjemplarDialog QLineEdit,
+QDialog#EjemplarDialog QComboBox {
+    border: 1px solid #DCE5DF;
+    border-radius: 7px;
+    padding: 8px 10px;
+    background-color: #FFFFFF;
+    color: #173B2E;
+}
+
+/* Estado de enfoque */
+QDialog#EjemplarDialog QLineEdit:focus,
+QDialog#EjemplarDialog QComboBox:focus {
+    border: 2px solid #276749;
+}
+
+/* Campos con errores */
+QDialog#EjemplarDialog QLineEdit[error="true"],
+QDialog#EjemplarDialog QComboBox[error="true"] {
+    border: 2px solid #B42318;
+    background-color: #FFF8F8;
+}
+
+/* Mensajes de validación */
+QDialog#EjemplarDialog QLabel#lblErrorLibro,
+QDialog#EjemplarDialog QLabel#lblErrorCodigo,
+QDialog#EjemplarDialog QLabel#lblErrorEstado {
+    color: #B42318;
+    font-size: 12px;
+    padding-left: 2px;
+}
+
+/* Botón cancelar */
+QDialog#EjemplarDialog QPushButton#btnCancelar:hover {
+    background-color: #F1F5F9;
+    border-color: #94A3B8;
+}
