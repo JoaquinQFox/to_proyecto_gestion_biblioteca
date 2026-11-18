@@ -91,6 +91,8 @@ set(PROJECT_SOURCES
     src/controllers/LibroController.cpp
     src/controllers/EjemplarController.h
     src/controllers/EjemplarController.cpp
+    src/controllers/LectorController.h
+    src/controllers/LectorController.cpp
 
     resources/resources.qrc
 )

@@ -8,7 +8,10 @@
 #include "../components/TablaHelper.h"
 
 #include <QPushButton>
+#include <QLineEdit>
+#include <QMessageBox>
 #include <QTableWidgetItem>
+#include <exception>
 
 LectoresPage::LectoresPage(QWidget *parent)
     : QWidget(parent)
@@ -23,13 +26,66 @@ LectoresPage::LectoresPage(QWidget *parent)
         this,
         [this]() {
             LectorDialog dialog(this);
+            connect(
+                &dialog,
+                &LectorDialog::guardarSolicitado,
+                this,
+                [this, &dialog](
+                    const QString &nombreCompleto,
+                    const QString &dni,
+                    const QString &correo,
+                    const QString &telefono
+                    ) {
+                    try {
+                        controller.crear(
+                            nombreCompleto,
+                            dni,
+                            correo,
+                            telefono
+                            );
+                        cargarLectores();
+                        dialog.accept();
+                    } catch (const std::exception &error) {
+                        QMessageBox::warning(
+                            &dialog,
+                            "No se pudo guardar el lector",
+                            QString::fromUtf8(error.what())
+                            );
+                    }
+                }
+                );
             dialog.exec();
+        }
+        );
+
+    connect(
+        this,
+        &LectoresPage::editarLectorSolicitado,
+        this,
+        &LectoresPage::editarLector
+        );
+
+    connect(
+        this,
+        &LectoresPage::eliminarLectorSolicitado,
+        this,
+        &LectoresPage::eliminarLector
+        );
+
+    connect(
+        ui->txtBuscar,
+        &QLineEdit::textChanged,
+        this,
+        [this](const QString &texto) {
+            TablaHelper::filtrar(ui->tablaLectores, texto);
         }
         );
 
     // Configuración reutilizable de la tabla
     // Columna 5: Acciones, ancho de 180 px
     TablaHelper::configurar(ui->tablaLectores, 5, 180);
+
+    cargarLectores();
 }
 
 LectoresPage::~LectoresPage()
@@ -80,8 +136,7 @@ void LectoresPage::mostrarLectores(
         ui->tablaLectores->setItem(fila, 2, itemDni);
 
         // Columna 3: Correo
-        // El modelo Lector aún no dispone de este atributo
-        auto *itemCorreo = new QTableWidgetItem("—");
+        auto *itemCorreo = new QTableWidgetItem(lector.getCorreo());
 
         itemCorreo->setTextAlignment(Qt::AlignCenter);
         ui->tablaLectores->setItem(fila, 3, itemCorreo);
@@ -141,4 +196,79 @@ void LectoresPage::mostrarLectores(
     ui->lblTotal->setText(
         QString("Total de lectores: %1").arg(lectores.size())
         );
+}
+
+void LectoresPage::cargarLectores()
+{
+    try {
+        mostrarLectores(controller.listar());
+        TablaHelper::filtrar(ui->tablaLectores, ui->txtBuscar->text());
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudieron cargar los lectores",
+            QString::fromUtf8(error.what())
+            );
+    }
+}
+
+void LectoresPage::editarLector(int idLector)
+{
+    try {
+        const Lector lector = controller.obtenerPorId(idLector);
+        LectorDialog dialog(this);
+        dialog.cargarLector(lector);
+
+        connect(
+            &dialog,
+            &LectorDialog::guardarSolicitado,
+            this,
+            [this, &dialog, idLector](
+                const QString &nombreCompleto,
+                const QString &dni,
+                const QString &correo,
+                const QString &telefono
+                ) {
+                try {
+                    controller.actualizar(
+                        idLector,
+                        nombreCompleto,
+                        dni,
+                        correo,
+                        telefono
+                        );
+                    cargarLectores();
+                    dialog.accept();
+                } catch (const std::exception &error) {
+                    QMessageBox::warning(
+                        &dialog,
+                        "No se pudo editar el lector",
+                        QString::fromUtf8(error.what())
+                        );
+                }
+            }
+            );
+
+        dialog.exec();
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudo abrir el lector",
+            QString::fromUtf8(error.what())
+            );
+    }
+}
+
+void LectoresPage::eliminarLector(int idLector)
+{
+    try {
+        controller.eliminar(idLector);
+        cargarLectores();
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudo eliminar el lector",
+            QString::fromUtf8(error.what())
+            );
+    }
 }

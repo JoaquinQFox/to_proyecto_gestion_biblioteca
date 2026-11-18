@@ -8,6 +8,7 @@
 #include "../components/TablaHelper.h"
 
 #include <QPushButton>
+#include <QLineEdit>
 #include <QMessageBox>
 #include <QTableWidgetItem>
 #include <exception>
@@ -59,6 +60,15 @@ CategoriasPage::CategoriasPage(QWidget *parent)
         &CategoriasPage::eliminarCategoriaSolicitado,
         this,
         &CategoriasPage::eliminarCategoria
+        );
+
+    connect(
+        ui->txtBuscar,
+        &QLineEdit::textChanged,
+        this,
+        [this](const QString &texto) {
+            TablaHelper::filtrar(ui->tablaCategorias, texto);
+        }
         );
 
     // Configuración reutilizable de la tabla
@@ -158,6 +168,7 @@ void CategoriasPage::cargarCategorias()
 {
     try {
         mostrarCategorias(controller.listar());
+        TablaHelper::filtrar(ui->tablaCategorias, ui->txtBuscar->text());
     } catch (const std::exception &error) {
         QMessageBox::warning(
             this,

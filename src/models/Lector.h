@@ -10,6 +10,7 @@ private:
     QString dni;
     QString nombres;
     QString apellidos;
+    QString correo;
     QString telefono;
     QString direccion;
     bool activo;
@@ -17,7 +18,8 @@ private:
 public:
     Lector();
     Lector(int id, const QString &dni, const QString &nombres, const QString &apellidos,
-           const QString &telefono, const QString &direccion, bool activo = true);
+           const QString &telefono, const QString &direccion, bool activo = true,
+           const QString &correo = QString());
 
     int getId() const;
     void setId(int id);
@@ -30,6 +32,9 @@ public:
 
     QString getApellidos() const;
     void setApellidos(const QString &apellidos);
+
+    QString getCorreo() const;
+    void setCorreo(const QString &correo);
 
     QString getTelefono() const;
     void setTelefono(const QString &telefono);
