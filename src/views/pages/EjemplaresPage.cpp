@@ -8,7 +8,10 @@
 #include "../components/TablaHelper.h"
 
 #include <QPushButton>
+#include <QLineEdit>
+#include <QMessageBox>
 #include <QTableWidgetItem>
+#include <exception>
 
 EjemplaresPage::EjemplaresPage(QWidget *parent)
     : QWidget(parent)
@@ -22,14 +25,80 @@ EjemplaresPage::EjemplaresPage(QWidget *parent)
         &QPushButton::clicked,
         this,
         [this]() {
-            EjemplarDialog dialog(this);
-            dialog.exec();
+            try {
+                const QList<Libro> libros = libroController.listarActivos();
+                if (libros.isEmpty()) {
+                    QMessageBox::information(
+                        this,
+                        "No hay libros",
+                        "Primero registra un libro para poder crear un ejemplar."
+                        );
+                    return;
+                }
+
+                EjemplarDialog dialog(this);
+                dialog.establecerLibros(libros);
+                connect(
+                    &dialog,
+                    &EjemplarDialog::guardarSolicitado,
+                    this,
+                    [this, &dialog](
+                        int idLibro,
+                        const QString &codigo,
+                        const QString &estado
+                        ) {
+                        try {
+                            controller.crear(idLibro, codigo, estado);
+                            cargarEjemplares();
+                            dialog.accept();
+                        } catch (const std::exception &error) {
+                            QMessageBox::warning(
+                                &dialog,
+                                "No se pudo guardar el ejemplar",
+                                QString::fromUtf8(error.what())
+                                );
+                        }
+                    }
+                    );
+                dialog.exec();
+            } catch (const std::exception &error) {
+                QMessageBox::warning(
+                    this,
+                    "No se pudieron cargar los libros",
+                    QString::fromUtf8(error.what())
+                    );
+            }
+        }
+        );
+
+    connect(
+        this,
+        &EjemplaresPage::editarEjemplarSolicitado,
+        this,
+        &EjemplaresPage::editarEjemplar
+        );
+
+    connect(
+        this,
+        &EjemplaresPage::eliminarEjemplarSolicitado,
+        this,
+        &EjemplaresPage::eliminarEjemplar
+        );
+
+    connect(
+        ui->txtBuscar,
+        &QLineEdit::textChanged,
+        this,
+        [this](const QString &texto) {
+            TablaHelper::filtrar(ui->tablaEjemplares, texto);
         }
         );
 
     // Configuración reutilizable de la tabla
     // Columna 4: Acciones, ancho de 180 px
     TablaHelper::configurar(ui->tablaEjemplares, 4, 180);
+
+    cargarEjemplares();
 }
 
 EjemplaresPage::~EjemplaresPage()
@@ -69,12 +138,14 @@ void EjemplaresPage::mostrarEjemplares(
         ui->tablaEjemplares->setItem(fila, 1, itemCodigo);
 
         // Columna 2: Libro
-        // Temporalmente se muestra el ID del libro
         auto *itemLibro = new QTableWidgetItem(
-            QString::number(ejemplar.getIdLibro())
+            titulosLibros.value(
+                ejemplar.getIdLibro(),
+                QString::number(ejemplar.getIdLibro())
+                )
             );
 
-        itemLibro->setTextAlignment(Qt::AlignCenter);
+        itemLibro->setTextAlignment(Qt::AlignVCenter | Qt::AlignLeft);
         ui->tablaEjemplares->setItem(fila, 2, itemLibro);
 
         // Columna 3: Estado
@@ -132,4 +203,85 @@ void EjemplaresPage::mostrarEjemplares(
     ui->lblTotal->setText(
         QString("Total de ejemplares: %1").arg(ejemplares.size())
         );
+}
+
+void EjemplaresPage::cargarEjemplares()
+{
+    try {
+        titulosLibros.clear();
+        const QList<Libro> libros = libroController.listarActivos();
+        for (const Libro &libro : libros) {
+            titulosLibros.insert(libro.getId(), libro.getTitulo());
+        }
+
+        mostrarEjemplares(controller.listar());
+        TablaHelper::filtrar(ui->tablaEjemplares, ui->txtBuscar->text());
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudieron cargar los ejemplares",
+            QString::fromUtf8(error.what())
+            );
+    }
+}
+
+void EjemplaresPage::editarEjemplar(int idEjemplar)
+{
+    try {
+        const Ejemplar ejemplar = controller.obtenerPorId(idEjemplar);
+        const QList<Libro> libros = libroController.listarActivos();
+        EjemplarDialog dialog(this);
+        dialog.establecerLibros(libros, ejemplar.getIdLibro());
+        dialog.cargarEjemplar(ejemplar);
+
+        connect(
+            &dialog,
+            &EjemplarDialog::guardarSolicitado,
+            this,
+            [this, &dialog, idEjemplar](
+                int idLibro,
+                const QString &codigo,
+                const QString &estado
+                ) {
+                try {
+                    controller.actualizar(
+                        idEjemplar,
+                        idLibro,
+                        codigo,
+                        estado
+                        );
+                    cargarEjemplares();
+                    dialog.accept();
+                } catch (const std::exception &error) {
+                    QMessageBox::warning(
+                        &dialog,
+                        "No se pudo editar el ejemplar",
+                        QString::fromUtf8(error.what())
+                        );
+                }
+            }
+            );
+
+        dialog.exec();
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudo abrir el ejemplar",
+            QString::fromUtf8(error.what())
+            );
+    }
+}
+
+void EjemplaresPage::eliminarEjemplar(int idEjemplar)
+{
+    try {
+        controller.eliminar(idEjemplar);
+        cargarEjemplares();
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudo eliminar el ejemplar",
+            QString::fromUtf8(error.what())
+            );
+    }
 }

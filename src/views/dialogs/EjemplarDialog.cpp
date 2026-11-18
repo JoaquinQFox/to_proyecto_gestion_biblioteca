@@ -105,7 +105,15 @@ EjemplarDialog::EjemplarDialog(QWidget *parent)
         &QPushButton::clicked,
         this,
         [this]() {
-            validarFormulario();
+            if (!validarFormulario()) {
+                return;
+            }
+
+            emit guardarSolicitado(
+                ui->cmbLibro->currentData().toInt(),
+                ui->txtCodigo->text().trimmed(),
+                ui->cmbEstado->currentData().toString()
+                );
         }
         );
 
@@ -188,6 +196,44 @@ EjemplarDialog::EjemplarDialog(QWidget *parent)
 EjemplarDialog::~EjemplarDialog()
 {
     delete ui;
+}
+
+void EjemplarDialog::establecerLibros(
+    const QList<Libro> &libros,
+    int idLibroSeleccionado
+    )
+{
+    ui->cmbLibro->clear();
+    ui->cmbLibro->addItem("Seleccionar libro", 0);
+    for (const Libro &libro : libros) {
+        ui->cmbLibro->addItem(libro.getTitulo(), libro.getId());
+    }
+
+    const int indiceLibro = ui->cmbLibro->findData(idLibroSeleccionado);
+    if (indiceLibro >= 0) {
+        ui->cmbLibro->setCurrentIndex(indiceLibro);
+    }
+
+    ui->cmbEstado->clear();
+    ui->cmbEstado->addItem("Seleccionar estado", QString());
+    ui->cmbEstado->addItem("Disponible", "DISPONIBLE");
+    ui->cmbEstado->addItem("Prestado", "PRESTADO");
+    ui->cmbEstado->addItem("Retirado", "RETIRADO");
+}
+
+void EjemplarDialog::cargarEjemplar(const Ejemplar &ejemplar)
+{
+    setWindowTitle("Editar ejemplar");
+    ui->lblTitulo->setText("Editar ejemplar");
+    ui->lblDescripcion->setText("Actualiza la información del ejemplar.");
+    ui->btnGuardar->setText("Guardar cambios");
+    ui->txtCodigo->setText(ejemplar.getCodigo());
+    ui->cmbLibro->setCurrentIndex(
+        ui->cmbLibro->findData(ejemplar.getIdLibro())
+        );
+    ui->cmbEstado->setCurrentIndex(
+        ui->cmbEstado->findData(ejemplar.getEstadoString())
+        );
 }
 
 // =========================================
