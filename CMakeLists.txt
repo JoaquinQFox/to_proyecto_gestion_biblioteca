@@ -87,6 +87,8 @@ set(PROJECT_SOURCES
 
     src/controllers/CategoriaController.h
     src/controllers/CategoriaController.cpp
+    src/controllers/LibroController.h
+    src/controllers/LibroController.cpp
 
     resources/resources.qrc
 )

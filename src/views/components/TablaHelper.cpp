@@ -2,6 +2,8 @@
 #include "TablaHelper.h"
 
 #include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QString>
 #include <QHeaderView>
 #include <QAbstractItemView>
 
@@ -90,5 +92,30 @@ void TablaHelper::ajustarFilas(
 
     for (int fila = 0; fila < tabla->rowCount(); ++fila) {
         tabla->setRowHeight(fila, altura);
+    }
+}
+
+void TablaHelper::filtrar(
+    QTableWidget *tabla,
+    const QString &texto
+    )
+{
+    const QString consulta = texto.trimmed();
+    for (int fila = 0; fila < tabla->rowCount(); ++fila) {
+        bool coincide = consulta.isEmpty();
+
+        for (int columna = 0;
+             !coincide && columna < tabla->columnCount();
+             ++columna) {
+            const QTableWidgetItem *item = tabla->item(fila, columna);
+            if (item && item->text().contains(
+                    consulta,
+                    Qt::CaseInsensitive
+                    )) {
+                coincide = true;
+            }
+        }
+
+        tabla->setRowHidden(fila, !coincide);
     }
 }

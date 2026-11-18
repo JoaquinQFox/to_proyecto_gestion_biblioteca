@@ -2,6 +2,7 @@
 #ifndef TABLAHELPER_H
 #define TABLAHELPER_H
 
+class QString;
 class QTableWidget;
 
 class TablaHelper
@@ -16,6 +17,11 @@ public:
     static void ajustarFilas(
         QTableWidget *tabla,
         int altura = 52
+        );
+
+    static void filtrar(
+        QTableWidget *tabla,
+        const QString &texto
         );
 };
 

@@ -4,6 +4,10 @@
 
 #include <QWidget>
 #include <QList>
+#include <QHash>
+
+#include "../../controllers/CategoriaController.h"
+#include "../../controllers/LibroController.h"
 #include "../../models/Libro.h"
 
 QT_BEGIN_NAMESPACE
@@ -28,6 +32,13 @@ signals:
 
 private:
     Ui::LibrosPage *ui;
+    LibroController controller;
+    CategoriaController categoriaController;
+    QHash<int, QString> nombresCategorias;
+
+    void cargarLibros();
+    void editarLibro(int idLibro);
+    void eliminarLibro(int idLibro);
 };
 
 #endif // LIBROSPAGE_H
