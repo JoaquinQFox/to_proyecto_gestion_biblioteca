@@ -14,6 +14,7 @@ class CategoriaDialog : public QDialog
 
 public:
     explicit CategoriaDialog(QWidget *parent = nullptr);
+    CategoriaDialog(const QString &nombreInicial, QWidget *parent = nullptr);
     ~CategoriaDialog();
 
 signals:

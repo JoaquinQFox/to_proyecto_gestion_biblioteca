@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QList>
 
+#include "../../controllers/CategoriaController.h"
 #include "../../models/Categoria.h"
 
 QT_BEGIN_NAMESPACE
@@ -29,6 +30,11 @@ signals:
 
 private:
     Ui::CategoriasPage *ui;
+    CategoriaController controller;
+
+    void cargarCategorias();
+    void editarCategoria(int idCategoria);
+    void eliminarCategoria(int idCategoria);
 };
 
 #endif // CATEGORIASPAGE_H

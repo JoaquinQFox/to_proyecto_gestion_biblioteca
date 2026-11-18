@@ -8,7 +8,9 @@
 #include "../components/TablaHelper.h"
 
 #include <QPushButton>
+#include <QMessageBox>
 #include <QTableWidgetItem>
+#include <exception>
 
 CategoriasPage::CategoriasPage(QWidget *parent)
     : QWidget(parent)
@@ -23,13 +25,47 @@ CategoriasPage::CategoriasPage(QWidget *parent)
         this,
         [this]() {
             CategoriaDialog dialog(this);
+            connect(
+                &dialog,
+                &CategoriaDialog::guardarSolicitado,
+                this,
+                [this, &dialog](const QString &nombre) {
+                    try {
+                        controller.crear(nombre);
+                        cargarCategorias();
+                        dialog.accept();
+                    } catch (const std::exception &error) {
+                        QMessageBox::warning(
+                            &dialog,
+                            "No se pudo guardar la categoría",
+                            QString::fromUtf8(error.what())
+                            );
+                    }
+                }
+                );
             dialog.exec();
         }
+        );
+
+    connect(
+        this,
+        &CategoriasPage::editarCategoriaSolicitado,
+        this,
+        &CategoriasPage::editarCategoria
+        );
+
+    connect(
+        this,
+        &CategoriasPage::eliminarCategoriaSolicitado,
+        this,
+        &CategoriasPage::eliminarCategoria
         );
 
     // Configuración reutilizable de la tabla
     // Columna 2: Acciones, ancho de 180 px
     TablaHelper::configurar(ui->tablaCategorias, 2, 180);
+
+    cargarCategorias();
 }
 
 CategoriasPage::~CategoriasPage()
@@ -116,4 +152,66 @@ void CategoriasPage::mostrarCategorias(
     ui->lblTotal->setText(
         QString("Total de categorías: %1").arg(categorias.size())
         );
+}
+
+void CategoriasPage::cargarCategorias()
+{
+    try {
+        mostrarCategorias(controller.listar());
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudieron cargar las categorías",
+            QString::fromUtf8(error.what())
+            );
+    }
+}
+
+void CategoriasPage::editarCategoria(int idCategoria)
+{
+    try {
+        const Categoria categoria = controller.obtenerPorId(idCategoria);
+        CategoriaDialog dialog(categoria.getNombre(), this);
+
+        connect(
+            &dialog,
+            &CategoriaDialog::guardarSolicitado,
+            this,
+            [this, &dialog, idCategoria](const QString &nombre) {
+                try {
+                    controller.actualizar(idCategoria, nombre);
+                    cargarCategorias();
+                    dialog.accept();
+                } catch (const std::exception &error) {
+                    QMessageBox::warning(
+                        &dialog,
+                        "No se pudo editar la categoría",
+                        QString::fromUtf8(error.what())
+                        );
+                }
+            }
+            );
+
+        dialog.exec();
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudo abrir la categoría",
+            QString::fromUtf8(error.what())
+            );
+    }
+}
+
+void CategoriasPage::eliminarCategoria(int idCategoria)
+{
+    try {
+        controller.eliminar(idCategoria);
+        cargarCategorias();
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudo eliminar la categoría",
+            QString::fromUtf8(error.what())
+            );
+    }
 }
