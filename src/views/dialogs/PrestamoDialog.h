@@ -1,9 +1,9 @@
-
 #ifndef PRESTAMODIALOG_H
 #define PRESTAMODIALOG_H
 
 #include <QDialog>
 #include <QString>
+#include <QDate>
 
 class QLabel;
 class QWidget;
@@ -20,6 +20,11 @@ public:
     explicit PrestamoDialog(QWidget *parent = nullptr);
     ~PrestamoDialog();
 
+    int getIdLectorSeleccionado() const;
+    int getIdEjemplarSeleccionado() const;
+    QDate getFechaPrestamo() const;
+    QDate getFechaVencimiento() const;
+
 private:
     Ui::PrestamoDialog *ui;
 
@@ -28,6 +33,7 @@ private:
     QLabel *lblErrorFechaPrestamo = nullptr;
     QLabel *lblErrorFechaDevolucion = nullptr;
 
+    void cargarDatosCombos();
     bool validarFormulario();
 
     void mostrarError(
