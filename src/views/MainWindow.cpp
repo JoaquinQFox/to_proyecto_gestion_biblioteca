@@ -8,6 +8,7 @@
 #include "pages/LectoresPage.h"
 #include "pages/PrestamosPage.h"
 #include "pages/RecomendacionesPage.h"
+#include "../controllers/PrestamoController.h"
 
 #include <QFile>
 #include <QDebug>
@@ -23,10 +24,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    PrestamoController *prestamoController = new PrestamoController(this);
 
     // 1. INTEGRAR LA PANTALLA DE INICIO
 
-    InicioPage *inicioPage = new InicioPage(this);
+    InicioPage *inicioPage = new InicioPage(prestamoController, this);
 
     QWidget *paginaInicioVacia = ui->pageInicio;
 
@@ -141,7 +143,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 6. INTEGRAR LA PANTALLA DE PRÉSTAMOS
 
-    PrestamosPage *prestamosPage = new PrestamosPage(this);
+    PrestamosPage *prestamosPage = new PrestamosPage(prestamoController, this);
 
     QWidget *paginaPrestamosVacia = ui->pagePrestamos;
 
