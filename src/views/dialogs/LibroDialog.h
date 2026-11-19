@@ -3,7 +3,11 @@
 #define LIBRODIALOG_H
 
 #include <QDialog>
+#include <QList>
 #include <QString>
+
+#include "../../models/Categoria.h"
+#include "../../models/Libro.h"
 
 namespace Ui {
 class LibroDialog;
@@ -16,6 +20,14 @@ class LibroDialog : public QDialog
 public:
     explicit LibroDialog(QWidget *parent = nullptr);
     ~LibroDialog();
+
+    void establecerCategorias(const QList<Categoria> &categorias,
+                              int idCategoriaSeleccionada = 0);
+    void cargarLibro(const Libro &libro);
+
+signals:
+    void guardarSolicitado(const QString &titulo, const QString &autor,
+                           const QString &isbn, int idCategoria);
 
 private:
     Ui::LibroDialog *ui;

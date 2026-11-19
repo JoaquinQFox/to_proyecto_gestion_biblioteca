@@ -2,6 +2,11 @@
 #define EJEMPLARDIALOG_H
 
 #include <QDialog>
+#include <QList>
+#include <QString>
+
+#include "../../models/Ejemplar.h"
+#include "../../models/Libro.h"
 
 class QLabel;
 
@@ -16,6 +21,14 @@ class EjemplarDialog : public QDialog
 public:
     explicit EjemplarDialog(QWidget *parent = nullptr);
     ~EjemplarDialog();
+
+    void establecerLibros(const QList<Libro> &libros,
+                          int idLibroSeleccionado = 0);
+    void cargarEjemplar(const Ejemplar &ejemplar);
+
+signals:
+    void guardarSolicitado(int idLibro, const QString &codigo,
+                           const QString &estado);
 
 private:
     Ui::EjemplarDialog *ui;

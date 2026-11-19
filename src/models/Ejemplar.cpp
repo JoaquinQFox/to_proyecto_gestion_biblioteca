@@ -1,5 +1,7 @@
 #include "Ejemplar.h"
 
+#include <stdexcept>
+
 Ejemplar::Ejemplar()
     : id(0), idLibro(0), codigo(""), estado(Estado::DISPONIBLE) {}
 
@@ -69,7 +71,7 @@ Ejemplar::Estado Ejemplar::stringToEstado(const QString &estado)
         return Estado::PRESTADO;
 
     if (estado == "RETIRADO")
-        return Estado::PRESTADO;
+        return Estado::RETIRADO;
 
     throw std::invalid_argument("Estado de ejemplar no valido");
 }

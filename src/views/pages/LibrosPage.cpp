@@ -8,7 +8,10 @@
 #include "../components/TablaHelper.h"
 
 #include <QPushButton>
+#include <QLineEdit>
+#include <QMessageBox>
 #include <QTableWidgetItem>
+#include <exception>
 
 LibrosPage::LibrosPage(QWidget *parent)
     : QWidget(parent)
@@ -22,14 +25,87 @@ LibrosPage::LibrosPage(QWidget *parent)
         &QPushButton::clicked,
         this,
         [this]() {
-            LibroDialog dialog(this);
-            dialog.exec();
+            try {
+                const QList<Categoria> categorias =
+                    categoriaController.listar();
+                if (categorias.isEmpty()) {
+                    QMessageBox::information(
+                        this,
+                        "No hay categorías",
+                        "Primero registra una categoría para poder crear un libro."
+                        );
+                    return;
+                }
+
+                LibroDialog dialog(this);
+                dialog.establecerCategorias(categorias);
+                connect(
+                    &dialog,
+                    &LibroDialog::guardarSolicitado,
+                    this,
+                    [this, &dialog](
+                        const QString &titulo,
+                        const QString &autor,
+                        const QString &isbn,
+                        int idCategoria
+                        ) {
+                        try {
+                            controller.crear(
+                                idCategoria,
+                                titulo,
+                                autor,
+                                isbn
+                                );
+                            cargarLibros();
+                            dialog.accept();
+                        } catch (const std::exception &error) {
+                            QMessageBox::warning(
+                                &dialog,
+                                "No se pudo guardar el libro",
+                                QString::fromUtf8(error.what())
+                                );
+                        }
+                    }
+                    );
+                dialog.exec();
+            } catch (const std::exception &error) {
+                QMessageBox::warning(
+                    this,
+                    "No se pudieron cargar las categorías",
+                    QString::fromUtf8(error.what())
+                    );
+            }
+        }
+        );
+
+    connect(
+        this,
+        &LibrosPage::editarLibroSolicitado,
+        this,
+        &LibrosPage::editarLibro
+        );
+
+    connect(
+        this,
+        &LibrosPage::eliminarLibroSolicitado,
+        this,
+        &LibrosPage::eliminarLibro
+        );
+
+    connect(
+        ui->txtBuscar,
+        &QLineEdit::textChanged,
+        this,
+        [this](const QString &texto) {
+            TablaHelper::filtrar(ui->tablaLibros, texto);
         }
         );
 
     // Configuración reutilizable de la tabla
     // Columna 5: Acciones, ancho de 180 px
     TablaHelper::configurar(ui->tablaLibros, 5, 180);
+
+    cargarLibros();
 }
 
 LibrosPage::~LibrosPage()
@@ -86,12 +162,14 @@ void LibrosPage::mostrarLibros(const QList<Libro> &libros)
         ui->tablaLibros->setItem(fila, 3, itemIsbn);
 
         // Columna 4: Categoría
-        // Temporalmente se muestra el ID de categoría
         auto *itemCategoria = new QTableWidgetItem(
-            QString::number(libro.getIdCategoria())
+            nombresCategorias.value(
+                libro.getIdCategoria(),
+                QString::number(libro.getIdCategoria())
+                )
             );
 
-        itemCategoria->setTextAlignment(Qt::AlignCenter);
+        itemCategoria->setTextAlignment(Qt::AlignVCenter | Qt::AlignLeft);
         ui->tablaLibros->setItem(fila, 4, itemCategoria);
 
         // Columna 5: Acciones reutilizables
@@ -141,4 +219,87 @@ void LibrosPage::mostrarLibros(const QList<Libro> &libros)
     ui->lblTotal->setText(
         QString("Total de libros: %1").arg(libros.size())
         );
+}
+
+void LibrosPage::cargarLibros()
+{
+    try {
+        nombresCategorias.clear();
+        const QList<Categoria> categorias = categoriaController.listar();
+        for (const Categoria &categoria : categorias) {
+            nombresCategorias.insert(categoria.getId(), categoria.getNombre());
+        }
+
+        mostrarLibros(controller.listar());
+        TablaHelper::filtrar(ui->tablaLibros, ui->txtBuscar->text());
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudieron cargar los libros",
+            QString::fromUtf8(error.what())
+            );
+    }
+}
+
+void LibrosPage::editarLibro(int idLibro)
+{
+    try {
+        const Libro libro = controller.obtenerPorId(idLibro);
+        const QList<Categoria> categorias = categoriaController.listar();
+        LibroDialog dialog(this);
+        dialog.establecerCategorias(categorias, libro.getIdCategoria());
+        dialog.cargarLibro(libro);
+
+        connect(
+            &dialog,
+            &LibroDialog::guardarSolicitado,
+            this,
+            [this, &dialog, idLibro](
+                const QString &titulo,
+                const QString &autor,
+                const QString &isbn,
+                int idCategoria
+                ) {
+                try {
+                    controller.actualizar(
+                        idLibro,
+                        idCategoria,
+                        titulo,
+                        autor,
+                        isbn
+                        );
+                    cargarLibros();
+                    dialog.accept();
+                } catch (const std::exception &error) {
+                    QMessageBox::warning(
+                        &dialog,
+                        "No se pudo editar el libro",
+                        QString::fromUtf8(error.what())
+                        );
+                }
+            }
+            );
+
+        dialog.exec();
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudo abrir el libro",
+            QString::fromUtf8(error.what())
+            );
+    }
+}
+
+void LibrosPage::eliminarLibro(int idLibro)
+{
+    try {
+        controller.eliminar(idLibro);
+        cargarLibros();
+    } catch (const std::exception &error) {
+        QMessageBox::warning(
+            this,
+            "No se pudo eliminar el libro",
+            QString::fromUtf8(error.what())
+            );
+    }
 }

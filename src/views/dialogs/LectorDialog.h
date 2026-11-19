@@ -5,6 +5,9 @@
 #include <QDialog>
 #include <QString>
 
+#include "../../models/Lector.h"
+#include <QString>
+
 class QLabel;
 class QWidget;
 
@@ -19,6 +22,14 @@ class LectorDialog : public QDialog
 public:
     explicit LectorDialog(QWidget *parent = nullptr);
     ~LectorDialog();
+
+    void cargarLector(const Lector &lector);
+
+signals:
+    void guardarSolicitado(const QString &nombreCompleto,
+                           const QString &dni,
+                           const QString &correo,
+                           const QString &telefono);
 
 private:
     Ui::LectorDialog *ui;

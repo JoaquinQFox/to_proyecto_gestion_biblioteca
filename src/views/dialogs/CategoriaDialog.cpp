@@ -15,10 +15,28 @@
 #include <QTimer>
 
 CategoriaDialog::CategoriaDialog(QWidget *parent)
+    : CategoriaDialog(QString(), parent)
+{
+}
+
+CategoriaDialog::CategoriaDialog(
+    const QString &nombreInicial,
+    QWidget *parent
+    )
     : QDialog(parent)
     , ui(new Ui::CategoriaDialog)
 {
     ui->setupUi(this);
+
+    if (!nombreInicial.isNull()) {
+        setWindowTitle("Editar categoría");
+        ui->lblTitulo->setText("Editar categoría");
+        ui->lblDescripcion->setText(
+            "Actualiza el nombre de la categoría."
+            );
+        ui->btnGuardar->setText("Guardar cambios");
+        ui->txtNombre->setText(nombreInicial);
+    }
 
     // =========================================
     // CONFIGURACIÓN DEL FORMULARIO

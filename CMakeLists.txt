@@ -85,6 +85,15 @@ set(PROJECT_SOURCES
     src/views/dialogs/ConfirmacionDialog.h
     src/views/dialogs/ConfirmacionDialog.cpp
 
+    src/controllers/CategoriaController.h
+    src/controllers/CategoriaController.cpp
+    src/controllers/LibroController.h
+    src/controllers/LibroController.cpp
+    src/controllers/EjemplarController.h
+    src/controllers/EjemplarController.cpp
+    src/controllers/LectorController.h
+    src/controllers/LectorController.cpp
+
     resources/resources.qrc
 )
 

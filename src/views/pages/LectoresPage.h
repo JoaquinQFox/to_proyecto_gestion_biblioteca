@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QList>
 
+#include "../../controllers/LectorController.h"
 #include "../../models/Lector.h"
 
 QT_BEGIN_NAMESPACE
@@ -29,6 +30,11 @@ signals:
 
 private:
     Ui::LectoresPage *ui;
+    LectorController controller;
+
+    void cargarLectores();
+    void editarLector(int idLector);
+    void eliminarLector(int idLector);
 };
 
 #endif // LECTORESPAGE_H

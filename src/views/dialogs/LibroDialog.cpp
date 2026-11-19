@@ -10,7 +10,6 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QStyle>
-#include <QMessageBox>
 #include <QLayout>
 #include <QSizePolicy>
 #include <QTimer>
@@ -108,12 +107,11 @@ LibroDialog::LibroDialog(QWidget *parent)
                 return;
             }
 
-            // Prueba visual: no guarda en la base de datos
-            QMessageBox::information(
-                this,
-                "Validación correcta",
-                "Los datos del libro son válidos.\n\n"
-                "El guardado se integrará posteriormente."
+            emit guardarSolicitado(
+                ui->txtTitulo->text().trimmed(),
+                ui->txtAutor->text().trimmed(),
+                ui->txtISBN->text().trimmed(),
+                ui->cmbCategoria->currentData().toInt()
                 );
         }
         );
@@ -201,6 +199,41 @@ LibroDialog::LibroDialog(QWidget *parent)
 LibroDialog::~LibroDialog()
 {
     delete ui;
+}
+
+void LibroDialog::establecerCategorias(
+    const QList<Categoria> &categorias,
+    int idCategoriaSeleccionada
+    )
+{
+    ui->cmbCategoria->clear();
+    ui->cmbCategoria->addItem("Seleccionar categoría", 0);
+
+    for (const Categoria &categoria : categorias) {
+        ui->cmbCategoria->addItem(
+            categoria.getNombre(),
+            categoria.getId()
+            );
+    }
+
+    const int indice = ui->cmbCategoria->findData(idCategoriaSeleccionada);
+    if (indice >= 0) {
+        ui->cmbCategoria->setCurrentIndex(indice);
+    }
+}
+
+void LibroDialog::cargarLibro(const Libro &libro)
+{
+    setWindowTitle("Editar libro");
+    ui->lblTitulo->setText("Editar libro");
+    ui->lblDescripcion->setText("Actualiza la información del libro.");
+    ui->btnGuardar->setText("Guardar cambios");
+    ui->txtTitulo->setText(libro.getTitulo());
+    ui->txtAutor->setText(libro.getAutor());
+    ui->txtISBN->setText(libro.getIsbn());
+    ui->cmbCategoria->setCurrentIndex(
+        ui->cmbCategoria->findData(libro.getIdCategoria())
+        );
 }
 
 // =========================================

@@ -8,11 +8,13 @@
 int LectorRepository::agregar(const Lector &entidad)
 {
     QSqlQuery query(Database::obtenerConexion());
-    query.prepare("INSERT INTO lectores (dni, nombres, apellidos, telefono, direccion, activo) "
-                  "VALUES (:dni, :nombres, :apellidos, :telefono, :direccion, :activo)");
+    query.prepare("INSERT INTO lectores "
+                  "(dni, nombres, apellidos, correo, telefono, direccion, activo) "
+                  "VALUES (:dni, :nombres, :apellidos, :correo, :telefono, :direccion, :activo)");
     query.bindValue(":dni", entidad.getDni());
     query.bindValue(":nombres", entidad.getNombres());
     query.bindValue(":apellidos", entidad.getApellidos());
+    query.bindValue(":correo", entidad.getCorreo());
     query.bindValue(":telefono", entidad.getTelefono());
     query.bindValue(":direccion", entidad.getDireccion());
     query.bindValue(":activo", entidad.isActivo() ? 1 : 0);
@@ -26,7 +28,7 @@ int LectorRepository::agregar(const Lector &entidad)
 Lector LectorRepository::obtenerPorId(int id)
 {
     QSqlQuery query(Database::obtenerConexion());
-    query.prepare("SELECT id, dni, nombres, apellidos, telefono, direccion, activo "
+    query.prepare("SELECT id, dni, nombres, apellidos, correo, telefono, direccion, activo "
                   "FROM lectores WHERE id = :id");
     query.bindValue(":id", id);
 
@@ -42,7 +44,8 @@ Lector LectorRepository::obtenerPorId(int id)
             query.value("apellidos").toString(),
             query.value("telefono").toString(),
             query.value("direccion").toString(),
-            query.value("activo").toInt() == 1
+            query.value("activo").toInt() == 1,
+            query.value("correo").toString()
             );
     }
     throw std::runtime_error("Lector no encontrado con ID: " + std::to_string(id));
@@ -51,7 +54,8 @@ Lector LectorRepository::obtenerPorId(int id)
 QList<Lector> LectorRepository::obtenerTodos() {
     QList<Lector> lista;
     QSqlQuery query(Database::obtenerConexion());
-    query.prepare("SELECT id, dni, nombres, apellidos, telefono, direccion, activo FROM lectores");
+    query.prepare("SELECT id, dni, nombres, apellidos, correo, telefono, direccion, activo "
+                  "FROM lectores");
 
     if (!query.exec()) {
         throw std::runtime_error("Error al obtener lectores: " + query.lastError().text().toStdString());
@@ -65,7 +69,8 @@ QList<Lector> LectorRepository::obtenerTodos() {
             query.value("apellidos").toString(),
             query.value("telefono").toString(),
             query.value("direccion").toString(),
-            query.value("activo").toInt() == 1
+            query.value("activo").toInt() == 1,
+            query.value("correo").toString()
             ));
     }
     return lista;
@@ -75,11 +80,13 @@ bool LectorRepository::actualizar(const Lector &entidad)
 {
     QSqlQuery query(Database::obtenerConexion());
     query.prepare("UPDATE lectores SET dni = :dni, nombres = :nombres, apellidos = :apellidos, "
+                  "correo = :correo, "
                   "telefono = :telefono, direccion = :direccion, activo = :activo "
                   "WHERE id = :id");
     query.bindValue(":dni", entidad.getDni());
     query.bindValue(":nombres", entidad.getNombres());
     query.bindValue(":apellidos", entidad.getApellidos());
+    query.bindValue(":correo", entidad.getCorreo());
     query.bindValue(":telefono", entidad.getTelefono());
     query.bindValue(":direccion", entidad.getDireccion());
     query.bindValue(":activo", entidad.isActivo() ? 1 : 0);
@@ -107,7 +114,7 @@ QList<Lector> LectorRepository::obtenerActivos()
 {
     QList<Lector> lista;
     QSqlQuery query(Database::obtenerConexion());
-    query.prepare("SELECT id, dni, nombres, apellidos, telefono, direccion, activo "
+    query.prepare("SELECT id, dni, nombres, apellidos, correo, telefono, direccion, activo "
                   "FROM lectores WHERE activo = 1");
 
     if (!query.exec()) {
@@ -122,7 +129,8 @@ QList<Lector> LectorRepository::obtenerActivos()
             query.value("apellidos").toString(),
             query.value("telefono").toString(),
             query.value("direccion").toString(),
-            true
+            true,
+            query.value("correo").toString()
             ));
     }
     return lista;

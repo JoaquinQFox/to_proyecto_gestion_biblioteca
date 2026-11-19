@@ -71,6 +71,7 @@ bool DatabaseInitializer::incializar()
                 dni TEXT NOT NULL UNIQUE,
                 nombres TEXT NOT NULL,
                 apellidos TEXT NOT NULL,
+                correo TEXT NOT NULL DEFAULT '',
                 telefono TEXT,
                 direccion TEXT,
                 activo INTEGER NOT NULL DEFAULT 1
@@ -107,6 +108,32 @@ bool DatabaseInitializer::incializar()
 
     for (const QString &sentencia : sentencias) {
         if (!query.exec(sentencia)) {
+            db.rollback();
+            return false;
+        }
+    }
+
+    QSqlQuery columnasLector(db);
+    if (!columnasLector.exec("PRAGMA table_info(lectores)")) {
+        db.rollback();
+        return false;
+    }
+
+    bool tieneCorreo = false;
+    while (columnasLector.next()) {
+        if (columnasLector.value(1).toString() == "correo") {
+            tieneCorreo = true;
+            break;
+        }
+    }
+    columnasLector.finish();
+
+    if (!tieneCorreo) {
+        QSqlQuery migracion(db);
+        if (!migracion.exec(
+                "ALTER TABLE lectores "
+                "ADD COLUMN correo TEXT NOT NULL DEFAULT ''"
+                )) {
             db.rollback();
             return false;
         }

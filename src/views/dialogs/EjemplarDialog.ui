@@ -85,7 +85,7 @@
       <property name="text"><string>Prestado</string></property>
      </item>
      <item>
-      <property name="text"><string>Mantenimiento</string></property>
+      <property name="text"><string>Retirado</string></property>
      </item>
     </widget>
    </item>

@@ -119,13 +119,21 @@ LectorDialog::LectorDialog(QWidget *parent)
         &QDialog::reject
         );
 
-    // Validación visual, sin modificar backend
     connect(
         ui->btnGuardar,
         &QPushButton::clicked,
         this,
         [this]() {
-            validarFormulario();
+            if (!validarFormulario()) {
+                return;
+            }
+
+            emit guardarSolicitado(
+                ui->txtNombre->text().trimmed(),
+                ui->txtDNI->text().trimmed(),
+                ui->txtCorreo->text().trimmed(),
+                ui->txtTelefono->text().trimmed()
+                );
         }
         );
 
@@ -221,6 +229,20 @@ LectorDialog::LectorDialog(QWidget *parent)
 LectorDialog::~LectorDialog()
 {
     delete ui;
+}
+
+void LectorDialog::cargarLector(const Lector &lector)
+{
+    setWindowTitle("Editar lector");
+    ui->lblTitulo->setText("Editar lector");
+    ui->lblDescripcion->setText("Actualiza la información del lector.");
+    ui->btnGuardar->setText("Guardar cambios");
+    ui->txtNombre->setText(
+        (lector.getNombres() + " " + lector.getApellidos()).trimmed()
+        );
+    ui->txtDNI->setText(lector.getDni());
+    ui->txtCorreo->setText(lector.getCorreo());
+    ui->txtTelefono->setText(lector.getTelefono());
 }
 
 // =========================================

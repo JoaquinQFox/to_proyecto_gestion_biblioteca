@@ -1,11 +1,13 @@
 #include "Lector.h"
 
 Lector::Lector()
-    : id(0), dni(""), nombres(""), apellidos(""), telefono(""), direccion(""), activo(true) {}
+    : id(0), dni(""), nombres(""), apellidos(""), correo(""),
+    telefono(""), direccion(""), activo(true) {}
 
 Lector::Lector(int id, const QString &dni, const QString &nombres, const QString &apellidos,
-               const QString &telefono, const QString &direccion, bool activo)
-    : id(id), dni(dni), nombres(nombres), apellidos(apellidos),
+               const QString &telefono, const QString &direccion, bool activo,
+               const QString &correo)
+    : id(id), dni(dni), nombres(nombres), apellidos(apellidos), correo(correo),
     telefono(telefono), direccion(direccion), activo(activo) {}
 
 int Lector::getId() const
@@ -48,6 +50,16 @@ void Lector::setApellidos(const QString &apellidos)
     this->apellidos = apellidos;
 }
 
+QString Lector::getCorreo() const
+{
+    return correo;
+}
+
+void Lector::setCorreo(const QString &correo)
+{
+    this->correo = correo;
+}
+
 QString Lector::getTelefono() const
 {
     return telefono;
@@ -84,6 +96,7 @@ bool Lector::operator==(const Lector &otro) const
            dni == otro.dni &&
            nombres == otro.nombres &&
            apellidos == otro.apellidos &&
+           correo == otro.correo &&
            telefono == otro.telefono &&
            direccion == otro.direccion &&
            activo == otro.activo;
