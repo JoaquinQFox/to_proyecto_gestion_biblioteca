@@ -94,6 +94,8 @@ set(PROJECT_SOURCES
     src/controllers/LectorController.h
     src/controllers/LectorController.cpp
 
+    src/controllers/PrestamoController.h
+    src/controllers/PrestamoController.cpp
     resources/resources.qrc
 )
 
