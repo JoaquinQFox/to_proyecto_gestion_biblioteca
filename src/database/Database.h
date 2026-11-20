@@ -8,11 +8,16 @@ class Database
 {
 private:
     static QSqlDatabase conexion;
+    static QString rutaBD;
 
 public:
     static bool conectar();
     static QSqlDatabase obtenerConexion();
     static void cerrarConexion();
+
+    // conexión propia para hilos secundarios
+    static bool abrirConexionHilo();
+    static void cerrarConexionHilo();
 };
 
 

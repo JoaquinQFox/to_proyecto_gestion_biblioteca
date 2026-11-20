@@ -5,8 +5,12 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QSqlQuery>
+#include <QThread>
 
 QSqlDatabase Database::conexion;
+QString Database::rutaBD;
+
+static thread_local QString conexionHilo;
 
 bool Database::conectar()
 {
@@ -28,6 +32,7 @@ bool Database::conectar()
         "BibliotecaConnection"
         );
 
+    rutaBD = ruta;
     conexion.setDatabaseName(ruta);
 
     if (!conexion.open()) {
@@ -48,6 +53,9 @@ bool Database::conectar()
 
 QSqlDatabase Database::obtenerConexion()
 {
+    if (!conexionHilo.isEmpty()) {
+        return QSqlDatabase::database(conexionHilo);
+    }
     return conexion;
 }
 
@@ -56,4 +64,45 @@ void Database::cerrarConexion()
     if (conexion.isOpen()) {
         conexion.close();
     }
+}
+
+bool Database::abrirConexionHilo()
+{
+    if (rutaBD.isEmpty()) {
+        return false;
+    }
+
+    const QString nombre = QString("BibliotecaHilo_%1")
+                               .arg(reinterpret_cast<quintptr>(QThread::currentThreadId()));
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", nombre);
+    db.setDatabaseName(rutaBD);
+
+    if (!db.open()) {
+        qDebug() << "Error al conectar en hilo:" << db.lastError().text();
+        db = QSqlDatabase();
+        QSqlDatabase::removeDatabase(nombre);
+        return false;
+    }
+
+    conexionHilo = nombre;
+    return true;
+}
+
+void Database::cerrarConexionHilo()
+{
+    if (conexionHilo.isEmpty()) {
+        return;
+    }
+
+    const QString nombre = conexionHilo;
+    conexionHilo.clear();
+
+    {
+        QSqlDatabase db = QSqlDatabase::database(nombre, false);
+        if (db.isOpen()) {
+            db.close();
+        }
+    }
+    QSqlDatabase::removeDatabase(nombre);
 }
