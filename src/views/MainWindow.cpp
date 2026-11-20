@@ -9,6 +9,7 @@
 #include "pages/PrestamosPage.h"
 #include "pages/RecomendacionesPage.h"
 #include "../controllers/PrestamoController.h"
+#include "../controllers/RecomendacionController.h"
 
 #include <QFile>
 #include <QDebug>
@@ -166,8 +167,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 7. INTEGRAR LA PANTALLA DE RECOMENDACIONES
 
+    RecomendacionController *recomendacionController =
+        new RecomendacionController(this);
+
     RecomendacionesPage *recomendacionesPage =
-        new RecomendacionesPage(this);
+        new RecomendacionesPage(recomendacionController, this);
 
     QWidget *paginaRecomendacionesVacia =
         ui->pageRecomendaciones;

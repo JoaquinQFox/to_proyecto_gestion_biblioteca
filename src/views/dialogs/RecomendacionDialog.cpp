@@ -2,6 +2,8 @@
 #include "RecomendacionDialog.h"
 #include "ui_RecomendacionDialog.h"
 
+#include "../../controllers/RecomendacionController.h"
+
 #include <QFile>
 #include <QDebug>
 #include <QPushButton>
@@ -14,12 +16,38 @@
 #include <QLayout>
 #include <QSizePolicy>
 #include <QTimer>
+#include <QMessageBox>
+#include <exception>
 
-RecomendacionDialog::RecomendacionDialog(QWidget *parent)
+RecomendacionDialog::RecomendacionDialog(RecomendacionController *controller,
+                                         QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::RecomendacionDialog)
+    , m_controller(controller)
 {
     ui->setupUi(this);
+
+    // =========================================
+    // TIPO DE RECOMENDACIÓN (ComboBox)
+    // =========================================
+
+    cmbEstrategia = new QComboBox(this);
+    cmbEstrategia->setMinimumHeight(42);
+    cmbEstrategia->addItem("Por popularidad", static_cast<int>(TipoEstrategia::Popularidad));
+    cmbEstrategia->addItem("Por categoría", static_cast<int>(TipoEstrategia::Categoria));
+    cmbEstrategia->addItem("Por historial del lector", static_cast<int>(TipoEstrategia::Historial));
+
+    auto *lblEstrategia = new QLabel("Tipo de recomendación", this);
+    lblEstrategia->setObjectName("lblEstrategia");
+
+    const int posLector = ui->layoutPrincipal->indexOf(ui->lblLector);
+    ui->layoutPrincipal->insertWidget(posLector, lblEstrategia);
+    ui->layoutPrincipal->insertWidget(posLector + 1, cmbEstrategia);
+
+    lblErrorCategoria = new QLabel(this);
+    lblErrorCategoria->setObjectName("lblErrorCategoria");
+    lblErrorCategoria->setWordWrap(true);
+    lblErrorCategoria->hide();
 
     // =========================================
     // CONFIGURACIÓN DEL FORMULARIO
@@ -99,6 +127,11 @@ RecomendacionDialog::RecomendacionDialog(QWidget *parent)
         lblErrorCantidad
         );
 
+    insertarError(
+        ui->cmbCategoria,
+        lblErrorCategoria
+        );
+
     // =========================================
     // BOTONES
     // =========================================
@@ -110,15 +143,40 @@ RecomendacionDialog::RecomendacionDialog(QWidget *parent)
         &QDialog::reject
         );
 
-    // Generar: únicamente validación visual
+    // Generar: si el formulario es válido se cierra con Accepted
     connect(
         ui->btnGenerar,
         &QPushButton::clicked,
         this,
         [this]() {
-            validarFormulario();
+            if (validarFormulario()) {
+                accept();
+            }
         }
         );
+
+    // La categoría solo es obligatoria con la estrategia "Por categoría"
+    connect(
+        cmbEstrategia,
+        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this,
+        [this](int) {
+            limpiarError(lblErrorCategoria, ui->cmbCategoria);
+            actualizarCategoriaObligatoria();
+        }
+        );
+
+    connect(
+        ui->cmbCategoria,
+        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this,
+        [this](int) {
+            limpiarError(lblErrorCategoria, ui->cmbCategoria);
+        }
+        );
+
+    cargarLectoresYCategorias();
+    actualizarCategoriaObligatoria();
 
     // =========================================
     // LIMPIEZA AUTOMÁTICA DE ERRORES
@@ -245,8 +303,26 @@ bool RecomendacionDialog::validarFormulario()
             );
     }
 
-    // Categoría opcional:
-    // índice 0 significa todas las categorías.
+    // Categoría: obligatoria solo con la estrategia "Por categoría"
+    if (tipoSeleccionado() == TipoEstrategia::Categoria
+        && ui->cmbCategoria->currentIndex() <= 0) {
+        mostrarError(
+            lblErrorCategoria,
+            "Selecciona una categoría para esta recomendación.",
+            ui->cmbCategoria
+            );
+
+        if (!primerCampoInvalido) {
+            primerCampoInvalido = ui->cmbCategoria;
+        }
+
+        valido = false;
+    } else {
+        limpiarError(
+            lblErrorCategoria,
+            ui->cmbCategoria
+            );
+    }
 
     // Enfocar el primer campo incorrecto
     if (primerCampoInvalido) {
@@ -303,4 +379,69 @@ void RecomendacionDialog::limpiarError(
 
     ui->layoutPrincipal->invalidate();
     adjustSize();
+}
+
+// =========================================
+// DATOS ELEGIDOS
+// =========================================
+
+TipoEstrategia RecomendacionDialog::tipoSeleccionado() const
+{
+    return static_cast<TipoEstrategia>(cmbEstrategia->currentData().toInt());
+}
+
+int RecomendacionDialog::idLector() const
+{
+    return ui->cmbLector->currentData().toInt();
+}
+
+int RecomendacionDialog::idCategoria() const
+{
+    return ui->cmbCategoria->currentData().toInt();
+}
+
+int RecomendacionDialog::cantidad() const
+{
+    return ui->spinCantidad->value();
+}
+
+// =========================================
+// CARGA DE COMBOS
+// =========================================
+
+void RecomendacionDialog::cargarLectoresYCategorias()
+{
+    if (!m_controller) {
+        return;
+    }
+
+    try {
+        ui->cmbLector->clear();
+        ui->cmbLector->addItem("Seleccionar lector", 0);
+        for (const Lector &lector : m_controller->listarLectores()) {
+            ui->cmbLector->addItem(
+                lector.getNombres() + " " + lector.getApellidos()
+                    + " (" + lector.getDni() + ")",
+                lector.getId()
+                );
+        }
+
+        ui->cmbCategoria->clear();
+        ui->cmbCategoria->addItem("Todas las categorías", 0);
+        for (const Categoria &categoria : m_controller->listarCategorias()) {
+            ui->cmbCategoria->addItem(categoria.getNombre(), categoria.getId());
+        }
+    } catch (const std::exception &error) {
+        QMessageBox::warning(this, "Recomendaciones", QString::fromUtf8(error.what()));
+    }
+}
+
+void RecomendacionDialog::actualizarCategoriaObligatoria()
+{
+    // ... "Seleccionar categoría" en lugar de "Todas" cuando es obligatoria
+    const bool obligatoria = tipoSeleccionado() == TipoEstrategia::Categoria;
+    ui->cmbCategoria->setItemText(
+        0, obligatoria ? "Seleccionar categoría" : "Todas las categorías");
+    ui->lblCategoria->setText(
+        obligatoria ? "Categoría (obligatoria)" : "Categoría de interés (opcional)");
 }
