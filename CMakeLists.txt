@@ -13,6 +13,8 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
     Widgets
     Sql
+    Concurrent
+    Test
 )
 
 set(PROJECT_SOURCES
@@ -96,6 +98,19 @@ set(PROJECT_SOURCES
 
     src/controllers/PrestamoController.h
     src/controllers/PrestamoController.cpp
+
+    # Recomendaciones (Persona 5)
+    src/interfaces/IRecommendationStrategy.h
+    src/strategies/PopularityStrategy.h
+    src/strategies/PopularityStrategy.cpp
+    src/strategies/CategoryStrategy.h
+    src/strategies/CategoryStrategy.cpp
+    src/strategies/HistoryStrategy.h
+    src/strategies/HistoryStrategy.cpp
+    src/factories/RecommendationFactory.h
+    src/factories/RecommendationFactory.cpp
+    src/controllers/RecomendacionController.h
+    src/controllers/RecomendacionController.cpp
     resources/resources.qrc
 )
 
@@ -140,6 +155,7 @@ endif()
 target_link_libraries(GestionBiblioteca PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Sql
+    Qt${QT_VERSION_MAJOR}::Concurrent
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -166,3 +182,28 @@ install(TARGETS GestionBiblioteca
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(GestionBiblioteca)
 endif()
+
+# Pruebas unitarias (recomendaciones)
+enable_testing()
+
+add_executable(tst_RecommendationFactory
+    src/tests/tst_RecommendationFactory.cpp
+    src/factories/RecommendationFactory.h src/factories/RecommendationFactory.cpp
+    src/interfaces/IRecommendationStrategy.h
+    src/strategies/PopularityStrategy.h src/strategies/PopularityStrategy.cpp
+    src/strategies/CategoryStrategy.h src/strategies/CategoryStrategy.cpp
+    src/strategies/HistoryStrategy.h src/strategies/HistoryStrategy.cpp
+    src/database/Database.h src/database/Database.cpp
+    src/models/Libro.h src/models/Libro.cpp
+    src/models/Ejemplar.h src/models/Ejemplar.cpp
+    src/models/Prestamo.h src/models/Prestamo.cpp
+    src/repositories/LibroRepository.h src/repositories/LibroRepository.cpp
+    src/repositories/EjemplarRepository.h src/repositories/EjemplarRepository.cpp
+    src/repositories/PrestamoRepository.h src/repositories/PrestamoRepository.cpp
+)
+target_link_libraries(tst_RecommendationFactory PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Sql
+    Qt${QT_VERSION_MAJOR}::Test
+)
+add_test(NAME tst_RecommendationFactory COMMAND tst_RecommendationFactory)
