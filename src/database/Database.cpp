@@ -51,6 +51,35 @@ bool Database::conectar()
     return true;
 }
 
+bool Database::conectarEnMemoria()
+{
+    const QString nombre = "BibliotecaConnection";
+
+    if (QSqlDatabase::contains(nombre)) {
+        conexion.close();
+        conexion = QSqlDatabase();
+        QSqlDatabase::removeDatabase(nombre);
+    }
+
+    conexion = QSqlDatabase::addDatabase("QSQLITE", nombre);
+    conexion.setDatabaseName(":memory:");
+    rutaBD.clear();
+
+    if (!conexion.open()) {
+        qDebug() << "Error al conectar con la base de datos en memoria:"
+                 << conexion.lastError().text();
+        return false;
+    }
+
+    QSqlQuery query(conexion);
+    if (!query.exec("PRAGMA foreign_keys = ON")) {
+        qDebug() << "Error al activar claves foráneas:"
+                 << query.lastError().text();
+        return false;
+    }
+    return true;
+}
+
 QSqlDatabase Database::obtenerConexion()
 {
     if (!conexionHilo.isEmpty()) {

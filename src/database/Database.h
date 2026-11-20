@@ -12,6 +12,10 @@ private:
 
 public:
     static bool conectar();
+
+    // Solo para pruebas
+    static bool conectarEnMemoria();
+
     static QSqlDatabase obtenerConexion();
     static void cerrarConexion();
 
@@ -19,6 +23,5 @@ public:
     static bool abrirConexionHilo();
     static void cerrarConexionHilo();
 };
-
 
 #endif // DATABASE_H

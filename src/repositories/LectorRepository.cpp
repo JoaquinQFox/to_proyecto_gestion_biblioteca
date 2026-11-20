@@ -14,7 +14,9 @@ int LectorRepository::agregar(const Lector &entidad)
     query.bindValue(":dni", entidad.getDni());
     query.bindValue(":nombres", entidad.getNombres());
     query.bindValue(":apellidos", entidad.getApellidos());
-    query.bindValue(":correo", entidad.getCorreo());
+    query.bindValue(":correo", entidad.getCorreo().isNull()
+                                   ? QStringLiteral("")
+                                   : entidad.getCorreo());
     query.bindValue(":telefono", entidad.getTelefono());
     query.bindValue(":direccion", entidad.getDireccion());
     query.bindValue(":activo", entidad.isActivo() ? 1 : 0);
@@ -86,7 +88,9 @@ bool LectorRepository::actualizar(const Lector &entidad)
     query.bindValue(":dni", entidad.getDni());
     query.bindValue(":nombres", entidad.getNombres());
     query.bindValue(":apellidos", entidad.getApellidos());
-    query.bindValue(":correo", entidad.getCorreo());
+    query.bindValue(":correo", entidad.getCorreo().isNull()
+                                   ? QStringLiteral("")
+                                   : entidad.getCorreo());
     query.bindValue(":telefono", entidad.getTelefono());
     query.bindValue(":direccion", entidad.getDireccion());
     query.bindValue(":activo", entidad.isActivo() ? 1 : 0);

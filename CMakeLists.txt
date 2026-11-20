@@ -207,3 +207,26 @@ target_link_libraries(tst_RecommendationFactory PRIVATE
     Qt${QT_VERSION_MAJOR}::Test
 )
 add_test(NAME tst_RecommendationFactory COMMAND tst_RecommendationFactory)
+
+add_executable(tst_Repositories
+    src/tests/tst_Repositories.cpp
+    src/database/Database.h src/database/Database.cpp
+    src/database/DatabaseInitializer.h src/database/DatabaseInitializer.cpp
+    src/interfaces/IRepository.h
+    src/models/Categoria.h src/models/Categoria.cpp
+    src/models/Ejemplar.h src/models/Ejemplar.cpp
+    src/models/Lector.h src/models/Lector.cpp
+    src/models/Libro.h src/models/Libro.cpp
+    src/models/Prestamo.h src/models/Prestamo.cpp
+    src/repositories/CategoriaRepository.h src/repositories/CategoriaRepository.cpp
+    src/repositories/EjemplarRepository.h src/repositories/EjemplarRepository.cpp
+    src/repositories/LectorRepository.h src/repositories/LectorRepository.cpp
+    src/repositories/LibroRepository.h src/repositories/LibroRepository.cpp
+    src/repositories/PrestamoRepository.h src/repositories/PrestamoRepository.cpp
+)
+target_link_libraries(tst_Repositories PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Sql
+    Qt${QT_VERSION_MAJOR}::Test
+)
+add_test(NAME tst_Repositories COMMAND tst_Repositories)
